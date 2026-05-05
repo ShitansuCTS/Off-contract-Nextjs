@@ -7,8 +7,100 @@ datasource db {
   provider = "postgresql"
 }
 
+/////////////////////
+/////ENMUS START HERE
+/////////////////////
+enum Role {
+  SUPPLIER
+  AGENCY
+  ADMIN
+}
+
+enum UserStatus {
+  PENDING_PAYMENT
+  PENDING_APPROVAL
+  ACTIVE
+  REJECTED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+/////////////////////
+/////ENMUS END HERE
+/////////////////////
+
+
+/////////////////////
+/////USER  START HERE
+/////////////////////
 model User {
-  id    String @id @default(uuid())
-  email String @unique
-  name  String
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      Role
+  status    UserStatus @default(PENDING_PAYMENT)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profile       Profile?
+  company       Company?
+  subscriptions Subscription[]
+}
+
+/////////////////////
+///PROFILE START HERE
+/////////////////////
+model Profile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+
+  fullName  String
+  phone     String
+
+  createdAt DateTime @default(now())
+
+  user      User @relation(fields: [userId], references: [id])
+}
+
+/////////////////////
+///COMPANY  HERE
+/////////////////////
+model Company {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+
+  name        String
+  gstNumber   String?
+  category    String
+  experience  Int?
+
+  city        String?
+  state       String?
+
+  createdAt DateTime @default(now())
+
+  user        User @relation(fields: [userId], references: [id])
+}
+
+/////////////////////
+///SUBSCRIPTION  HERE
+/////////////////////
+model Subscription {
+  id        String   @id @default(uuid())
+  userId    String   
+
+  planName  String
+  amount    Float
+  status PaymentStatus @default(PENDING)
+
+  paymentId String?
+
+  createdAt DateTime @default(now())
+
+  user      User @relation(fields: [userId], references: [id])
+  @@index([userId])
 }
