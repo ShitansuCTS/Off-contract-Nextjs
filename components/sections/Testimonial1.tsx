@@ -105,70 +105,235 @@ export default function Testimonial1() {
     return (
         <>
             <div
-                className="testimonial1-section-area sp1"
-                style={{
-                    backgroundImage: "url(assets/img/all-images/bg/bg1.png)",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "cover",
-                }}
-            >
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-6">
-                            <div className="testimonial-header space-margin60 heading1">
-                                <h5 data-aos="fade-left" data-aos-duration={800}>
-                                    feedback/testimonial
-                                </h5>
-                                <div className="space20" />
-                                <h2 className="text-anime-style-3">A Legacy Of Happy Clients</h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-lg-12">
-                            <div className="testimonialmain-slider">
-                                <div className="row align-items-center">
-                                    <div className="col-lg-5">
-                                        <Slider {...settings2} className="images-area2 slider2">
-                                            {imageSlides.map((img, index) => (
-                                                <div key={index} className="img1 image-anime">
-                                                    <img src={img} alt="housebox" />
-                                                </div>
-                                            ))}
-                                        </Slider>
-                                    </div>
-                                    <div className="col-lg-7">
-                                        <Slider {...settings1} className="testimonial-slider-area slider1">
-                                            {testimonialSlides.map((slide, index) => (
-                                                <div key={index} className="testimonial-box">
-                                                    <img src="/assets/img/icons/quoto-icon1.svg" alt="housebox" />
-                                                    <div className="space16" />
-                                                    <p>{slide.quote}</p>
-                                                    <div className="space32" />
-                                                    <div className="test-images">
-                                                        <div className="auhtor-area">
-                                                            <div className="img1">
-                                                                <img src={slide.authorImg} alt="housebox" />
-                                                            </div>
-                                                            <div className="text">
-                                                                <Link href="#">{slide.authorName}</Link>
-                                                                <div className="space10" />
-                                                                <p>Happy Client</p>
-                                                            </div>
-                                                        </div>
-                                                        <img src="/assets/img/elements/brand1.png" alt="housebox" className="brand1" />
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </Slider>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            className="testimonial1-section-area sp1"
+            style={{
+              backgroundImage: "url(assets/img/all-images/bg/bg1.png)",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+            }}
+          >
+            <div className="container">
+              <div className="row">
+                <div className="col-lg-6">
+                  <div className="testimonial-header space-margin60 heading1">
+                    <h5 data-aos="fade-left" data-aos-duration={800}>
+                      feedback/testimonial
+                    </h5>
+                    <div className="space20" />
+                    <h2 className="text-anime-style-3">
+                      A Legacy Of Happy Clients
+                    </h2>
+                  </div>
                 </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-12">
+                  <div className="testimonialmain-slider">
+                    <div className="row align-items-center">
+                      <div className="col-lg-5">
+                        <Slider {...settings2} className="images-area2 slider2">
+                          <div className="img1 image-anime">
+                            <img
+                              src="/assets/img/all-images/about/7.jpg"
+                              alt="Of Contractors"
+                            />
+                          </div>
+                          <div className="img1 image-anime">
+                            <img
+                              src="/assets/img/all-images/about/8.jpg"
+                              alt="Of Contractors"
+                            />
+                          </div>
+                          <div className="img1 image-anime">
+                            <img
+                              src="/assets/img/all-images/about/9.jpg"
+                              alt="Of Contractors"
+                            />
+                          </div>
+                          <div className="img1 image-anime">
+                            <img
+                              src="/assets/img/all-images/about/10.jpg"
+                              alt="Of Contractors"
+                            />
+                          </div>
+                        </Slider>
+                      </div>
+                      <div className="col-lg-7">
+                        <Slider
+                          {...settings1}
+                          className="testimonial-slider-area slider1"
+                        >
+                          <div className="testimonial-box">
+                            <img
+                              src="/assets/img/icons/quoto-icon1.svg"
+                              alt="Of Contractors"
+                            />
+
+                            <div className="space16" />
+
+                            <p>
+                              "OfContractors helped us find reliable
+                              construction materials and skilled contractors for
+                              our commercial project. The entire process was
+                              smooth, professional, and completed on time."
+                            </p>
+
+                            <div className="space32" />
+
+                            <div className="test-images">
+                              <div className="auhtor-area">
+                                <div className="img1">
+                                  <img
+                                    src="/assets/img/all-images/testimonial/testimonial-img2.png"
+                                    alt="Of Contractors"
+                                  />
+                                </div>
+
+                                <div className="text">
+                                  <Link href="#">Rahul Sharma</Link>
+                                  <div className="space10" />
+                                  <p>Business Owner</p>
+                                </div>
+                              </div>
+
+                              <img
+                                src="/assets/img/elements/brand1.png"
+                                alt="Of Contractors"
+                                className="brand1"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="testimonial-box">
+                            <img
+                              src="/assets/img/icons/quoto-icon1.svg"
+                              alt="Of Contractors"
+                            />
+
+                            <div className="space16" />
+
+                            <p>
+                              "We rented construction equipment through
+                              OfContractors and received excellent support
+                              throughout the project. Their service saved both
+                              time and operational costs."
+                            </p>
+
+                            <div className="space32" />
+
+                            <div className="test-images">
+                              <div className="auhtor-area">
+                                <div className="img1">
+                                  <img
+                                    src="/assets/img/all-images/testimonial/testimonial-img2.png"
+                                    alt="Of Contractors"
+                                  />
+                                </div>
+
+                                <div className="text">
+                                  <Link href="#">Amit Patel</Link>
+                                  <div className="space10" />
+                                  <p>Project Manager</p>
+                                </div>
+                              </div>
+
+                              <img
+                                src="/assets/img/elements/brand1.png"
+                                alt="Of Contractors"
+                                className="brand1"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="testimonial-box">
+                            <img
+                              src="/assets/img/icons/quoto-icon1.svg"
+                              alt="Of Contractors"
+                            />
+
+                            <div className="space16" />
+
+                            <p>
+                              "Their contractor network is highly professional
+                              and reliable. OfContractors helped us complete our
+                              residential construction work efficiently and
+                              within budget."
+                            </p>
+
+                            <div className="space32" />
+
+                            <div className="test-images">
+                              <div className="auhtor-area">
+                                <div className="img1">
+                                  <img
+                                    src="/assets/img/all-images/testimonial/testimonial-img2.png"
+                                    alt="Of Contractors"
+                                  />
+                                </div>
+
+                                <div className="text">
+                                  <Link href="#">Priya Verma</Link>
+                                  <div className="space10" />
+                                  <p>Homeowner</p>
+                                </div>
+                              </div>
+
+                              <img
+                                src="/assets/img/elements/brand1.png"
+                                alt="Of Contractors"
+                                className="brand1"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="testimonial-box">
+                            <img
+                              src="/assets/img/icons/quoto-icon1.svg"
+                              alt="Of Contractors"
+                            />
+
+                            <div className="space16" />
+
+                            <p>
+                              "OfContractors provided quick assistance for our
+                              worker insurance and construction support needs.
+                              Their team was responsive and easy to work with."
+                            </p>
+
+                            <div className="space32" />
+
+                            <div className="test-images">
+                              <div className="auhtor-area">
+                                <div className="img1">
+                                  <img
+                                    src="/assets/img/all-images/testimonial/testimonial-img2.png"
+                                    alt="Of Contractors"
+                                  />
+                                </div>
+
+                                <div className="text">
+                                  <Link href="#">Sandeep Kumar</Link>
+                                  <div className="space10" />
+                                  <p>Contractor</p>
+                                </div>
+                              </div>
+
+                              <img
+                                src="/assets/img/elements/brand1.png"
+                                alt="Of Contractors"
+                                className="brand1"
+                              />
+                            </div>
+                          </div>
+                        </Slider>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </>
     );
 }

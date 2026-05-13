@@ -15,7 +15,7 @@ export default function MobileMenu({ isMobileMenu, handleMobileMenu }: any) {
                             <div className="mobile-header-elements">
                                 <div className="mobile-logo">
                                     <Link href="/">
-                                        <img src="/assets/img/logo/logo1.png" alt="housebox" />
+                                        <img src="/icons/logo.png" alt="housebox" style={{width:"150px"}} />
                                     </Link>
                                 </div>
                                 <div className="mobile-right d-flex gap-1 align-items-center">

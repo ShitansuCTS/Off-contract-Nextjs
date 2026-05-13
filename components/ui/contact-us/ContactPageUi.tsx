@@ -45,9 +45,10 @@ export default function ContactPageUi() {
                     <h2>Let’s Build Strong Business Connections</h2>
                     <div className="space24" />
                     <p style={{ textAlign: "justify" }}>
-                      At OffContractors, we connect businesses with trusted contractors and professional service providers.
-Partner with us to find skilled experts, new opportunities, and reliable project support.
-
+                      At OffContractors, we connect businesses with trusted
+                      contractors and professional service providers. Partner
+                      with us to find skilled experts, new opportunities, and
+                      reliable project support.
                     </p>
                     <div className="space40" />
                     <div className="number-address-area">
@@ -213,8 +214,6 @@ Partner with us to find skilled experts, new opportunities, and reliable project
               ></iframe>
             </div>
           </div>
-
-
 
           {/*===== CONTACT AREA ENDS =======*/}
         </div>
