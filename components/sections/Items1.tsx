@@ -157,7 +157,7 @@ export default function Items1() {
                     <h2>{slide.title}</h2>
                     <div className="space28" />
                     <h3>
-                      <s>{slide.oldPrice}</s> {slide.newPrice}
+                     {slide.newPrice}
                     </h3>
                     <div className="space28" />
                     <div className="btn-area1">
