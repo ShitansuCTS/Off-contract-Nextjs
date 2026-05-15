@@ -26,7 +26,7 @@ export default function Project1() {
               >
                 <div className="img1">
                   <img
-                    src="/assets/img/all-images/project/project-img1.png"
+                    src="/assets/img/all-images/home/contact/1.png"
                     alt="housebox"
                   />
                 </div>
@@ -56,7 +56,7 @@ export default function Project1() {
               >
                 <div className="img1">
                   <img
-                    src="/assets/img/all-images/project/project-img2.png"
+                    src="/assets/img/all-images/home/contact/4.png"
                     alt="housebox"
                   />
                 </div>
@@ -86,7 +86,7 @@ export default function Project1() {
               >
                 <div className="img1">
                   <img
-                    src="/assets/img/all-images/project/project-img3.png"
+                    src="/assets/img/all-images/home/contact/1.png"
                     alt="housebox"
                   />
                 </div>
@@ -116,7 +116,7 @@ export default function Project1() {
               >
                 <div className="img1">
                   <img
-                    src="/assets/img/all-images/project/project-img3.png"
+                    src="/assets/img/all-images/home/contact/2.png"
                     alt="housebox"
                   />
                 </div>

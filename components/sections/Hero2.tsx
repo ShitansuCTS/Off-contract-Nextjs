@@ -39,7 +39,7 @@ export default function Hero2() {
             />
             <div className="img1">
               <img
-                src="/assets/img/all-images/hero/hero2-img2.png"
+                src="/assets/img/all-images/home/banner/1.png"
                 alt="housebox"
               />
             </div>
@@ -101,7 +101,7 @@ export default function Hero2() {
             />
             <div className="img1">
               <img
-                src="/assets/img/all-images/hero/hero2-img3.png"
+                src="/assets/img/all-images/home/banner/2.png"
                 alt="housebox"
               />
             </div>
@@ -163,7 +163,7 @@ export default function Hero2() {
             />
             <div className="img1">
               <img
-                src="/assets/img/all-images/hero/hero2-img4.png"
+                src="/assets/img/all-images/home/banner/4.png"
                 alt="housebox"
               />
             </div>
