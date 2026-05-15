@@ -99,6 +99,7 @@ export default function CoreServices() {
         className="others-selider-section"
         data-aos="fade-up"
         data-aos-duration={1000}
+        style={{paddingTop:"70px"}}
       >
         <div className="container">
           <div className="row">

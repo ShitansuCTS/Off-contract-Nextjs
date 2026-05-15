@@ -141,7 +141,16 @@ export default function HomeCategory() {
   return (
     <>
       {/* Blog Grid Section */}
-      <div className="blog-grid-section-area sp1">
+      <div
+        className="blog-grid-section-area sp1"
+        style={{
+          backgroundImage: "url(assets/img/all-images/bg/bg1.png)",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          marginTop:"-40px",
+        }}
+      >
         <div className="container">
           <div className="row">
             <div className="col-lg-6 m-auto">

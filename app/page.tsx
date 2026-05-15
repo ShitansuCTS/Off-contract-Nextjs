@@ -25,11 +25,11 @@ export default function Home() {
         {/* <About1 /> */}
         <CoreServices />
         {/* <Properties1 /> */}
-        {/* <Project1 /> */}
         <Items1 />
         <PropertyLocation4 />
         <CtaHome />
         <Testimonial1 />
+        <Project1 />
         <Cta />
       </Layout>
     </>
