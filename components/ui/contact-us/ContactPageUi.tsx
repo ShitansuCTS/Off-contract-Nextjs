@@ -1,5 +1,6 @@
 import Layout from "@/components/layout/Layout";
 import Link from "next/link";
+import Cta from "../cta/Cta";
 export default function ContactPageUi() {
   return (
     <>
@@ -202,7 +203,7 @@ export default function ContactPageUi() {
               </div>
             </div>
           </div>
-          <div className="mapouter">
+          <div className="mapouter" style={{marginBottom:"30px"}}>
             <div className="gmap_canvas">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3385.2974999973976!2d85.82090307736716!3d20.34676086224104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a190914ad2d782b%3A0xda020790127b2e08!2sCrushaders%20Tech!5e1!3m2!1sen!2sin!4v1778490858211!5m2!1sen!2sin"
@@ -214,8 +215,10 @@ export default function ContactPageUi() {
               ></iframe>
             </div>
           </div>
-
           {/*===== CONTACT AREA ENDS =======*/}
+
+
+          <Cta />
         </div>
       </Layout>
     </>

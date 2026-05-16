@@ -201,68 +201,62 @@ export default function InsuranceSection() {
                       <div className="col-lg-4">
                         <div className="contact-form-area">
                           <h4>Get In Touch</h4>
-                          <div className="row">
-                            <div className="col-lg-12">
-                              <div className="input-area">
-                                <input type="text" placeholder="First Name" />
-                              </div>
-                            </div>
-                            <div className="col-lg-12">
-                              <div className="input-area">
-                                <input type="text" placeholder="Last Name" />
-                              </div>
-                            </div>
-                            <div className="col-lg-12">
-                              <div className="input-area">
-                                <input
-                                  type="email"
-                                  placeholder="Email Address"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-lg-12">
-                              <div className="input-area">
-                                <input
-                                  type="number"
-                                  placeholder="Phone Number"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-lg-12">
-                              <div className="input-area">
-                                <textarea placeholder="Your Message" />
-                              </div>
-                            </div>
-                            <div className="col-lg-12">
-                              <div className="input-area">
-                                <button type="submit" className="theme-btn1">
-                                  Send Now{" "}
-                                  <span className="arrow1">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 24 24"
-                                      width={24}
-                                      height={24}
-                                      fill="currentColor"
-                                    >
-                                      <path d="M12 13H4V11H12V4L20 12L12 20V13Z" />
-                                    </svg>
-                                  </span>
-                                  <span className="arrow2">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 24 24"
-                                      width={24}
-                                      height={24}
-                                      fill="currentColor"
-                                    >
-                                      <path d="M12 13H4V11H12V4L20 12L12 20V13Z" />
-                                    </svg>
-                                  </span>
-                                </button>
-                              </div>
-                            </div>
-                          </div>
+                       <div className="row">
+                      <div className="col-lg-12">
+                        <div className="input-area">
+                          <input type="text" placeholder="First Name" />
+                        </div>
+                      </div>
+                      <div className="col-lg-12">
+                        <div className="input-area">
+                          <input type="text" placeholder="Last Name" />
+                        </div>
+                      </div>
+                      <div className="col-lg-12">
+                        <div className="input-area">
+                          <input type="email" placeholder="Email Address" />
+                        </div>
+                      </div>
+                      <div className="col-lg-12">
+                        <div className="input-area">
+                          <input type="number" placeholder="Phone Number" />
+                        </div>
+                      </div>
+                      <div className="col-lg-12">
+                        <div className="input-area">
+                          <textarea placeholder="Your Message" />
+                        </div>
+                      </div>
+                      <div className="col-lg-12">
+                        <div className="input-area">
+                          <button type="submit" className="theme-btn1">
+                            Send Now{" "}
+                            <span className="arrow1">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                width={24}
+                                height={24}
+                                fill="currentColor"
+                              >
+                                <path d="M12 13H4V11H12V4L20 12L12 20V13Z" />
+                              </svg>
+                            </span>
+                            <span className="arrow2">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                width={24}
+                                height={24}
+                                fill="currentColor"
+                              >
+                                <path d="M12 13H4V11H12V4L20 12L12 20V13Z" />
+                              </svg>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                         </div>
                       </div>
                     </div>
