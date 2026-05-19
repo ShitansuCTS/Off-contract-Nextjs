@@ -99,7 +99,14 @@ export default function CoreServices() {
         className="others-selider-section"
         data-aos="fade-up"
         data-aos-duration={1000}
-        style={{paddingTop:"70px"}}
+        style={{
+          backgroundImage: "url('/assets/img/all-images/bg/bg1.png')",
+          backgroundPosition: "center center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          paddingTop: "50px",
+          paddingBottom:"100px"
+        }}
       >
         <div className="container">
           <div className="row">

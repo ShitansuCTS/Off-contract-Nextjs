@@ -1,4 +1,5 @@
-import InsuranceSection from "@/components/ui/services/InsuranceSection";
+import ServicesSection from "@/components/ui/services/ServicesSection";
+import "@/styles/services.css";
 
 export const metadata = {
   title: "Our Services || To registre your buimsess",
@@ -6,5 +7,5 @@ export const metadata = {
 };
 
 export default function Page() {
-  return <InsuranceSection />;
+  return <ServicesSection />;
 }

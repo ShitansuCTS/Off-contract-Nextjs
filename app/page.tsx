@@ -14,6 +14,7 @@ import Cta from "@/components/ui/cta/Cta";
 import CoreServices from "@/components/ui/home/CoreServices";
 import CtaHome from "@/components/ui/home/CtaHome";
 import HomeCategory from "@/components/ui/category/HomeCategory"
+import EquipmentRental from "@/components/ui/services/EquipmentRental";
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
         <Others1 />
         <HomeCategory />
         {/* <About1 /> */}
+        <EquipmentRental/>
         <CoreServices />
         {/* <Properties1 /> */}
         <Items1 />

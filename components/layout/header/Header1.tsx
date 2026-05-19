@@ -117,12 +117,29 @@ export default function Header1({
                         <Link href="/about-us">About Us</Link>
                       </li>
                       <li>
-                        <Link href="/services">Services</Link>
+                        <Link href="#" className="plus">
+                          Services <i className="fa-solid fa-angle-down" />
+                        </Link>
+                        <ul className="dropdown-padding">
+                          <li>
+                            <Link href="/services#insurance">Insurance Services</Link>
+                          </li>
+                          <li>
+                            <Link href="/services#finance">Finance & Loans</Link>
+                          </li>
+                          <li>
+                            <Link href="/services#equipment-rental">Equipment Rental</Link>
+                          </li>
+                          <li>
+                            <Link href="/services#construction-items">Construction Items</Link>
+                          </li>
+                          
+                        </ul>
                       </li>
                       <li>
                         <Link href="/contact-us">Contact Us</Link>
                       </li>
-                 
+
                       <li>
                         <Link href="#" className="plus">
                           Pages <i className="fa-solid fa-angle-down" />

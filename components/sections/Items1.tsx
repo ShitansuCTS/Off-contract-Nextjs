@@ -77,7 +77,7 @@ export default function Items1() {
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundAttachment: "fixed",
-          marginTop: "100px",
+       
         }}
       >
         <div className="container">
