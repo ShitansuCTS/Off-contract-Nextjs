@@ -1,15 +1,17 @@
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../lib/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 /////////////////////
-/////ENMUS START HERE
+///// ENUMS
 /////////////////////
+
 enum Role {
   SUPPLIER
   AGENCY
@@ -17,31 +19,37 @@ enum Role {
 }
 
 enum UserStatus {
-  PENDING_PAYMENT
-  PENDING_APPROVAL
   ACTIVE
+  SUSPENDED
+}
+
+enum VerificationStatus {
+  PROFILE_PENDING
+  PENDING_APPROVAL
+  VERIFIED
   REJECTED
 }
 
-enum PaymentStatus {
+enum SubscriptionStatus {
   PENDING
-  SUCCESS
+  ACTIVE
+  EXPIRED
   FAILED
 }
-/////////////////////
-/////ENMUS END HERE
-/////////////////////
-
 
 /////////////////////
-/////USER  START HERE
+///// USER
 /////////////////////
+
 model User {
   id        String   @id @default(uuid())
+
   email     String   @unique
   password  String
+
   role      Role
-  status    UserStatus @default(PENDING_PAYMENT)
+
+  status    UserStatus @default(ACTIVE)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -49,58 +57,83 @@ model User {
   profile       Profile?
   company       Company?
   subscriptions Subscription[]
+
+  @@index([email])
 }
 
 /////////////////////
-///PROFILE START HERE
+///// PROFILE
 /////////////////////
+
 model Profile {
   id        String   @id @default(uuid())
+
   userId    String   @unique
 
   fullName  String
-  phone     String
+  phone     String   @unique
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  user      User @relation(fields: [userId], references: [id])
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 /////////////////////
-///COMPANY  HERE
+///// COMPANY
 /////////////////////
+
 model Company {
   id          String   @id @default(uuid())
+
   userId      String   @unique
 
   name        String
   gstNumber   String?
+
   category    String
+
   experience  Int?
 
   city        String?
   state       String?
 
-  createdAt DateTime @default(now())
+  verificationStatus VerificationStatus @default(PROFILE_PENDING)
 
-  user        User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([name])
+  @@index([gstNumber])
 }
 
 /////////////////////
-///SUBSCRIPTION  HERE
+///// SUBSCRIPTION
 /////////////////////
+
 model Subscription {
-  id        String   @id @default(uuid())
-  userId    String   
+  id          String   @id @default(uuid())
 
-  planName  String
-  amount    Float
-  status PaymentStatus @default(PENDING)
+  userId      String
 
-  paymentId String?
+  planName    String
 
-  createdAt DateTime @default(now())
+  amount      Float
 
-  user      User @relation(fields: [userId], references: [id])
+  status      SubscriptionStatus @default(PENDING)
+
+  paymentId   String?
+
+  startDate   DateTime?
+  endDate     DateTime?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId])
+  @@index([status])
 }

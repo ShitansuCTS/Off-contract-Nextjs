@@ -199,7 +199,7 @@ export default function EquipmentRental() {
                       {slide.status}
                     </div>
                     <Link
-                      href="/property-details-v1"
+                      href="/products-details"
                       style={{ padding: "8px", fontSize: "15px" }}
                     >
                       {slide.location}

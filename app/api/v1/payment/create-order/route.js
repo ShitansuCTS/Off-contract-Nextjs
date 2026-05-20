@@ -7,6 +7,5 @@ export async function POST(req) {
   const data = await createOrderController(body);
   console.log("The Reuested Data is in the API GATE WAY PAGE:", body);
 
-
   return NextResponse.json(data);
 }

@@ -300,7 +300,7 @@ export default function ContructionMaterials() {
                                   }}
                                 >
                                   <Link
-                                    href="/product-details"
+                                    href="/products-details"
                                     style={{
                                       color: "#08171f",
                                       fontSize: "20px",
