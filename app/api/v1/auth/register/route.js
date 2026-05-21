@@ -10,11 +10,23 @@ export async function POST(req) {
 
     const data = await registerController(body);
 
-    return NextResponse.json({
+    // CREATE RESPONSE
+    const response = NextResponse.json({
       success: true,
       message: "User Registered Successfully",
-      data,
+      user: data.user,
     });
+
+    // SET COOKIE
+    response.cookies.set("auth_token", data.token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 60 * 60 * 24 * 7,
+      path: "/",
+    });
+
+    return response;
   } catch (error) {
     console.log(error);
     // ZOD VALIDATION ERROR

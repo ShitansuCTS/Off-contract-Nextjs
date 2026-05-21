@@ -2,6 +2,15 @@
 
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import {
+  Mail,
+  LockKeyhole,
+  ArrowRight,
+  Github,
+  Linkedin,
+  Chrome,
+} from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
 
 const LoginForm = () => {
   const [form, setForm] = useState({
@@ -18,168 +27,355 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    toast.success("This is a alreat...~~");
-    console.log(form);
+
+    try {
+      // LOADING TOAST
+      const loadingToast = toast.loading("Signing in...");
+
+      const response = await fetch("/api/v1/auth/login", {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        credentials: "include",
+
+        body: JSON.stringify(form),
+      });
+
+      const data = await response.json();
+
+      // REMOVE LOADING
+      toast.dismiss(loadingToast);
+
+      // SUCCESS
+      if (data.success) {
+        toast.success(data.message || "Login successful");
+
+        console.log("LOGIN DATA:", data);
+
+        // REDIRECT
+        window.location.href = "/dashboard";
+      } else {
+        toast.error(data.message || "Login failed");
+      }
+    } catch (error) {
+      console.log(error);
+
+      toast.error("Something went wrong");
+    }
   };
 
   return (
-    <div className="contact-inner-section " style={{ padding: "80px 0" }}>
-      <div className="container">
-        <div className="row align-items-center">
-          {/* Left Side: Modern Vector/Illustration */}
-          <div className="col-lg-6 d-none d-lg-block">
-            <div className="login-vector-area text-center">
-              <img
-                src="/icons/login-vector.png"
-                alt="Login Illustration"
-                className="img-fluid"
-                style={{ maxWidth: "80%" }}
-              />
-            </div>
-          </div>
+    <div
+      className="min-vh-100 d-flex align-items-center"
+      style={{
+        background: "#004a95",
+      }}
+    >
+      <div
+        className="row g-0 overflow-hidden"
+        style={{
+          borderRadius: "5px",
+          background: "#a60000",
+          boxShadow: "0 10px 40px rgba(0,0,0,0.06)",
+          width: "100%",
+        }}
+      >
+        {/* LEFT SIDE */}
+        <div
+          className="col-lg-6 d-none d-lg-flex position-relative"
+          style={{
+            background:
+              "linear-gradient(135deg, #004d4d 0%, #006666 50%, #0b7a75 100%)",
+            padding: "70px",
+            minHeight: "695px",
+            overflow: "hidden",
+          }}
+        >
+          {/* SOFT CIRCLES */}
+          <div
+            style={{
+              position: "absolute",
+              width: "700px",
+              height: "700px",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: "50%",
+              right: "-250px",
+              bottom: "-300px",
+            }}
+          />
 
-          {/* Right Side: Login Form */}
-          <div className="col-lg-5 offset-lg-1">
-            <div className="contact-form-area">
-              <div className="section-title mb-4">
-                <h4>Welcome Back!</h4>
-                <p>Please login to your account</p>
+          <div
+            style={{
+              position: "absolute",
+              width: "500px",
+              height: "500px",
+              border: "1px solid rgba(255,255,255,0.06)",
+              borderRadius: "50%",
+              right: "-120px",
+              bottom: "-180px",
+            }}
+          />
+
+          <div
+            className="position-relative text-white d-flex flex-column justify-content-between"
+            style={{ zIndex: 2 }}
+          >
+            <div>
+              {/* SMALL LOGO */}
+              <div
+                className="mb-5 d-flex align-items-center justify-content-center"
+                style={{
+                  width: "70px",
+                  height: "70px",
+                  borderRadius: "18px",
+                  background: "rgba(255,255,255,0.12)",
+                  backdropFilter: "blur(8px)",
+                  fontSize: "32px",
+                  fontWeight: "700",
+                }}
+              >
+                ✦
               </div>
 
-              <form onSubmit={handleSubmit}>
-                <div className="row">
-                  <div className="col-lg-12">
-                    <div className="input-area mb-3">
-                      <input
-                        type="email"
-                        name="email"
-                        placeholder="Email Address"
-                        value={form.email}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
+              {/* TITLE */}
+              <h1
+                style={{
+                  fontSize: "38px",
+                  lineHeight: "68px",
+                  fontWeight: "700",
+                  marginBottom: "25px",
+                }}
+              >
+                Welcome Back 👋
+              </h1>
 
-                  <div className="col-lg-12">
-                    <div className="input-area mb-3">
-                      <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        value={form.password}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
+              {/* DESCRIPTION */}
+              <p
+                style={{
+                  fontSize: "13px",
+                  lineHeight: "22px",
+                  color: "rgba(255,255,255,0.82)",
+                  maxWidth: "480px",
+                  marginBottom: "0",
+                }}
+              >
+                Manage your account, properties and business connections easily
+                from one modern dashboard.
+              </p>
+            </div>
 
-                  <div className="col-lg-12">
-                    <div className="input-area">
-                      <button type="submit" className="theme-btn1 w-100">
-                        Sign in
-                        <span className="arrow1">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width={24}
-                            height={24}
-                            fill="currentColor"
-                          >
-                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z" />
-                          </svg>
-                        </span>
-                        <span className="arrow2">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width={24}
-                            height={24}
-                            fill="currentColor"
-                          >
-                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z" />
-                          </svg>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Social Login Divider */}
-                  <div className="col-lg-12 text-center mt-4">
-                    <div
-                      className="social-divider"
-                      style={{
-                        position: "relative",
-                        borderBottom: "1px solid #eee",
-                        marginBottom: "25px",
-                      }}
-                    >
-                      <span
-                        style={{
-                          position: "absolute",
-                          top: "-12px",
-                          background: "#fff",
-                          padding: "0 15px",
-                          left: "50%",
-                          transform: "translateX(-50%)",
-                          fontSize: "14px",
-                          color: "#777",
-                        }}
-                      >
-                        Or Login With
-                      </span>
-                    </div>
-
-                    <div className="social-login-icons d-flex justify-content-center gap-3">
-                      {/* Google Icon */}
-                      <button
-                        type="button"
-                        className="btn btn-outline-light border shadow-sm p-2"
-                        style={{ borderRadius: "10px", width: "60px" }}
-                      >
-                        <img src="/icons/github.webp" alt="GitHub" width="26" />
-                      </button>
-
-                      {/* GitHub Icon */}
-                      <button
-                        type="button"
-                        className="btn btn-outline-light border shadow-sm p-2"
-                        style={{ borderRadius: "10px", width: "60px" }}
-                      >
-                        <img
-                          src="/icons/google-icon-logo.svg"
-                          alt="GitHub"
-                          width="24"
-                        />
-                      </button>
-                      {/* GitHub Icon */}
-                      <button
-                        type="button"
-                        className="btn btn-outline-light border shadow-sm p-2"
-                        style={{ borderRadius: "10px", width: "60px" }}
-                      >
-                        <img src="/icons/linkdin.png" alt="GitHub" width="20" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="col-lg-12 text-center mt-4">
-                    <p>
-                      Don’t have an account?{" "}
-                      <a
-                        href="/register"
-                        className="fw-bold"
-                        style={{ color: "var(--theme-color-1)" }}
-                      >
-                        Create Account
-                      </a>
-                    </p>
-                  </div>
-                </div>
-              </form>
+            {/* FOOTER */}
+            <div
+              style={{
+                color: "rgba(255,255,255,0.65)",
+                fontSize: "15px",
+              }}
+            >
+              © 2026 OFC Tech India. All rights reserved.
             </div>
           </div>
-          {/* End Right Side */}
+        </div>
+
+        {/* RIGHT SIDE */}
+        <div
+          className="col-lg-6 d-flex align-items-center justify-content-center"
+          style={{
+            padding: "60px 50px",
+            background: "#fff",
+          }}
+        >
+          <div style={{ width: "100%", maxWidth: "430px" }}>
+            {/* LOGO */}
+            <img
+              src="/icons/logo.png"
+              alt="Logo"
+              style={{
+                height: "45px",
+                objectFit: "contain",
+                marginBottom: "50px",
+              }}
+            />
+
+            {/* HEADING */}
+            <div className="mb-4">
+              <h2
+                style={{
+                  fontSize: "32px",
+                  fontWeight: "700",
+                  color: "#111",
+                  marginBottom: "12px",
+                }}
+              >
+                Sign In
+              </h2>
+
+              <p
+                style={{
+                  color: "#666",
+                  fontSize: "13px",
+                  lineHeight: "22px",
+                  marginBottom: "0",
+                }}
+              >
+                Access your dashboard and continue managing your properties and
+                listings.
+              </p>
+            </div>
+
+            {/* FORM */}
+            <form onSubmit={handleSubmit}>
+              {/* EMAIL */}
+              <div className="mb-3 position-relative">
+                <Mail
+                  size={15}
+                  style={{
+                    position: "absolute",
+                    left: "18px",
+                    top: "20px",
+                    color: "#888",
+                  }}
+                />
+
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  className="form-control"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  style={{
+                    height: "50px",
+                    borderRadius: "12px",
+                    paddingLeft: "50px",
+                    border: "1px solid #e5e7eb",
+                    fontSize: "13px",
+                    boxShadow: "none",
+                  }}
+                />
+              </div>
+
+              {/* PASSWORD */}
+              <div className="mb-3 position-relative">
+                <LockKeyhole
+                  size={15}
+                  style={{
+                    position: "absolute",
+                    left: "18px",
+                    top: "20px",
+                    color: "#888",
+                  }}
+                />
+
+                <input
+                  type="password"
+                  placeholder="Password"
+                  className="form-control"
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  style={{
+                    height: "50px",
+                    borderRadius: "12px",
+                    paddingLeft: "50px",
+                    border: "1px solid #e5e7eb",
+                    fontSize: "13px",
+                    boxShadow: "none",
+                  }}
+                />
+              </div>
+
+              {/* FORGOT */}
+              <div className="text-end mb-4">
+                <a
+                  href="/forgot-password"
+                  style={{
+                    textDecoration: "none",
+                    color: "#0b7a75",
+                    fontSize: "14px",
+                    fontWeight: "600",
+                  }}
+                >
+                  Forgot Password?
+                </a>
+              </div>
+
+              {/* BUTTON */}
+              <button
+                type="submit"
+                className="w-100 border-0 d-flex align-items-center justify-content-center gap-2"
+                style={{
+                  height: "45px",
+                  borderRadius: "12px",
+                  background: "#c7c72b",
+                  color: "#111",
+                  fontSize: "16px",
+                  fontWeight: "700",
+                  transition: "0.3s",
+                }}
+              >
+                Login Now
+                <ArrowRight size={18} />
+              </button>
+
+              {/* DIVIDER */}
+              <div
+                className="text-center position-relative my-4"
+                style={{
+                  color: "#999",
+                  fontSize: "14px",
+                }}
+              >
+                <span
+                  style={{
+                    background: "#fff",
+                    padding: "0 15px",
+                    position: "relative",
+                    zIndex: 2,
+                  }}
+                >
+                  Or continue with
+                </span>
+
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: 0,
+                    width: "100%",
+                    height: "1px",
+                    background: "#eee",
+                    zIndex: 1,
+                  }}
+                />
+              </div>
+
+              {/* REGISTER */}
+              <div className="text-center mt-4">
+                <p
+                  style={{
+                    color: "#666",
+                    fontSize: "15px",
+                    marginBottom: "0",
+                  }}
+                >
+                  Don’t have an account?{" "}
+                  <a
+                    href="/register"
+                    style={{
+                      color: "#0b7a75",
+                      fontWeight: "700",
+                      textDecoration: "none",
+                    }}
+                  >
+                    Create Account
+                  </a>
+                </p>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>

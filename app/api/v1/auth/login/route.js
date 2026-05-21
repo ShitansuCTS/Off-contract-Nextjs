@@ -8,11 +8,23 @@ export async function POST(req) {
     console.log("LOGIN API BODY:", body);
     const data = await loginController(body);
 
-    return NextResponse.json({
+    // CREATE RESPONSE
+    const response = NextResponse.json({
       success: true,
       message: "Login Successful",
-      data,
+      user: data.user,
     });
+
+    // SET COOKIE
+    response.cookies.set("auth_token", data.token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 60 * 60 * 24 * 7,
+      path: "/",
+    });
+
+    return response;
   } catch (error) {
     console.log(error);
 
