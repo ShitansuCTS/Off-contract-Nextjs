@@ -122,18 +122,25 @@ export default function Header1({
                         </Link>
                         <ul className="dropdown-padding">
                           <li>
-                            <Link href="/services#insurance">Insurance Services</Link>
+                            <Link href="/services#insurance">
+                              Insurance Services
+                            </Link>
                           </li>
                           <li>
-                            <Link href="/services#finance">Finance & Loans</Link>
+                            <Link href="/services#finance">
+                              Finance & Loans
+                            </Link>
                           </li>
                           <li>
-                            <Link href="/services#equipment-rental">Equipment Rental</Link>
+                            <Link href="/services#equipment-rental">
+                              Equipment Rental
+                            </Link>
                           </li>
                           <li>
-                            <Link href="/services#construction-items">Construction Items</Link>
+                            <Link href="/services#construction-items">
+                              Construction Items
+                            </Link>
                           </li>
-                          
                         </ul>
                       </li>
                       <li>
