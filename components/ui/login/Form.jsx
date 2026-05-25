@@ -2,14 +2,7 @@
 
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import {
-  Mail,
-  LockKeyhole,
-  ArrowRight,
-  Github,
-  Linkedin,
-  Chrome,
-} from "lucide-react";
+import { Mail, LockKeyhole, ArrowRight } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 
 const LoginForm = () => {

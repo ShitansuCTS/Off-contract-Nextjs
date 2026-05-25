@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 
 export default function Project1() {
   const [showEnquiryPopup, setShowEnquiryPopup] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -14,6 +15,74 @@ export default function Project1() {
     enquiryType: "",
     message: "",
   });
+
+  const openEnquiryPopup = (type: string, subject: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      enquiryType: type,
+    }));
+
+    setShowEnquiryPopup(true);
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+
+      const res = await fetch("/api/v1/leads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          formType: "ENQUIRY",
+          sourcePage: window.location.pathname,
+          sourceWebsite: window.location.origin,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        toast.error(data.message || "Something went wrong");
+        return;
+      }
+
+      toast.success("Enquiry submitted successfully");
+
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        subject: "",
+        enquiryType: "",
+        message: "",
+      });
+
+      setShowEnquiryPopup(false);
+    } catch (error) {
+      toast.error("Failed to submit enquiry");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -55,7 +124,7 @@ export default function Project1() {
                     }}
                     onClick={(e) => {
                       e.preventDefault();
-                      setShowEnquiryPopup(true);
+                      openEnquiryPopup("general", "General Enquiries");
                     }}
                   >
                     General Enquiries
@@ -89,7 +158,7 @@ export default function Project1() {
                     }}
                     onClick={(e) => {
                       e.preventDefault();
-                      setShowEnquiryPopup(true);
+                      openEnquiryPopup("supplier", "Supplier Enquiries");
                     }}
                   >
                     Supplier Enquiries
@@ -123,7 +192,7 @@ export default function Project1() {
                     }}
                     onClick={(e) => {
                       e.preventDefault();
-                      setShowEnquiryPopup(true);
+                      openEnquiryPopup("partner", "Partner Enquiries");
                     }}
                   >
                     Partner Enquiries
@@ -157,7 +226,7 @@ export default function Project1() {
                     }}
                     onClick={(e) => {
                       e.preventDefault();
-                      setShowEnquiryPopup(true);
+                      openEnquiryPopup("investor", "Investor Relations");
                     }}
                   >
                     Investor Relations
@@ -258,13 +327,15 @@ export default function Project1() {
             </div>
 
             {/* FORM */}
-            <div className="row">
+            <form className="row" onSubmit={handleSubmit}>
               {/* FIRST NAME */}
               <div className="col-md-6">
                 <input
                   type="text"
                   placeholder="First Name"
                   name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
                   style={{
                     width: "100%",
                     height: window.innerWidth < 768 ? "35px" : "52px",
@@ -284,6 +355,8 @@ export default function Project1() {
                 <input
                   type="text"
                   name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
                   placeholder="Last Name"
                   style={{
                     width: "100%",
@@ -304,6 +377,8 @@ export default function Project1() {
                 <input
                   type="email"
                   name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="Email Address"
                   style={{
                     width: "100%",
@@ -324,27 +399,9 @@ export default function Project1() {
                 <input
                   type="number"
                   name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
                   placeholder="Phone Number"
-                  style={{
-                    width: "100%",
-                    height: window.innerWidth < 768 ? "35px" : "52px",
-                    border: "1px solid #dbe2ea",
-                    borderRadius: "5px",
-                    padding: "0 16px",
-                    marginBottom: "18px",
-                    fontSize: "15px",
-                    outline: "none",
-                    background: "#fff",
-                  }}
-                />
-              </div>
-
-              {/* SUBJECT */}
-              <div className="col-lg-12">
-                <input
-                  type="text"
-                  name="subject"
-                  placeholder="Subject"
                   style={{
                     width: "100%",
                     height: window.innerWidth < 768 ? "35px" : "52px",
@@ -362,8 +419,9 @@ export default function Project1() {
               {/* SELECT */}
               <div className="col-lg-12">
                 <select
-                  defaultValue=""
+                  value={formData.enquiryType}
                   name="enquiryType"
+                  onChange={handleChange}
                   style={{
                     width: "100%",
                     height: window.innerWidth < 768 ? "35px" : "52px",
@@ -388,22 +446,40 @@ export default function Project1() {
                   <option value="" disabled>
                     Select Enquiry Type
                   </option>
-
                   <option value="general">General Enquiries</option>
-
                   <option value="supplier">Supplier Enquiries</option>
-
                   <option value="partner">Partner Enquiries</option>
-
                   <option value="investor">Investor Enquiries</option>
                 </select>
               </div>
-
+              {/* SUBJECT */}
+              <div className="col-lg-12">
+                <input
+                  type="text"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  placeholder="Subject"
+                  style={{
+                    width: "100%",
+                    height: window.innerWidth < 768 ? "35px" : "52px",
+                    border: "1px solid #dbe2ea",
+                    borderRadius: "5px",
+                    padding: "0 16px",
+                    marginBottom: "18px",
+                    fontSize: "15px",
+                    outline: "none",
+                    background: "#fff",
+                  }}
+                />
+              </div>
               {/* MESSAGE */}
               <div className="col-lg-12">
                 <textarea
                   placeholder="Write Your Message"
                   name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   style={{
                     width: "100%",
                     height: window.innerWidth < 768 ? "50px" : "70px",
@@ -423,6 +499,7 @@ export default function Project1() {
               <div className="col-lg-12">
                 <button
                   type="submit"
+                  disabled={loading}
                   className="theme-btn1"
                   style={{
                     width: "100%",
@@ -433,34 +510,14 @@ export default function Project1() {
                     justifyContent: "center",
                     fontSize: window.innerWidth < 768 ? "15px" : "16px",
                     fontWeight: "600",
+                    opacity: loading ? 0.7 : 1,
+                    cursor: loading ? "not-allowed" : "pointer",
                   }}
                 >
-                  Submit Enquiry
-                  <span className="arrow1">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={20}
-                      height={20}
-                      fill="currentColor"
-                    >
-                      <path d="M12 13H4V11H12V4L20 12L12 20V13Z" />
-                    </svg>
-                  </span>
-                  <span className="arrow2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={20}
-                      height={20}
-                      fill="currentColor"
-                    >
-                      <path d="M12 13H4V11H12V4L20 12L12 20V13Z" />
-                    </svg>
-                  </span>
+                  {loading ? "Submitting..." : "Submit Enquiry"}
                 </button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       )}

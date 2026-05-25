@@ -1,6 +1,70 @@
 "use client";
-
+import { useState } from "react";
+import toast from "react-hot-toast";
 export default function FinanceSection() {
+  const [loading, setLoading] = useState(false);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+
+      const res = await fetch("/api/v1/leads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          ...formData,
+          subject: "Finance Application",
+          formType: "FINANCE",
+          sourcePage: window.location.pathname,
+          sourceWebsite: window.location.origin,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        toast.error(data.message || "Something went wrong");
+        return;
+      }
+
+      toast.success("Finance application submitted");
+
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+      });
+    } catch (error) {
+      toast.error("Failed to submit finance application");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <div id="finance">
@@ -12,39 +76,70 @@ export default function FinanceSection() {
                 <div className="contact-form-area">
                   <h4>Finance Application</h4>
 
-                  <div className="row">
+                  <form className="row" onSubmit={handleSubmit}>
                     <div className="col-lg-12">
                       <div className="input-area">
-                        <input type="text" placeholder="You Name" />
+                        <input
+                          type="text"
+                          name="name"
+                          placeholder="Your Name"
+                          value={formData.name}
+                          onChange={handleChange}
+                        />
                       </div>
                     </div>
 
                     <div className="col-lg-12">
                       <div className="input-area">
-                        <input type="email" placeholder="Email Address" />
+                        <input
+                          type="email"
+                          name="email"
+                          placeholder="Email Address"
+                          value={formData.email}
+                          onChange={handleChange}
+                        />
                       </div>
                     </div>
 
                     <div className="col-lg-12">
                       <div className="input-area">
-                        <input type="number" placeholder="Phone Number" />
+                        <input
+                          type="number"
+                          name="phone"
+                          placeholder="Phone Number"
+                          value={formData.phone}
+                          onChange={handleChange}
+                        />
                       </div>
                     </div>
 
                     <div className="col-lg-12">
                       <div className="input-area">
-                        <textarea placeholder="Your Message" />
+                        <textarea
+                          placeholder="Your Message"
+                          name="message"
+                          value={formData.message}
+                          onChange={handleChange}
+                        />
                       </div>
                     </div>
 
                     <div className="col-lg-12">
                       <div className="input-area">
-                        <button type="submit" className="theme-btn1">
-                          Send Now
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          className="theme-btn1"
+                          style={{
+                            opacity: loading ? 0.7 : 1,
+                            cursor: loading ? "not-allowed" : "pointer",
+                          }}
+                        >
+                          {loading ? "Submitting..." : "Send Now"}
                         </button>
                       </div>
                     </div>
-                  </div>
+                  </form>
                 </div>
               </div>
               {/* LEFT CONTENT */}

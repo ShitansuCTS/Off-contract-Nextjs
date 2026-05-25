@@ -1,18 +1,74 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 const Cta = () => {
   const [showEnquiryPopup, setShowEnquiryPopup] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
     subject: "",
-    enquiryType: "",
     message: "",
   });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+      const res = await fetch("/api/v1/leads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          formType: "ENQUIRY",
+          sourcePage: window.location.pathname,
+          sourceWebsite: window.location.origin,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        toast.error(data.message || "Something went wrong");
+        return;
+      }
+
+      toast.success("Enquiry submitted successfully");
+
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
+
+      setShowEnquiryPopup(false);
+    } catch (error) {
+      toast.error("Failed to submit enquiry");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -214,13 +270,15 @@ const Cta = () => {
             </div>
 
             {/* FORM */}
-            <div className="row">
+            <form className="row" onSubmit={handleSubmit}>
               {/* FIRST NAME */}
               <div className="col-md-6">
                 <input
                   type="text"
                   placeholder="First Name"
                   name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
                   style={{
                     width: "100%",
                     height: window.innerWidth < 768 ? "35px" : "52px",
@@ -241,6 +299,8 @@ const Cta = () => {
                   type="text"
                   name="lastName"
                   placeholder="Last Name"
+                  value={formData.lastName}
+                  onChange={handleChange}
                   style={{
                     width: "100%",
                     height: window.innerWidth < 768 ? "35px" : "52px",
@@ -261,6 +321,8 @@ const Cta = () => {
                   type="email"
                   name="email"
                   placeholder="Email Address"
+                  value={formData.email}
+                  onChange={handleChange}
                   style={{
                     width: "100%",
                     height: window.innerWidth < 768 ? "35px" : "52px",
@@ -281,6 +343,8 @@ const Cta = () => {
                   type="number"
                   name="phone"
                   placeholder="Phone Number"
+                  value={formData.phone}
+                  onChange={handleChange}
                   style={{
                     width: "100%",
                     height: window.innerWidth < 768 ? "35px" : "52px",
@@ -301,6 +365,8 @@ const Cta = () => {
                   type="text"
                   name="subject"
                   placeholder="Subject"
+                  value={formData.subject}
+                  onChange={handleChange}
                   style={{
                     width: "100%",
                     height: window.innerWidth < 768 ? "35px" : "52px",
@@ -315,54 +381,16 @@ const Cta = () => {
                 />
               </div>
 
-              {/* SELECT */}
-              <div className="col-lg-12">
-                <select
-                  defaultValue=""
-                  name="enquiryType"
-                  style={{
-                    width: "100%",
-                    height: window.innerWidth < 768 ? "35px" : "52px",
-                    border: "1px solid #dbe2ea",
-                    borderRadius: "5px",
-                    padding: "0 16px",
-                    marginBottom: "18px",
-                    fontSize: "15px",
-                    outline: "none",
-                    backgroundColor: "#fff",
-                    color: "#64748b",
-                    cursor: "pointer",
-                    appearance: "none",
-                    WebkitAppearance: "none",
-                    MozAppearance: "none",
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='4 7 9 12 14 7'%3E%3C/polyline%3E%3C/svg%3E")`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "right 15px center",
-                    paddingRight: "45px",
-                  }}
-                >
-                  <option value="" disabled>
-                    Select Enquiry Type
-                  </option>
-
-                  <option value="general">General Enquiries</option>
-
-                  <option value="supplier">Supplier Enquiries</option>
-
-                  <option value="partner">Partner Enquiries</option>
-
-                  <option value="investor">Investor Enquiries</option>
-                </select>
-              </div>
-
               {/* MESSAGE */}
               <div className="col-lg-12">
                 <textarea
                   placeholder="Write Your Message"
                   name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   style={{
                     width: "100%",
-                    height: window.innerWidth < 768 ? "50px" : "70px",
+                    height: window.innerWidth < 768 ? "50px" : "90px",
                     border: "1px solid #dbe2ea",
                     borderRadius: "5px",
                     padding: "16px",
@@ -379,6 +407,7 @@ const Cta = () => {
               <div className="col-lg-12">
                 <button
                   type="submit"
+                  disabled={loading}
                   className="theme-btn1"
                   style={{
                     width: "100%",
@@ -389,34 +418,42 @@ const Cta = () => {
                     justifyContent: "center",
                     fontSize: window.innerWidth < 768 ? "15px" : "16px",
                     fontWeight: "600",
+                    opacity: loading ? 0.7 : 1,
+                    cursor: loading ? "not-allowed" : "pointer",
                   }}
                 >
-                  Submit Enquiry
-                  <span className="arrow1">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={20}
-                      height={20}
-                      fill="currentColor"
-                    >
-                      <path d="M12 13H4V11H12V4L20 12L12 20V13Z" />
-                    </svg>
-                  </span>
-                  <span className="arrow2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={20}
-                      height={20}
-                      fill="currentColor"
-                    >
-                      <path d="M12 13H4V11H12V4L20 12L12 20V13Z" />
-                    </svg>
-                  </span>
+                  {loading ? "Submitting..." : "Submit Enquiry"}
+
+                  {!loading && (
+                    <>
+                      <span className="arrow1">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          width={20}
+                          height={20}
+                          fill="currentColor"
+                        >
+                          <path d="M12 13H4V11H12V4L20 12L12 20V13Z" />
+                        </svg>
+                      </span>
+
+                      <span className="arrow2">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          width={20}
+                          height={20}
+                          fill="currentColor"
+                        >
+                          <path d="M12 13H4V11H12V4L20 12L12 20V13Z" />
+                        </svg>
+                      </span>
+                    </>
+                  )}
                 </button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       )}
