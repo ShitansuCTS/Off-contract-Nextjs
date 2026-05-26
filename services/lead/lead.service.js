@@ -4,7 +4,6 @@ import validator from "validator";
 import xss from "xss";
 
 export const createLeadService = async (body, req) => {
-    console.log("LEAD SERVICE BODY:", body);
 
     // VALIDATE INPUT
     const validatedData = createLeadSchema.parse(body);

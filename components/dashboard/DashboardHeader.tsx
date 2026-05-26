@@ -12,6 +12,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import "@/styles/dashboard/dashboard-header.css";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 type DashboardHeaderProps = {
   sidebarOpen: boolean;
@@ -24,6 +25,11 @@ export default function DashboardHeader({
 }: DashboardHeaderProps) {
   const [profileOpen, setProfileOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
+  const { logout } = useAuthStore();
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <header className="admin-header">
@@ -105,7 +111,7 @@ export default function DashboardHeader({
                 Account Settings
               </button>
 
-              <button type="button" className="logout">
+              <button type="button" className="logout" onClick={handleLogout}>
                 <LogOut size={17} />
                 Logout
               </button>

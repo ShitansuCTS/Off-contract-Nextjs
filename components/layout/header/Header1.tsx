@@ -1,10 +1,25 @@
+"use client";
+
 import Link from "next/link";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Header1({
   scroll,
   isMobileMenu,
   handleMobileMenu,
 }: any) {
+  const { initialized, loading, isAuthenticated, checkAuth, user } =
+    useAuthStore();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!initialized) {
+      checkAuth();
+    }
+  }, [initialized, checkAuth]);
+
   return (
     <>
       <header>
@@ -79,7 +94,10 @@ export default function Header1({
                       </select>
                     </li>
                     <li>
-                      <Link href="#" className="signin">
+                      <Link
+                        href={isAuthenticated ? "/dashboard" : "/login"}
+                        className="signin"
+                      >
                         <span> | </span>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +115,11 @@ export default function Header1({
                             fill="white"
                           />
                         </svg>
-                        Sign In
+                        {loading || !initialized
+                          ? "Checking..."
+                          : isAuthenticated
+                            ? user?.profile?.fullName || "Dashboard"
+                            : "Sign In"}
                       </Link>
                     </li>
                   </ul>
@@ -277,8 +299,16 @@ export default function Header1({
                         </svg>
                       </Link>
                     </div>
-                    <Link href="/property-halfmap-grid" className="theme-btn1">
-                      View Listing{" "}
+                    <Link
+                      href={isAuthenticated ? "/dashboard" : "/register"}
+                      className="theme-btn1"
+                    >
+                      {loading || !initialized
+                        ? "Checking..."
+                        : isAuthenticated
+                          ? "Manage Dashboard"
+                          : "Register Yourself"}
+
                       <span className="arrow1">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -290,6 +320,7 @@ export default function Header1({
                           <path d="M12 13H4V11H12V4L20 12L12 20V13Z" />
                         </svg>
                       </span>
+
                       <span className="arrow2">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

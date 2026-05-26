@@ -52,7 +52,7 @@ export default function DashboardSidebar({
   return (
     <aside className={`admin-sidebar ${sidebarOpen ? "open" : "closed"}`}>
       <div className="admin-sidebar-logo">
-        <Link href="/dashboard">
+        <Link href="/">
           <Image
             src="/icons/logo.png"
             alt="Logo"

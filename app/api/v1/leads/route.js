@@ -1,13 +1,16 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { createLeadController } from "@/controllers/lead/lead.controller";
+import { getLeadsController } from "@/controllers/lead/lead.controller";
+import { authMiddleware } from "@/middleware/auth.middleware";
+
+
+
+
 
 export async function POST(req) {
     try {
         const body = await req.json();
-
-        console.log("CREATE LEAD API BODY:", body);
-
         const lead = await createLeadController(body, req);
 
         return NextResponse.json(
@@ -43,6 +46,35 @@ export async function POST(req) {
             {
                 status: 400,
             },
+        );
+    }
+}
+
+
+
+export async function GET(req) {
+    try {
+        const user = await authMiddleware(req);
+
+        const result = await getLeadsController(req, user);
+
+        return NextResponse.json(
+            {
+                success: true,
+                message: "Leads fetched successfully",
+                ...result,
+            },
+            { status: 200 }
+        );
+    } catch (error) {
+        console.log("GET LEADS ERROR:", error);
+
+        return NextResponse.json(
+            {
+                success: false,
+                message: error?.message || "Something went wrong",
+            },
+            { status: error?.statusCode || 500 }
         );
     }
 }
