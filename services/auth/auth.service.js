@@ -76,7 +76,6 @@ export const registerService = async (body) => {
 
 // Login Services
 export const loginService = async (body) => {
-  console.log("LOGIN SERVICE BODY:", body);
 
   // VALIDATE INPUT
   const validatedData = loginSchema.parse(body);

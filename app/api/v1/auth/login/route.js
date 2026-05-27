@@ -5,7 +5,6 @@ import { loginController } from "@/controllers/auth/auth.controller";
 export async function POST(req) {
   try {
     const body = await req.json();
-    console.log("LOGIN API BODY:", body);
     const data = await loginController(body);
 
     // CREATE RESPONSE

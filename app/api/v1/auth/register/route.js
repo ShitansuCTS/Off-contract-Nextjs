@@ -6,7 +6,6 @@ export async function POST(req) {
   try {
     const body = await req.json();
 
-    console.log("API BODY:", body);
 
     const data = await registerController(body);
 

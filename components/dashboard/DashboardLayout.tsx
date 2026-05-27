@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 import DashboardSidebar from "./DashboardSidebar";
 import DashboardHeader from "./DashboardHeader";
@@ -13,9 +13,18 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
+
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  const { initialized, loading, isAuthenticated, checkAuth } = useAuthStore();
+  const {
+    initialized,
+    loading,
+    isAuthenticated,
+    accessStatus,
+    user,
+    checkAuth,
+  } = useAuthStore();
 
   useEffect(() => {
     if (!initialized) {
@@ -25,15 +34,42 @@ export default function DashboardLayout({
 
   useEffect(() => {
     if (initialized && !loading && !isAuthenticated) {
-      router.push("/login");
+      router.replace("/login");
     }
   }, [initialized, loading, isAuthenticated, router]);
 
-  if (!initialized || loading) {
-    return (
-      <div className="dashboard-auth-loading">Checking authentication...</div>
-    );
-  }
+  // useEffect(() => {
+  //   if (!initialized || loading || !isAuthenticated) return;
+
+  //   if (user?.role === "ADMIN") return;
+
+  //   const redirectMap: Record<string, string> = {
+  //     COMPLETE_PROFILE: "/dashboard/kyc/complete-profile",
+  //     PAY_MEMBERSHIP: "/dashboard/kyc/complete-payment",
+  //     PENDING_APPROVAL: "/dashboard/kyc/admin-approval",
+  //     REJECTED: "/dashboard/rejected",
+  //   };
+
+  //   const targetRoute = redirectMap[accessStatus?.nextStep || ""];
+
+  //   if (targetRoute && pathname !== targetRoute) {
+  //     router.replace(targetRoute);
+  //   }
+  // }, [
+  //   initialized,
+  //   loading,
+  //   isAuthenticated,
+  //   accessStatus,
+  //   user,
+  //   pathname,
+  //   router,
+  // ]);
+
+  // if (!initialized || loading) {
+  //   return (
+  //     <div className="dashboard-auth-loading">Checking authentication...</div>
+  //   );
+  // }
 
   if (!isAuthenticated) {
     return null;

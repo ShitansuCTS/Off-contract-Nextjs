@@ -3,12 +3,16 @@ import { getMeController } from "@/controllers/auth/auth.controller";
 
 export async function GET(req) {
     try {
-        const user = await getMeController(req);
+        const result = await getMeController(req);
 
-        return NextResponse.json({
-            success: true,
-            user,
-        });
+        return NextResponse.json(
+            {
+                success: true,
+                user: result.user,
+                accessStatus: result.accessStatus,
+            },
+            { status: 200 }
+        );
     } catch (error) {
         return NextResponse.json(
             {

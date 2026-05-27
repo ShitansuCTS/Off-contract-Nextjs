@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   PanelLeftClose,
   PanelLeftOpen,
@@ -26,6 +26,14 @@ export default function DashboardHeader({
   const [profileOpen, setProfileOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const { logout } = useAuthStore();
+  const { initialized, loading, isAuthenticated, user, checkAuth } =
+    useAuthStore();
+
+  useEffect(() => {
+    if (!initialized) {
+      checkAuth();
+    }
+  }, [initialized, checkAuth]);
 
   const handleLogout = () => {
     logout();
@@ -92,8 +100,8 @@ export default function DashboardHeader({
             </div>
 
             <div className="admin-profile-info">
-              <strong>Admin User</strong>
-              <span>Administrator</span>
+              <strong>{user?.profile?.fullName || "Admin User"}</strong>
+              <span>{user?.role || "Role"}</span>
             </div>
 
             <ChevronDown size={18} />
