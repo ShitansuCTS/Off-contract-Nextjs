@@ -121,8 +121,11 @@ model Company {
 
   experience Int?
 
-  city  String?
-  state String?
+  stateId String?
+  cityId  String?
+
+  state State? @relation(fields: [stateId], references: [id], onDelete: SetNull)
+  city  City?  @relation(fields: [cityId], references: [id], onDelete: SetNull)
 
   verificationStatus VerificationStatus @default(PROFILE_PENDING)
 
@@ -133,6 +136,8 @@ model Company {
 
   @@index([name])
   @@index([gstNumber])
+  @@index([stateId])
+  @@index([cityId])
 }
 
 /////////////////////
@@ -200,4 +205,42 @@ model Lead {
   @@index([createdAt])
   @@index([phone])
   @@index([email])
+}
+
+
+////////////////////////////
+//// STATE MODEL
+////////////////////////////
+
+model State {
+  id String @id @default(uuid())
+
+  name String @unique
+  slug String @unique
+
+  cities    City[]
+  companies Company[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+////////////////////////////
+//// CITY MODEL
+////////////////////////////
+model City {
+  id String @id @default(uuid())
+
+  name    String
+  slug    String
+  stateId String
+
+  state     State     @relation(fields: [stateId], references: [id], onDelete: Cascade)
+  companies Company[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([slug, stateId])
+  @@index([stateId])
 }

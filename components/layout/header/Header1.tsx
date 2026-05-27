@@ -149,15 +149,16 @@ export default function Header1({
                             </Link>
                           </li>
                           <li>
-                            <Link href="/services#finance">
-                              Finance & Loans
-                            </Link>
-                          </li>
-                          <li>
                             <Link href="/services#equipment-rental">
                               Equipment Rental
                             </Link>
                           </li>
+                          <li>
+                            <Link href="/services#finance">
+                              Finance & Loans
+                            </Link>
+                          </li>
+
                           <li>
                             <Link href="/services#construction-items">
                               Construction Items
@@ -169,7 +170,7 @@ export default function Header1({
                         <Link href="/contact-us">Contact Us</Link>
                       </li>
 
-                      <li>
+                      {/* <li>
                         <Link href="#" className="plus">
                           Pages <i className="fa-solid fa-angle-down" />
                         </Link>
@@ -284,7 +285,7 @@ export default function Header1({
                             <Link href="/add-property">Add Property</Link>
                           </li>
                         </ul>
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
                   <div className="btn-area">
