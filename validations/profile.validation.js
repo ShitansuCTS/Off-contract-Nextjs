@@ -22,9 +22,16 @@ export const completeProfileSchema = z.object({
     gstNumber: z
         .string()
         .trim()
-        .max(20, "GST number is too long")
         .optional()
-        .or(z.literal("")),
+        .or(z.literal(""))
+        .refine(
+            (val) =>
+                !val ||
+                /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(
+                    val.toUpperCase()
+                ),
+            "Enter valid 15 digit GST number"
+        ),
 
     category: z
         .string()
@@ -38,17 +45,7 @@ export const completeProfileSchema = z.object({
         .max(100, "Experience is too high")
         .optional(),
 
-    city: z
-        .string()
-        .trim()
-        .max(100, "City is too long")
-        .optional()
-        .or(z.literal("")),
+    stateId: z.string().uuid("Please select a valid state"),
 
-    state: z
-        .string()
-        .trim()
-        .max(100, "State is too long")
-        .optional()
-        .or(z.literal("")),
+    cityId: z.string().uuid("Please select a valid city"),
 });

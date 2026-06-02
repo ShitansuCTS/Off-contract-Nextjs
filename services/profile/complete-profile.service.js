@@ -36,9 +36,8 @@ export const completeProfileService = async (body, req) => {
                 ? Number(validatedData.experience)
                 : null,
 
-        city: validatedData.city ? xss(validatedData.city) : null,
-
-        state: validatedData.state ? xss(validatedData.state) : null,
+        stateId: validatedData.stateId,
+        cityId: validatedData.cityId,
     };
 
     const user = await prisma.user.findUnique({
@@ -97,8 +96,8 @@ export const completeProfileService = async (body, req) => {
                 gstNumber: cleanData.gstNumber,
                 category: cleanData.category,
                 experience: cleanData.experience,
-                city: cleanData.city,
-                state: cleanData.state,
+                stateId: cleanData.stateId,
+                cityId: cleanData.cityId,
                 verificationStatus: "PROFILE_PENDING",
             },
             create: {
@@ -107,8 +106,8 @@ export const completeProfileService = async (body, req) => {
                 gstNumber: cleanData.gstNumber,
                 category: cleanData.category,
                 experience: cleanData.experience,
-                city: cleanData.city,
-                state: cleanData.state,
+                stateId: cleanData.stateId,
+                cityId: cleanData.cityId,
                 verificationStatus: "PROFILE_PENDING",
             },
         });

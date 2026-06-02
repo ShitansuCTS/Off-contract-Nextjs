@@ -28,15 +28,29 @@ type FormData = {
   gstNumber: string;
   category: string;
   experience: string;
-  city: string;
-  state: string;
+  stateId: string;
+  cityId: string;
+};
+
+type StateOption = {
+  id: string;
+  name: string;
+  slug: string;
+};
+
+type CityOption = {
+  id: string;
+  name: string;
+  slug: string;
+  stateId: string;
 };
 
 export default function ProfileCard() {
   const [currentStep, setCurrentStep] = useState(1);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [states, setStates] = useState<StateOption[]>([]);
+  const [cities, setCities] = useState<CityOption[]>([]);
   const { user, checkAuth } = useAuthStore();
 
   const [formData, setFormData] = useState<FormData>({
@@ -46,9 +60,51 @@ export default function ProfileCard() {
     gstNumber: "",
     category: "",
     experience: "",
-    city: "",
-    state: "",
+    stateId: "",
+    cityId: "",
   });
+
+  useEffect(() => {
+    const fetchStates = async () => {
+      try {
+        const res = await fetch("/api/v1/locations/states");
+        const data = await res.json();
+
+        if (data.success) {
+          setStates(data.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchStates();
+  }, []);
+  useEffect(() => {
+    if (!formData.stateId) {
+      setCities([]);
+      return;
+    }
+
+    const fetchCities = async () => {
+      try {
+        const res = await fetch(
+          `/api/v1/locations/cities?stateId=${formData.stateId}`
+        );
+
+        const data = await res.json();
+
+        if (data.success) {
+          setCities(data.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchCities();
+  }, [formData.stateId]);
+
 
   useEffect(() => {
     if (!user) return;
@@ -62,8 +118,8 @@ export default function ProfileCard() {
       experience: user.company?.experience
         ? String(user.company.experience)
         : "",
-      city: user.company?.city || "",
-      state: user.company?.state || "",
+      stateId: user.company?.stateId || "",
+      cityId: user.company?.cityId || "",
     });
   }, [user]);
 
@@ -108,8 +164,8 @@ export default function ProfileCard() {
           gstNumber: formData.gstNumber || "",
           category: formData.category,
           experience: formData.experience ? Number(formData.experience) : null,
-          city: formData.city || null,
-          state: formData.state || null,
+          stateId: formData.stateId,
+          cityId: formData.cityId,
         }),
       });
 
@@ -155,9 +211,8 @@ export default function ProfileCard() {
             return (
               <div
                 key={step}
-                className={`profile-step-item ${
-                  active ? "active" : ""
-                } ${completed ? "completed" : ""}`}
+                className={`profile-step-item ${active ? "active" : ""
+                  } ${completed ? "completed" : ""}`}
               >
                 <div className="profile-step-circle">{stepNumber}</div>
 
@@ -242,7 +297,12 @@ export default function ProfileCard() {
                     name="gstNumber"
                     placeholder="Enter GST number"
                     value={formData.gstNumber}
-                    onChange={handleChange}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        gstNumber: e.target.value.toUpperCase(),
+                      }))
+                    }
                   />
                 </div>
               </div>
@@ -285,28 +345,44 @@ export default function ProfileCard() {
               </div>
 
               <div className="profile-input-group">
-                <label>City</label>
-                <div className="profile-input-wrap">
-                  <MapPin size={18} />
-                  <input
-                    type="text"
-                    name="city"
-                    placeholder="Enter city"
-                    value={formData.city}
-                    onChange={handleChange}
-                  />
-                </div>
+                <label>State</label>
+                <select
+                  name="stateId"
+                  value={formData.stateId}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      stateId: e.target.value,
+                      cityId: "",
+                    }))
+                  }
+                >
+                  <option value="">Select state</option>
+
+                  {states.map((state: any) => (
+                    <option key={state.id} value={state.id}>
+                      {state.name}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="profile-input-group">
-                <label>State</label>
-                <input
-                  type="text"
-                  name="state"
-                  placeholder="Enter state"
-                  value={formData.state}
+                <label>City</label>
+                <select
+                  name="cityId"
+                  value={formData.cityId}
                   onChange={handleChange}
-                />
+                  disabled={!formData.stateId}
+                >
+                  <option value="">Select city</option>
+
+                  {cities.map((city: any) => (
+                    <option key={city.id} value={city.id}>
+                      {city.name}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           </div>
@@ -352,12 +428,12 @@ export default function ProfileCard() {
 
               <div className="profile-review-item">
                 <span>City</span>
-                <strong>{formData.city || "N/A"}</strong>
+                <strong>{cities.find((c: any) => c.id === formData.cityId)?.name || "N/A"}</strong>
               </div>
 
               <div className="profile-review-item">
                 <span>State</span>
-                <strong>{formData.state || "N/A"}</strong>
+                <strong>{states.find((s: any) => s.id === formData.stateId)?.name || "N/A"}</strong>
               </div>
             </div>
           </div>
