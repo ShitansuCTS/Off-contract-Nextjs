@@ -195,3 +195,104 @@ button.admin-sidebar-link {
 .admin-sidebar a {
   text-decoration: none;
 }
+
+
+/* =========================
+   SIDEBAR SKELETON - THEME
+========================= */
+
+.sidebar-skeleton-logo {
+  width: 205px;
+  height: 58px;
+  border-radius: 14px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 214, 0, 0.12) 0%,
+    rgba(255, 214, 0, 0.35) 45%,
+    rgba(255, 214, 0, 0.12) 100%
+  );
+  background-size: 220% 100%;
+  animation: sidebarSkeletonTheme 1.3s infinite linear;
+}
+
+.sidebar-skeleton-link {
+  height: 58px;
+  border-radius: 16px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.sidebar-skeleton-link:first-child {
+  background: rgba(213, 213, 31, 0.18);
+}
+
+.sidebar-skeleton-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(213, 213, 31, 0.35) 50%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  background-size: 220% 100%;
+  animation: sidebarSkeletonTheme 1.3s infinite linear;
+}
+
+.sidebar-skeleton-text {
+  width: 145px;
+  height: 16px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(213, 213, 31, 0.32) 50%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  background-size: 220% 100%;
+  animation: sidebarSkeletonTheme 1.3s infinite linear;
+}
+
+@keyframes sidebarSkeletonTheme {
+  from {
+    background-position: 220% 0;
+  }
+
+  to {
+    background-position: -220% 0;
+  }
+}
+
+
+
+
+
+
+
+
+.admin-sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-sidebar-nav {
+  flex: 1;
+}
+
+.admin-sidebar-bottom {
+  margin-top: auto;
+  padding: 15px 20px;
+  text-align: center;
+}
+
+.admin-sidebar-bottom p {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.55);
+}

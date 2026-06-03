@@ -128,6 +128,7 @@ model Company {
   city  City?  @relation(fields: [cityId], references: [id], onDelete: SetNull)
 
   verificationStatus VerificationStatus @default(PROFILE_PENDING)
+  rejectionReason    String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

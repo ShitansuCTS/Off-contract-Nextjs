@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   LayoutDashboard,
@@ -16,8 +16,23 @@ import {
   ChevronDown,
 } from "lucide-react";
 
+type Role = "ADMIN" | "SUPPLIER" | "AGENCY";
+
 type DashboardSidebarProps = {
   sidebarOpen: boolean;
+};
+
+type AccessStatus = {
+  dashboardAccess: boolean;
+  verificationStatus:
+  | "PROFILE_PENDING"
+  | "PENDING_APPROVAL"
+  | "VERIFIED"
+  | "REJECTED";
+};
+
+type AuthUser = {
+  role: Role;
 };
 
 const menuItems = [
@@ -25,45 +40,63 @@ const menuItems = [
     label: "Dashboard",
     href: "/dashboard",
     icon: LayoutDashboard,
+    roles: ["ADMIN", "SUPPLIER", "AGENCY"],
   },
+
   {
     label: "Leads",
     href: "/dashboard/my-leads",
     icon: ClipboardList,
+    roles: ["ADMIN"],
   },
   {
     label: "Users",
-    href: "/dashboard/users",
+    href: "/dashboard/admin/users",
     icon: Users,
+    roles: ["ADMIN"],
   },
   {
     label: "Listings",
     href: "/dashboard/listings",
     icon: ListChecks,
+    roles: ["SUPPLIER", "AGENCY"],
+    requireVerified: true,
+  },
+  {
+    label: "KYC Details",
+    href: "/dashboard/admin/vendors",
+    icon: ShieldCheck,
+    roles: ["ADMIN"],
+  },
+
+  {
+    label: "KYC Verification",
+    href: "#",
+    icon: ShieldCheck,
+    roles: ["SUPPLIER", "AGENCY"],
+    subMenus: [
+      {
+        label: "Business Profile",
+        href: "/dashboard/kyc/complete-profile",
+        roles: ["SUPPLIER", "AGENCY"],
+      },
+      {
+        label: "Complete Payment",
+        href: "/dashboard/kyc/complete-payment",
+        roles: ["SUPPLIER", "AGENCY"],
+      },
+      {
+        label: "Admin Approval",
+        href: "/dashboard/kyc/admin-approval",
+        roles: ["SUPPLIER", "AGENCY"],
+      },
+    ],
   },
   {
     label: "Settings",
     href: "/dashboard/settings",
     icon: Settings,
-  },
-  {
-    label: "KYC Verification",
-    href: "#",
-    icon: ShieldCheck,
-    subMenus: [
-      {
-        label: " Business Profile",
-        href: "/dashboard/kyc/complete-profile",
-      },
-      {
-        label: "Complete Payment",
-        href: "/dashboard/kyc/complete-payment",
-      },
-      {
-        label: "Admin Approved",
-        href: "/dashboard/kyc/admin-approval",
-      },
-    ],
+    roles: ["ADMIN", "SUPPLIER", "AGENCY"],
   },
 ];
 
@@ -72,14 +105,65 @@ export default function DashboardSidebar({
 }: DashboardSidebarProps) {
   const pathname = usePathname();
 
-  // Open/Close State
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [accessStatus, setAccessStatus] = useState<AccessStatus | null>(null);
+
   const [openMenu, setOpenMenu] = useState<string | null>(
     pathname.startsWith("/dashboard/kyc") ? "KYC Verification" : null,
   );
 
+  useEffect(() => {
+    const fetchMe = async () => {
+      const res = await fetch("/api/v1/auth/me", {
+        credentials: "include",
+        cache: "no-store",
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setUser(data.user);
+        setAccessStatus(data.accessStatus);
+      }
+    };
+
+    fetchMe();
+  }, []);
+
   const toggleMenu = (label: string) => {
     setOpenMenu(openMenu === label ? null : label);
   };
+
+  if (!user || !accessStatus) {
+    return (
+      <aside className={`admin-sidebar ${sidebarOpen ? "open" : "closed"}`}>
+        <div className="admin-sidebar-logo">
+          <div className="sidebar-skeleton-logo" />
+        </div>
+
+        <div className="admin-sidebar-menu-title">Main Menu</div>
+
+        <nav className="admin-sidebar-nav">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div className="sidebar-skeleton-link" key={index}>
+              <span className="sidebar-skeleton-icon" />
+              <span className="sidebar-skeleton-text" />
+            </div>
+          ))}
+        </nav>
+      </aside>
+    );
+  }
+
+  const visibleMenuItems = menuItems.filter((item) => {
+    if (!item.roles.includes(user.role)) return false;
+
+    if (item.requireVerified && !accessStatus.dashboardAccess) {
+      return false;
+    }
+
+    return true;
+  });
 
   return (
     <aside className={`admin-sidebar ${sidebarOpen ? "open" : "closed"}`}>
@@ -98,21 +182,21 @@ export default function DashboardSidebar({
       <div className="admin-sidebar-menu-title">Main Menu</div>
 
       <nav className="admin-sidebar-nav">
-        {menuItems.map((item) => {
+        {visibleMenuItems.map((item) => {
           const Icon = item.icon;
 
           const isActive =
             item.href === "/dashboard"
               ? pathname === "/dashboard"
-              : pathname.startsWith(item.href);
+              : item.href !== "#" && pathname.startsWith(item.href);
 
           const isOpen = openMenu === item.label;
 
           return (
-            <div key={item.href}>
-              {/* Main Menu */}
+            <div key={item.label}>
               {item.subMenus ? (
                 <button
+                  type="button"
                   onClick={() => toggleMenu(item.label)}
                   className={`admin-sidebar-link ${isActive ? "active" : ""}`}
                   style={{
@@ -152,30 +236,35 @@ export default function DashboardSidebar({
                 </Link>
               )}
 
-              {/* Sub Menu */}
               {item.subMenus && isOpen && (
                 <div className="admin-sidebar-submenu">
-                  {item.subMenus.map((sub) => {
-                    const isSubActive = pathname === sub.href;
+                  {item.subMenus
+                    .filter((sub) => sub.roles.includes(user.role))
+                    .map((sub) => {
+                      const isSubActive = pathname === sub.href;
 
-                    return (
-                      <Link
-                        key={sub.href}
-                        href={sub.href}
-                        className={`admin-sidebar-sublink ${
-                          isSubActive ? "active" : ""
-                        }`}
-                      >
-                        {sub.label}
-                      </Link>
-                    );
-                  })}
+                      return (
+                        <Link
+                          key={sub.href}
+                          href={sub.href}
+                          className={`admin-sidebar-sublink ${isSubActive ? "active" : ""
+                            }`}
+                        >
+                          {sub.label}
+                        </Link>
+                      );
+                    })}
                 </div>
               )}
             </div>
           );
         })}
       </nav>
+
+      <div className="admin-sidebar-bottom">
+        <hr className="admin-sidebar-divider" />
+        <p>Version 1.0.0v</p>
+      </div>
     </aside>
   );
 }

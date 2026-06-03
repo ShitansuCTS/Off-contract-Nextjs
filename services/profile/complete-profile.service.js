@@ -6,7 +6,6 @@ import { authMiddleware } from "@/middleware/auth.middleware";
 import { completeProfileSchema } from "@/validations/profile.validation";
 
 export const completeProfileService = async (body, req) => {
-
     console.log("COMPLETE PROFILE SERVICE BODY:", body);
 
     const authUser = await authMiddleware(req);
@@ -71,6 +70,22 @@ export const completeProfileService = async (body, req) => {
         throw error;
     }
 
+    const companyUpdateData = {
+        name: cleanData.companyName,
+        gstNumber: cleanData.gstNumber,
+        category: cleanData.category,
+        experience: cleanData.experience,
+        stateId: cleanData.stateId,
+        cityId: cleanData.cityId,
+    };
+
+    if (
+        !user.company ||
+        user.company.verificationStatus === "REJECTED"
+    ) {
+        companyUpdateData.verificationStatus = "PROFILE_PENDING";
+    }
+
     const result = await prisma.$transaction(async (tx) => {
         const profile = await tx.profile.upsert({
             where: {
@@ -91,15 +106,7 @@ export const completeProfileService = async (body, req) => {
             where: {
                 userId: user.id,
             },
-            update: {
-                name: cleanData.companyName,
-                gstNumber: cleanData.gstNumber,
-                category: cleanData.category,
-                experience: cleanData.experience,
-                stateId: cleanData.stateId,
-                cityId: cleanData.cityId,
-                verificationStatus: "PROFILE_PENDING",
-            },
+            update: companyUpdateData,
             create: {
                 userId: user.id,
                 name: cleanData.companyName,
