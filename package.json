@@ -32,6 +32,7 @@
         "react-modal-video": "^2.0.2",
         "react-redux": "^9.2.0",
         "react-slick": "^0.30.3",
+        "resend": "^6.12.4",
         "slick-carousel": "^1.8.1",
         "swiper": "^11.2.4",
         "use-debounce": "^10.1.1",
