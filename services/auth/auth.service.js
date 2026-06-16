@@ -79,13 +79,17 @@ export const loginService = async (body) => {
 
   // VALIDATE INPUT
   const validatedData = loginSchema.parse(body);
+  console.log("SERVICE VALIDATED DATA:", validatedData);
 
   // SANITIZE INPUT
   const cleanData = {
-    email: validator.normalizeEmail(validatedData.email),
-
+    email: validatedData.email.toLowerCase().trim(),
     password: validatedData.password,
   };
+
+  console.log("SERVICE CLEAN DATA:", cleanData);
+
+
 
   // FIND USER
   const user = await prisma.user.findUnique({

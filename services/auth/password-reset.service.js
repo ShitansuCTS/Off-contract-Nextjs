@@ -12,11 +12,17 @@ import {
 export const forgotPasswordService = async (body) => {
     const validatedData = forgotPasswordSchema.parse(body);
 
-    const email = validator.normalizeEmail(validatedData.email);
+    console.log("BODY:", body);
+    console.log("VALIDATED DATA:", validatedData);
+
+    const email = validatedData.email.toLowerCase().trim();
+
+    console.log("Received forgot password request for email:", email);
 
     const genericResponse = {
         message: "If this email exists, reset instructions have been sent.",
     };
+
 
     const user = await prisma.user.findUnique({
         where: {
@@ -28,6 +34,8 @@ export const forgotPasswordService = async (body) => {
         },
     });
 
+    console.log("User lookup result:", user);
+
     if (!user) {
         return genericResponse;
     }
@@ -38,6 +46,7 @@ export const forgotPasswordService = async (body) => {
         .createHash("sha256")
         .update(rawToken)
         .digest("hex");
+
 
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
 
