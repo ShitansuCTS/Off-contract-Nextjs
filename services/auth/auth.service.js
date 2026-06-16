@@ -79,7 +79,7 @@ export const loginService = async (body) => {
 
   // VALIDATE INPUT
   const validatedData = loginSchema.parse(body);
-  console.log("SERVICE VALIDATED DATA:", validatedData);
+  // console.log("SERVICE VALIDATED DATA:", validatedData);
 
   // SANITIZE INPUT
   const cleanData = {
@@ -87,7 +87,7 @@ export const loginService = async (body) => {
     password: validatedData.password,
   };
 
-  console.log("SERVICE CLEAN DATA:", cleanData);
+  // console.log("SERVICE CLEAN DATA:", cleanData);
 
 
 
@@ -102,6 +102,8 @@ export const loginService = async (body) => {
     },
   });
 
+  // console.log("SERVICE USER:", user);
+
   // CHECK USER
   if (!user) {
     throw new Error("Invalid email or password");
@@ -113,6 +115,8 @@ export const loginService = async (body) => {
     user.password,
   );
 
+  // console.log("SERVICE PASSWORD VALID:", isPasswordValid);
+
   if (!isPasswordValid) {
     throw new Error("Invalid email or password");
   }
@@ -122,6 +126,7 @@ export const loginService = async (body) => {
     id: user.id,
     role: user.role,
   });
+  // console.log("SERVICE TOKEN:", token);
 
   // REMOVE PASSWORD
   delete user.password;
