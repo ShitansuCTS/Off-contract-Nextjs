@@ -65,7 +65,7 @@ export default function ContactPageUi() {
                         </div>
                         <div className="content">
                           <p>Phone Number</p>
-                          <Link href="tel:123-456-7890">123-456-7890</Link>
+                          <Link href="tel:+91 94370 46877">+91 94370 46877</Link>
                         </div>
                       </div>
                       <div className="phone-number m-0">
@@ -80,8 +80,8 @@ export default function ContactPageUi() {
                         </div>
                         <div className="content">
                           <p>Email Address</p>
-                          <Link href="mailto:Infoseoc@gmail.com">
-                            housebox@gmail.com
+                          <Link href="mailto:ofctechindia@gmail.com ">
+                            ofctechindia@gmail.com
                           </Link>
                         </div>
                       </div>
@@ -100,8 +100,8 @@ export default function ContactPageUi() {
                         </div>
                         <div className="content">
                           <Link href="#">
-                            Kanan Vihar , Patia, Bhubaneswar,{" "}
-                            <br className="d-lg-block d-none" /> Odisha 751024
+                            Plot 11 8RXG+785 Arya Bhoomi, Nandankanan Road,{" "}
+                            <br className="d-lg-block d-none" /> Phase-II, Kanan Vihar, Patia, Bhubaneswar, Odisha
                           </Link>
                         </div>
                       </div>
@@ -203,16 +203,9 @@ export default function ContactPageUi() {
               </div>
             </div>
           </div>
-          <div className="mapouter" style={{marginBottom:"30px"}}>
+          <div className="mapouter" style={{ marginBottom: "30px" }}>
             <div className="gmap_canvas">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3385.2974999973976!2d85.82090307736716!3d20.34676086224104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a190914ad2d782b%3A0xda020790127b2e08!2sCrushaders%20Tech!5e1!3m2!1sen!2sin!4v1778490858211!5m2!1sen!2sin"
-                width="100%"
-                height="250"
-                style={{ border: 0, height: "250px" }}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13541.14127469395!2d85.80680605040774!3d20.347316803399185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a1909148bc48545%3A0x88975e943897e577!2s8RXG%2B785%20Arya%20Bhoomi%2C%20Nandankanan%20Rd%2C%20Phase-II%2C%20Kanan%20Vihar%2C%20Patia%2C%20Bhubaneswar%2C%20Odisha%20751031!5e1!3m2!1sen!2sin!4v1781593346269!5m2!1sen!2sin" width="100%" height="450" style={{ border: 0 }}  loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
             </div>
           </div>
           {/*===== CONTACT AREA ENDS =======*/}

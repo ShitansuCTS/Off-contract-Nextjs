@@ -10,7 +10,7 @@ export default function Footer1() {
                 <img src="/icons/logo.png" alt="housebox" />
                 <div className="space24" />
                 <p>
-                  OffContractors connects trusted suppliers, contractors, and
+                  OffContractor connects trusted suppliers, contractors, and
                   construction businesses across Odisha.
                 </p>
                 <div className="space24" />
@@ -50,13 +50,13 @@ export default function Footer1() {
                     <Link href="/about-us">About Us</Link>
                   </li>
                   <li>
-                    <Link href="/property-halfmap-grid">Properties</Link>
+                    <Link href="/services#insurance">Insurance Services</Link>
                   </li>
                   <li>
-                    <Link href="/blog">Our Blog</Link>
+                    <Link href="/services#equipment-rental">Equipment Rental</Link>
                   </li>
                   <li>
-                    <Link href="/dashboard">Dashboard</Link>
+                    <Link href="/contact-us">Contact Us</Link>
                   </li>
                 </ul>
               </div>
@@ -79,18 +79,36 @@ export default function Footer1() {
                     </Link>
                   </li>
                   <li>
-                    <Link href="#">
+                    <Link
+                      href="#"
+                      style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: "12px",
+                      }}
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         fill="currentColor"
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                          flexShrink: 0,
+                          marginTop: "4px",
+                        }}
                       >
                         <path d="M18.364 17.364L12 23.7279L5.63604 17.364C2.12132 13.8492 2.12132 8.15076 5.63604 4.63604C9.15076 1.12132 14.8492 1.12132 18.364 4.63604C21.8787 8.15076 21.8787 13.8492 18.364 17.364ZM12 15C14.2091 15 16 13.2091 16 11C16 8.79086 14.2091 7 12 7C9.79086 7 8 8.79086 8 11C8 13.2091 9.79086 15 12 15ZM12 13C10.8954 13 10 12.1046 10 11C10 9.89543 10.8954 9 12 9C13.1046 9 14 9.89543 14 11C14 12.1046 13.1046 13 12 13Z"></path>
-                      </svg>{" "}
-                      House No. 11, Arya Bhoomi, Patia, <br />
-                      <span style={{ marginLeft: "30px" }}>
-                        {" "}
-                        Bhubaneswar – 751024
+                      </svg>
+
+                      <span
+                        style={{
+                          lineHeight: "1.6",
+                          wordBreak: "break-word",
+                        }}
+                      >
+                        Plot 11, 8RXG+785 Arya Bhoomi, Nandankanan Road,
+                        Phase-II, Kanan Vihar, Patia, Bhubaneswar, Odisha
                       </span>
                     </Link>
                   </li>
@@ -218,9 +236,17 @@ export default function Footer1() {
                     OfContractors
                   </span>
                   . All Right Reserved || Powered By{" "}
-                  <span style={{ color: "#073b3a", fontWeight: "bold" }}>
-                    Crushaders Tech solution
-                  </span>
+                  <Link
+                    href="http://crushaderstech.com/"
+                    target="_blank"
+                    style={{
+                      color: "#073b3a",
+                      fontWeight: "bold",
+                      textDecoration: "none",
+                    }}
+                  >
+                    Crushaders Tech Solution
+                  </Link>
                 </p>
               </div>
             </div>

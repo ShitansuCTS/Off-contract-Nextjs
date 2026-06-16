@@ -17,7 +17,7 @@ export async function middleware(req) {
         }
 
         try {
-            // VERIFY TOKEN
+            // VERIFY TOKEN     
             await verifyEdgeToken(token);
 
         } catch (error) {
