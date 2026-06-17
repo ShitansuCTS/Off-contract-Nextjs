@@ -14,6 +14,7 @@ import {
   ChevronRight,
   ShieldCheck,
   ChevronDown,
+  Package
 } from "lucide-react";
 
 type Role = "ADMIN" | "SUPPLIER" | "AGENCY";
@@ -68,7 +69,12 @@ const menuItems = [
     icon: ShieldCheck,
     roles: ["ADMIN"],
   },
-
+  {
+    label: "Products",
+    href: "/dashboard/admin/products",
+    icon: Package,
+    roles: ["ADMIN"],
+  },
   {
     label: "KYC Verification",
     href: "#",

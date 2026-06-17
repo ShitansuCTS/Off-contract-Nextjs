@@ -62,6 +62,13 @@ enum LeadType {
   GENERAL
 }
 
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+  REJECTED
+}
+
 /////////////////////
 ///// USER
 /////////////////////
@@ -84,12 +91,14 @@ model User {
   subscriptions Subscription[]
   assignedLeads Lead[]
 
+  products Product[]
+
   passwordResetTokens PasswordResetToken[]
 
   @@index([email])
 }
 
-/////////////////////`
+/////////////////////
 ///// PROFILE
 /////////////////////
 
@@ -131,6 +140,8 @@ model Company {
 
   verificationStatus VerificationStatus @default(PROFILE_PENDING)
   rejectionReason    String?
+
+  products Product[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -210,7 +221,6 @@ model Lead {
   @@index([email])
 }
 
-
 ////////////////////////////
 //// STATE MODEL
 ////////////////////////////
@@ -223,6 +233,7 @@ model State {
 
   cities    City[]
   companies Company[]
+  products  Product[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -240,14 +251,13 @@ model City {
 
   state     State     @relation(fields: [stateId], references: [id], onDelete: Cascade)
   companies Company[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   @@unique([slug, stateId])
   @@index([stateId])
 }
-
 
 ////////////////////////////
 //// PASSWORD RESET MODEL
@@ -268,4 +278,52 @@ model PasswordResetToken {
 
   @@index([userId])
   @@index([expiresAt])
+}
+
+////////////////////////////
+//// PRODUCTS & ITEMS MODEL
+////////////////////////////
+model Product {
+  id String @id @default(uuid())
+
+  userId    String
+  companyId String?
+
+  title       String
+  slug        String  @unique
+  description String?
+
+  category    String
+  subCategory String?
+
+  price        Float?
+  unit         String? // bag, kg, ton, piece, day, month
+  stock        Int?
+  brand        String?
+  productModel String?
+
+  imageUrl      String?
+  imagePublicId String?
+
+  status ProductStatus @default(DRAFT)
+
+  stateId String?
+  cityId  String?
+
+  state State? @relation(fields: [stateId], references: [id], onDelete: SetNull)
+  city  City?  @relation(fields: [cityId], references: [id], onDelete: SetNull)
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([companyId])
+  @@index([category])
+  @@index([status])
+  @@index([stateId])
+  @@index([cityId])
+  @@index([createdAt])
 }
