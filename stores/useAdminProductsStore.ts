@@ -1,5 +1,5 @@
 import { create } from "zustand";
-
+import toast from "react-hot-toast";
 export type ProductStatus = "DRAFT" | "ACTIVE" | "INACTIVE" | "REJECTED";
 
 export interface Product {
@@ -15,6 +15,7 @@ export interface Product {
   brand?: string | null;
   productModel?: string | null;
   imageUrl?: string | null;
+  imagePublicId?: string | null;
   status: ProductStatus;
   createdAt: string;
   company?: {
@@ -280,10 +281,17 @@ export const useAdminProductsStore = create<AdminProductsStore>((set, get) => ({
 
       get().closeDrawer();
       await get().fetchProducts();
+      toast.success(
+        drawerMode === "create"
+          ? "Product created successfully"
+          : "Product updated successfully",
+      );
 
       return true;
     } catch (error) {
-      alert(error instanceof Error ? error.message : "Something went wrong");
+      toast.error(
+        error instanceof Error ? error.message : "Something went wrong",
+      );
       return false;
     } finally {
       set({ submitting: false });
@@ -301,9 +309,10 @@ export const useAdminProductsStore = create<AdminProductsStore>((set, get) => ({
     const data = await res.json();
 
     if (!res.ok) {
-      alert(data.message || "Failed to delete product");
+      toast.error(data.message || "Failed to delete product");
       return;
     }
+    toast.success("Product deleted successfully");
 
     await get().fetchProducts();
   },

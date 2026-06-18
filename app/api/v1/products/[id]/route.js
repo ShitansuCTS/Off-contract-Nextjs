@@ -5,6 +5,40 @@ import {
     deleteProductController,
 } from "@/controllers/product/product.controller";
 import { getAuthUser } from "@/lib/getAuthUser";
+import { supabaseAdmin } from "@/lib/supabase";
+
+const uploadProductImage = async (file, userId) => {
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${Date.now()}-${Math.random()
+        .toString(36)
+        .substring(2)}.${fileExt}`;
+
+    const filePath = `${userId}/${fileName}`;
+
+    const { error } = await supabaseAdmin.storage
+        .from(process.env.SUPABASE_PRODUCT_BUCKET)
+        .upload(filePath, buffer, {
+            contentType: file.type,
+            upsert: false,
+        });
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    const { data } = supabaseAdmin.storage
+        .from(process.env.SUPABASE_PRODUCT_BUCKET)
+        .getPublicUrl(filePath);
+
+    return {
+        imageUrl: data.publicUrl,
+        imagePublicId: filePath,
+    };
+};
+
 
 export async function GET(req, { params }) {
     try {
@@ -34,9 +68,31 @@ export async function GET(req, { params }) {
 export async function PATCH(req, { params }) {
     try {
         const authUser = await getAuthUser();
+        const userId = authUser.id || authUser.userId;
+
         const { id } = await params;
 
+        const existingProduct = await getProductByIdController(id);
+
         const formData = await req.formData();
+
+        const imageFile = formData.get("image");
+
+        let imageUrl;
+        let imagePublicId;
+
+        if (imageFile && imageFile.size > 0) {
+            const uploadedImage = await uploadProductImage(imageFile, userId);
+
+            imageUrl = uploadedImage.imageUrl;
+            imagePublicId = uploadedImage.imagePublicId;
+
+            if (existingProduct.imagePublicId) {
+                await supabaseAdmin.storage
+                    .from(process.env.SUPABASE_PRODUCT_BUCKET)
+                    .remove([existingProduct.imagePublicId]);
+            }
+        }
 
         const body = {
             title: formData.get("title"),
@@ -51,7 +107,10 @@ export async function PATCH(req, { params }) {
             status: formData.get("status"),
         };
 
-        // console.log("PRODUCT UPDATE BODY:", body);
+        if (imageUrl) {
+            body.imageUrl = imageUrl;
+            body.imagePublicId = imagePublicId;
+        }
 
         const product = await updateProductController(id, body, authUser);
 
@@ -80,6 +139,14 @@ export async function DELETE(req, { params }) {
     try {
         const { id } = await params;
 
+        const existingProduct = await getProductByIdController(id);
+
+        if (existingProduct.imagePublicId) {
+            await supabaseAdmin.storage
+                .from(process.env.SUPABASE_PRODUCT_BUCKET)
+                .remove([existingProduct.imagePublicId]);
+        }
+
         const result = await deleteProductController(id);
 
         return NextResponse.json(
@@ -90,6 +157,8 @@ export async function DELETE(req, { params }) {
             { status: 200 }
         );
     } catch (error) {
+        console.log("PRODUCT DELETE ERROR:", error);
+
         return NextResponse.json(
             {
                 success: false,

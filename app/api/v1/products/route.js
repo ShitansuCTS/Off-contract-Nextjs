@@ -4,6 +4,42 @@ import {
     getProductsController,
 } from "@/controllers/product/product.controller";
 import { getAuthUser } from "@/lib/getAuthUser";
+import { supabaseAdmin } from "@/lib/supabase";
+import { prisma } from "@/lib/prisma";
+
+
+const uploadProductImage = async (file, userId) => {
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${Date.now()}-${Math.random()
+        .toString(36)
+        .substring(2)}.${fileExt}`;
+
+    const filePath = `${userId}/${fileName}`;
+
+    const { error } = await supabaseAdmin.storage
+        .from(process.env.SUPABASE_PRODUCT_BUCKET)
+        .upload(filePath, buffer, {
+            contentType: file.type,
+            upsert: false,
+        });
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    const { data } = supabaseAdmin.storage
+        .from(process.env.SUPABASE_PRODUCT_BUCKET)
+        .getPublicUrl(filePath);
+
+    return {
+        imageUrl: data.publicUrl,
+        imagePublicId: filePath,
+    };
+};
+
 
 
 export async function GET(req) {
@@ -50,9 +86,36 @@ export async function POST(req) {
         const authUser = await getAuthUser();
         const userId = authUser.id || authUser.userId;
 
-        // console.log("AUTH USER IN PRODUCT POST:", authUser);
+        const company = await prisma.company.findUnique({
+            where: {
+                userId,
+            },
+            select: {
+                id: true,
+                stateId: true,
+                cityId: true,
+            },
+        });
+
+        console.log("The company details is :", company)
 
         const formData = await req.formData();
+
+        const imageFile = formData.get("image");
+
+        let imageUrl = null;
+        let imagePublicId = null;
+
+        // console.log("IMAGE FILE:", imageFile);
+        // console.log("IMAGE NAME:", imageFile?.name);
+        // console.log("IMAGE SIZE:", imageFile?.size);
+
+        if (imageFile && imageFile.size > 0) {
+            const uploadedImage = await uploadProductImage(imageFile, userId);
+
+            imageUrl = uploadedImage.imageUrl;
+            imagePublicId = uploadedImage.imagePublicId;
+        }
 
         const body = {
             title: formData.get("title"),
@@ -65,10 +128,16 @@ export async function POST(req) {
             brand: formData.get("brand"),
             productModel: formData.get("productModel"),
             status: formData.get("status") || "DRAFT",
+            companyId: company?.id || null,
+            stateId: company?.stateId || null,
+            cityId: company?.cityId || null,
+            imageUrl,
+            imagePublicId,
+
             userId,
         };
 
-        // console.log("PRODUCT POST BODY:", body);
+  
 
         const product = await createProductController(body);
 

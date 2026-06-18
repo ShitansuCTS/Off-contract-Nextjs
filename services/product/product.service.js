@@ -84,6 +84,7 @@ export const createProductService = async (data) => {
 };
 
 export const getProductsService = async (filters) => {
+    
     const {
         page = 1,
         limit = 10,
