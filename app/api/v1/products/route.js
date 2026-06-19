@@ -50,8 +50,8 @@ export async function GET(req) {
             page: searchParams.get("page") || 1,
             limit: searchParams.get("limit") || 10,
             status: searchParams.get("status"),
-            category: searchParams.get("category"),
-            subCategory: searchParams.get("subCategory"),
+            categoryId: searchParams.get("categoryId"),
+    subCategoryId: searchParams.get("subCategoryId"),
             stateId: searchParams.get("stateId"),
             cityId: searchParams.get("cityId"),
             userId: searchParams.get("userId"),
@@ -120,8 +120,8 @@ export async function POST(req) {
         const body = {
             title: formData.get("title"),
             description: formData.get("description"),
-            category: formData.get("category"),
-            subCategory: formData.get("subCategory"),
+            categoryId: formData.get("categoryId"),
+            subCategoryId: formData.get("subCategoryId"),
             price: formData.get("price"),
             unit: formData.get("unit"),
             stock: formData.get("stock"),
@@ -137,7 +137,7 @@ export async function POST(req) {
             userId,
         };
 
-  
+
 
         const product = await createProductController(body);
 

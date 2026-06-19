@@ -3,7 +3,7 @@
 import { JSX, useEffect, useState } from "react";
 import { Search, RotateCcw } from "lucide-react";
 import { useDebounce } from "use-debounce";
-
+import { useProductCategoryStore } from "@/stores/useProductCategoryStore";
 import {
     ProductStatus,
     useAdminProductsStore,
@@ -13,6 +13,12 @@ export default function ProductFilters(): JSX.Element {
     const filters = useAdminProductsStore((state) => state.filters);
     const setFilter = useAdminProductsStore((state) => state.setFilter);
     const resetFilters = useAdminProductsStore((state) => state.resetFilters);
+    const categories = useProductCategoryStore((state) => state.categories);
+    const fetchCategories = useProductCategoryStore((state) => state.fetchCategories);
+
+    useEffect(() => {
+        fetchCategories();
+    }, [fetchCategories]);
 
     const [searchText, setSearchText] = useState<string>(filters.search || "");
     const [debouncedSearch] = useDebounce(searchText, 500);
@@ -67,15 +73,15 @@ export default function ProductFilters(): JSX.Element {
 
                 <select
                     className="users-select"
-                    value={filters.category}
-                    onChange={(e) => setFilter("category", e.target.value)}
+                    value={filters.categoryId}
+                    onChange={(e) => setFilter("categoryId", e.target.value)}
                 >
                     <option value="">All Categories</option>
-                    <option value="Construction Materials">Construction Materials</option>
-                    <option value="Equipment Rental">Equipment Rental</option>
-                    <option value="Insurance">Insurance</option>
-                    <option value="Finance">Finance</option>
-                    <option value="Services">Services</option>
+                    {categories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                            {category.name}
+                        </option>
+                    ))}
                 </select>
 
                 <select

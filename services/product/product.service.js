@@ -14,8 +14,8 @@ export const createProductService = async (data) => {
         companyId,
         title,
         description,
-        category,
-        subCategory,
+        categoryId,
+        subCategoryId,
         price,
         unit,
         stock,
@@ -28,7 +28,8 @@ export const createProductService = async (data) => {
         cityId,
     } = data;
 
-    console.log("CREATE PRODUCT SERVICE DATA:", data.userId);
+    const finalCategoryId = categoryId || null;
+    const finalSubCategoryId = subCategoryId || null;
 
     if (!userId) {
         const error = new Error("userId is required");
@@ -42,10 +43,35 @@ export const createProductService = async (data) => {
         throw error;
     }
 
-    if (!category) {
+    if (!finalCategoryId) {
         const error = new Error("Product category is required");
         error.statusCode = 400;
         throw error;
+    }
+
+    const category = await prisma.productCategory.findUnique({
+        where: { id: finalCategoryId },
+    });
+
+    if (!category) {
+        const error = new Error("Product category not found");
+        error.statusCode = 404;
+        throw error;
+    }
+
+    if (finalSubCategoryId) {
+        const subCategory = await prisma.productSubCategory.findFirst({
+            where: {
+                id: finalSubCategoryId,
+                categoryId: finalCategoryId,
+            },
+        });
+
+        if (!subCategory) {
+            const error = new Error("Invalid sub category for selected category");
+            error.statusCode = 400;
+            throw error;
+        }
     }
 
     const baseSlug = generateSlug(title);
@@ -64,19 +90,43 @@ export const createProductService = async (data) => {
             companyId: companyId || null,
             title,
             slug,
-            description,
-            category,
-            subCategory,
+            description: description || null,
+
+            categoryId: finalCategoryId,
+            subCategoryId: finalSubCategoryId,
+
             price: price ? Number(price) : null,
-            unit,
+            unit: unit || null,
             stock: stock ? Number(stock) : null,
-            brand,
-            productModel,
-            imageUrl,
-            imagePublicId,
+            brand: brand || null,
+            productModel: productModel || null,
+
+            imageUrl: imageUrl || null,
+            imagePublicId: imagePublicId || null,
+
             status: status || "DRAFT",
             stateId: stateId || null,
             cityId: cityId || null,
+        },
+        include: {
+            category: true,
+            subCategory: true,
+            user: {
+                select: {
+                    id: true,
+                    email: true,
+                    role: true,
+                },
+            },
+            company: {
+                select: {
+                    id: true,
+                    name: true,
+                    category: true,
+                },
+            },
+            state: true,
+            city: true,
         },
     });
 
@@ -84,13 +134,12 @@ export const createProductService = async (data) => {
 };
 
 export const getProductsService = async (filters) => {
-    
     const {
         page = 1,
         limit = 10,
         status,
-        category,
-        subCategory,
+        categoryId,
+        subCategoryId,
         stateId,
         cityId,
         userId,
@@ -103,8 +152,8 @@ export const getProductsService = async (filters) => {
     const where = {};
 
     if (status) where.status = status;
-    if (category) where.category = category;
-    if (subCategory) where.subCategory = subCategory;
+    if (categoryId) where.categoryId = categoryId;
+    if (subCategoryId) where.subCategoryId = subCategoryId;
     if (stateId) where.stateId = stateId;
     if (cityId) where.cityId = cityId;
     if (userId) where.userId = userId;
@@ -125,15 +174,31 @@ export const getProductsService = async (filters) => {
                 },
             },
             {
-                category: {
+                brand: {
                     contains: search,
                     mode: "insensitive",
                 },
             },
             {
-                brand: {
+                productModel: {
                     contains: search,
                     mode: "insensitive",
+                },
+            },
+            {
+                category: {
+                    name: {
+                        contains: search,
+                        mode: "insensitive",
+                    },
+                },
+            },
+            {
+                subCategory: {
+                    name: {
+                        contains: search,
+                        mode: "insensitive",
+                    },
                 },
             },
         ];
@@ -148,6 +213,8 @@ export const getProductsService = async (filters) => {
                 createdAt: "desc",
             },
             include: {
+                category: true,
+                subCategory: true,
                 user: {
                     select: {
                         id: true,
@@ -205,6 +272,8 @@ export const getProductByIdService = async (id) => {
     const product = await prisma.product.findUnique({
         where: { id },
         include: {
+            category: true,
+            subCategory: true,
             user: {
                 select: {
                     id: true,
@@ -246,6 +315,41 @@ export const updateProductService = async (id, data) => {
 
     const updateData = { ...data };
 
+    if (data.categoryId !== undefined) {
+        updateData.categoryId = data.categoryId || null;
+    }
+
+    if (data.subCategoryId !== undefined) {
+        updateData.subCategoryId = data.subCategoryId || null;
+    }
+
+    if (updateData.categoryId) {
+        const category = await prisma.productCategory.findUnique({
+            where: { id: updateData.categoryId },
+        });
+
+        if (!category) {
+            const error = new Error("Product category not found");
+            error.statusCode = 404;
+            throw error;
+        }
+    }
+
+    if (updateData.subCategoryId) {
+        const subCategory = await prisma.productSubCategory.findFirst({
+            where: {
+                id: updateData.subCategoryId,
+                categoryId: updateData.categoryId || existingProduct.categoryId,
+            },
+        });
+
+        if (!subCategory) {
+            const error = new Error("Invalid sub category for selected category");
+            error.statusCode = 400;
+            throw error;
+        }
+    }
+
     if (data.price !== undefined) {
         updateData.price = data.price ? Number(data.price) : null;
     }
@@ -279,6 +383,20 @@ export const updateProductService = async (id, data) => {
     return await prisma.product.update({
         where: { id },
         data: updateData,
+        include: {
+            category: true,
+            subCategory: true,
+            user: {
+                select: {
+                    id: true,
+                    email: true,
+                    role: true,
+                },
+            },
+            company: true,
+            state: true,
+            city: true,
+        },
     });
 };
 

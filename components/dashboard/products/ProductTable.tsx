@@ -91,10 +91,11 @@ export default function ProductTable(): JSX.Element {
 
                                     <td>
                                         <div className="users-client-name">
-                                            {product.category}
+                                            {product.category?.name || "No category"}
                                         </div>
                                         <span className="users-muted">
-                                            {product.subCategory || "No sub category"}
+                                            {product.subCategory?.name || "No sub category"}
+
                                         </span>
                                     </td>
 

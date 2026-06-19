@@ -157,100 +157,68 @@ export default function ContructionMaterials() {
                     <>
                         <div className="row">
                             {products.map((item) => (
-                                <div className="col-lg-3 col-md-6 mb-4" key={item.id}>
+                                <div className="col-lg-3 col-md-6 col-sm-6 mb-4" key={item.id}>
                                     <div
-                                        className="product-public-card"
+                                        className="product-small-card"
                                         style={{
-                                            border: "1px solid #e8eeee",
-                                            borderRadius: "18px",
                                             background: "#fff",
+                                            borderRadius: "16px",
                                             overflow: "hidden",
+                                            border: "1px solid #edf0ef",
+                                            boxShadow: "0 10px 26px rgba(8,23,31,0.08)",
                                             height: "100%",
-                                            boxShadow: "0 12px 34px rgba(8, 23, 31, 0.08)",
                                             transition: "0.3s ease",
-                                            position: "relative",
                                         }}
                                     >
-                                        <div style={{ padding: "12px 12px 0" }}>
+                                        <Link href={`/products/${item.slug}`}>
                                             <div
                                                 style={{
-                                                    position: "relative",
-                                                    background: "#f6f9f8",
-                                                    borderRadius: "14px",
+                                                    height: "170px",
+                                                    background: "#f5f8f7",
                                                     overflow: "hidden",
-                                                    height: "205px",
                                                 }}
                                             >
                                                 <img
-                                                    src={
-                                                        item.imageUrl ||
-                                                        "/assets/img/all-images/products/1.jpeg"
-                                                    }
+                                                    src={item.imageUrl || "/assets/img/all-images/products/1.jpeg"}
                                                     alt={item.title}
                                                     style={{
                                                         width: "100%",
                                                         height: "100%",
                                                         objectFit: "cover",
+                                                        transition: "0.4s ease",
                                                     }}
                                                 />
-
-                                                <span
-                                                    style={{
-                                                        position: "absolute",
-                                                        top: "12px",
-                                                        left: "12px",
-                                                        background: "#d4d629",
-                                                        color: "#08171f",
-                                                        fontSize: "12px",
-                                                        fontWeight: 800,
-                                                        padding: "6px 11px",
-                                                        borderRadius: "30px",
-                                                    }}
-                                                >
-                                                    Verified
-                                                </span>
-
-                                                <span
-                                                    style={{
-                                                        position: "absolute",
-                                                        top: "12px",
-                                                        right: "12px",
-                                                        background: "#00433f",
-                                                        color: "#fff",
-                                                        fontSize: "12px",
-                                                        fontWeight: 700,
-                                                        padding: "6px 11px",
-                                                        borderRadius: "30px",
-                                                    }}
-                                                >
-                                                    Available
-                                                </span>
                                             </div>
-                                        </div>
+                                        </Link>
 
-                                        <div style={{ padding: "16px 18px 18px" }}>
+                                        <div style={{ padding: "14px" }}>
                                             <span
                                                 style={{
                                                     display: "inline-block",
-                                                    background: "rgba(0, 67, 63, 0.08)",
-                                                    color: "#00433f",
-                                                    fontSize: "12px",
+                                                    fontSize: "11px",
                                                     fontWeight: 800,
-                                                    padding: "6px 12px",
+                                                    color: "#00433f",
+                                                    background: "rgba(0,67,63,0.08)",
+                                                    padding: "5px 10px",
                                                     borderRadius: "30px",
-                                                    marginBottom: "10px",
+                                                    marginBottom: "8px",
                                                 }}
                                             >
-                                                {item.category}
+                                                {item.category || "Product"}
                                             </span>
 
-                                            <h3 style={{ marginBottom: "6px", lineHeight: "26px" }}>
+                                            <h3
+                                                style={{
+                                                    fontSize: "17px",
+                                                    fontWeight: 800,
+                                                    lineHeight: "22px",
+                                                    marginBottom: "14px",
+                                                }}
+                                            >
                                                 <Link
                                                     href={`/products/${item.slug}`}
                                                     style={{
                                                         color: "#08171f",
-                                                        fontSize: "20px",
-                                                        fontWeight: "800",
                                                         textDecoration: "none",
                                                     }}
                                                 >
@@ -258,92 +226,21 @@ export default function ContructionMaterials() {
                                                 </Link>
                                             </h3>
 
-                                            <p
-                                                style={{
-                                                    color: "#5c727d",
-                                                    fontSize: "14px",
-                                                    marginBottom: "12px",
-                                                    lineHeight: "22px",
-                                                }}
-                                            >
-                                                {item.subCategory || item.brand || "Construction Product"}
-                                            </p>
-
-                                            <div
-                                                style={{
-                                                    display: "flex",
-                                                    gap: "8px",
-                                                    flexWrap: "wrap",
-                                                    marginBottom: "12px",
-                                                }}
-                                            >
-                                                <span
-                                                    style={{
-                                                        background: "#f6f9f8",
-                                                        color: "#00433f",
-                                                        fontSize: "12px",
-                                                        fontWeight: 700,
-                                                        padding: "6px 10px",
-                                                        borderRadius: "8px",
-                                                    }}
-                                                >
-                                                    {item.company?.name || "Verified Supplier"}
-                                                </span>
-
-                                                <span
-                                                    style={{
-                                                        background: "#f6f9f8",
-                                                        color: "#5c727d",
-                                                        fontSize: "12px",
-                                                        fontWeight: 700,
-                                                        padding: "6px 10px",
-                                                        borderRadius: "8px",
-                                                    }}
-                                                >
-                                                    {item.city?.name || "Bhubaneswar"}
-                                                </span>
-                                            </div>
-
-                                            <h4
-                                                style={{
-                                                    color: "#08171f",
-                                                    fontSize: "24px",
-                                                    fontWeight: "900",
-                                                    marginBottom: "14px",
-                                                }}
-                                            >
-                                                {item.price ? `₹${item.price}` : "Price on request"}
-
-                                                {item.price && (
-                                                    <span
-                                                        style={{
-                                                            fontSize: "14px",
-                                                            color: "#5c727d",
-                                                            fontWeight: "600",
-                                                        }}
-                                                    >
-                                                        {" "}
-                                                        / {item.unit || "unit"}
-                                                    </span>
-                                                )}
-                                            </h4>
-
                                             <Link
-                                                href={`/contact?product=${item.slug}`}
+                                                href={`/products/${item.slug}`}
                                                 style={{
                                                     display: "block",
                                                     textAlign: "center",
                                                     background: "#00433f",
                                                     color: "#fff",
-                                                    padding: "13px 14px",
-                                                    borderRadius: "12px",
-                                                    fontSize: "15px",
-                                                    fontWeight: "800",
+                                                    padding: "10px 12px",
+                                                    borderRadius: "10px",
+                                                    fontSize: "14px",
+                                                    fontWeight: 800,
                                                     textDecoration: "none",
-                                                    boxShadow: "0 8px 18px rgba(0, 67, 63, 0.22)",
                                                 }}
                                             >
-                                                Enquiry Now →
+                                                View More →
                                             </Link>
                                         </div>
                                     </div>

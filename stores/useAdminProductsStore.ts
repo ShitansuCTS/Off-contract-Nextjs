@@ -1,14 +1,33 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
+
 export type ProductStatus = "DRAFT" | "ACTIVE" | "INACTIVE" | "REJECTED";
+
+export interface ProductCategory {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+export interface ProductSubCategory {
+  id: string;
+  name: string;
+  slug: string;
+  categoryId?: string;
+}
 
 export interface Product {
   id: string;
   title: string;
   slug: string;
   description?: string | null;
-  category: string;
-  subCategory?: string | null;
+
+  categoryId?: string | null;
+  subCategoryId?: string | null;
+
+  category?: ProductCategory | null;
+  subCategory?: ProductSubCategory | null;
+
   price?: number | null;
   unit?: string | null;
   stock?: number | null;
@@ -18,6 +37,7 @@ export interface Product {
   imagePublicId?: string | null;
   status: ProductStatus;
   createdAt: string;
+
   company?: {
     name?: string;
     category?: string;
@@ -38,14 +58,15 @@ interface ProductFilters {
   limit: number;
   search: string;
   status: "" | ProductStatus;
-  category: string;
+  categoryId: string;
+  subCategoryId: string;
 }
 
 interface ProductForm {
   title: string;
   description: string;
-  category: string;
-  subCategory: string;
+  categoryId: string;
+  subCategoryId: string;
   price: string;
   unit: string;
   stock: string;
@@ -73,15 +94,19 @@ interface AdminProductsStore {
   openCreateDrawer: () => void;
   openEditDrawer: (product: Product) => void;
   closeDrawer: () => void;
+
   setFilter: <K extends keyof ProductFilters>(
     key: K,
     value: ProductFilters[K],
   ) => void;
+
   resetFilters: () => void;
+
   setFormField: <K extends keyof ProductForm>(
     key: K,
     value: ProductForm[K],
   ) => void;
+
   setImageFile: (file: File | null) => void;
   submitProduct: () => Promise<boolean>;
   deleteProduct: (id: string) => Promise<void>;
@@ -90,8 +115,8 @@ interface AdminProductsStore {
 const initialForm: ProductForm = {
   title: "",
   description: "",
-  category: "",
-  subCategory: "",
+  categoryId: "",
+  subCategoryId: "",
   price: "",
   unit: "",
   stock: "",
@@ -115,7 +140,8 @@ export const useAdminProductsStore = create<AdminProductsStore>((set, get) => ({
     limit: 10,
     search: "",
     status: "",
-    category: "",
+    categoryId: "",
+    subCategoryId: "",
   },
 
   form: initialForm,
@@ -127,7 +153,6 @@ export const useAdminProductsStore = create<AdminProductsStore>((set, get) => ({
       set({ loading: true, error: null });
 
       const { filters } = get();
-
       const params = new URLSearchParams();
 
       params.set("page", String(filters.page));
@@ -135,7 +160,10 @@ export const useAdminProductsStore = create<AdminProductsStore>((set, get) => ({
 
       if (filters.search) params.set("search", filters.search);
       if (filters.status) params.set("status", filters.status);
-      if (filters.category) params.set("category", filters.category);
+      if (filters.categoryId) params.set("categoryId", filters.categoryId);
+      if (filters.subCategoryId) {
+        params.set("subCategoryId", filters.subCategoryId);
+      }
 
       const res = await fetch(`/api/v1/products?${params.toString()}`, {
         credentials: "include",
@@ -179,8 +207,8 @@ export const useAdminProductsStore = create<AdminProductsStore>((set, get) => ({
       form: {
         title: product.title || "",
         description: product.description || "",
-        category: product.category || "",
-        subCategory: product.subCategory || "",
+        categoryId: product.categoryId || product.category?.id || "",
+        subCategoryId: product.subCategoryId || product.subCategory?.id || "",
         price: product.price ? String(product.price) : "",
         unit: product.unit || "",
         stock: product.stock ? String(product.stock) : "",
@@ -221,7 +249,8 @@ export const useAdminProductsStore = create<AdminProductsStore>((set, get) => ({
         limit: 10,
         search: "",
         status: "",
-        category: "",
+        categoryId: "",
+        subCategoryId: "",
       },
     });
 
@@ -233,6 +262,11 @@ export const useAdminProductsStore = create<AdminProductsStore>((set, get) => ({
       form: {
         ...state.form,
         [key]: value,
+        ...(key === "categoryId"
+          ? {
+              subCategoryId: "",
+            }
+          : {}),
       },
     }));
   },
@@ -281,6 +315,7 @@ export const useAdminProductsStore = create<AdminProductsStore>((set, get) => ({
 
       get().closeDrawer();
       await get().fetchProducts();
+
       toast.success(
         drawerMode === "create"
           ? "Product created successfully"
@@ -312,8 +347,8 @@ export const useAdminProductsStore = create<AdminProductsStore>((set, get) => ({
       toast.error(data.message || "Failed to delete product");
       return;
     }
-    toast.success("Product deleted successfully");
 
+    toast.success("Product deleted successfully");
     await get().fetchProducts();
   },
 }));

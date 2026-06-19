@@ -1,9 +1,11 @@
 "use client";
 
-import { JSX } from "react";
+import { JSX, useEffect, useMemo } from "react";
 import { X, UploadCloud } from "lucide-react";
 
 import { useAdminProductsStore } from "@/stores/useAdminProductsStore";
+import { useProductCategoryStore } from "@/stores/useProductCategoryStore";
+import { useProductSubCategoryStore } from "@/stores/useProductSubCategoryStore";
 import ProductStatusBadge from "./ProductStatusBadge";
 
 export default function ProductDrawer(): JSX.Element | null {
@@ -19,14 +21,34 @@ export default function ProductDrawer(): JSX.Element | null {
     const setImageFile = useAdminProductsStore((state) => state.setImageFile);
     const submitProduct = useAdminProductsStore((state) => state.submitProduct);
 
+    const categories = useProductCategoryStore((state) => state.categories);
+    const fetchCategories = useProductCategoryStore((state) => state.fetchCategories);
+
+    const subCategories = useProductSubCategoryStore((state) => state.subCategories);
+    const fetchSubCategories = useProductSubCategoryStore(
+        (state) => state.fetchSubCategories,
+    );
+
+    useEffect(() => {
+        if (drawerOpen) {
+            fetchCategories();
+            fetchSubCategories("", true);
+        }
+    }, [drawerOpen, fetchCategories, fetchSubCategories]);
+
+    const filteredSubCategories = useMemo(() => {
+        if (!form.categoryId) return [];
+
+        return subCategories.filter(
+            (item) => item.categoryId === form.categoryId,
+        );
+    }, [subCategories, form.categoryId]);
+
     if (!drawerOpen) return null;
 
     return (
         <div className="users-drawer-overlay" onClick={closeDrawer}>
-            <aside
-                className="users-drawer"
-                onClick={(e) => e.stopPropagation()}
-            >
+            <aside className="users-drawer" onClick={(e) => e.stopPropagation()}>
                 <div className="users-drawer-header">
                     <div>
                         <h3>
@@ -81,9 +103,7 @@ export default function ProductDrawer(): JSX.Element | null {
                         <FormField label="Product Title">
                             <input
                                 value={form.title}
-                                onChange={(e) =>
-                                    setFormField("title", e.target.value)
-                                }
+                                onChange={(e) => setFormField("title", e.target.value)}
                                 placeholder="UltraTech Cement PPC"
                             />
                         </FormField>
@@ -128,40 +148,49 @@ export default function ProductDrawer(): JSX.Element | null {
 
                         <FormField label="Category">
                             <select
-                                value={form.category}
+                                value={form.categoryId}
                                 onChange={(e) =>
-                                    setFormField("category", e.target.value)
+                                    setFormField("categoryId", e.target.value)
                                 }
                             >
                                 <option value="">Select Category</option>
-                                <option value="Construction Materials">
-                                    Construction Materials
-                                </option>
-                                <option value="Equipment Rental">
-                                    Equipment Rental
-                                </option>
-                                <option value="Insurance">Insurance</option>
-                                <option value="Finance">Finance</option>
-                                <option value="Services">Services</option>
+                                {categories.map((category) => (
+                                    <option key={category.id} value={category.id}>
+                                        {category.name}
+                                    </option>
+                                ))}
                             </select>
                         </FormField>
 
                         <FormField label="Sub Category">
-                            <input
-                                value={form.subCategory}
+                            <select
+                                value={form.subCategoryId}
                                 onChange={(e) =>
-                                    setFormField("subCategory", e.target.value)
+                                    setFormField("subCategoryId", e.target.value)
                                 }
-                                placeholder="Cement"
-                            />
+                                disabled={!form.categoryId}
+                            >
+                                <option value="">
+                                    {form.categoryId
+                                        ? "Select Sub Category"
+                                        : "Select category first"}
+                                </option>
+
+                                {filteredSubCategories.map((subCategory) => (
+                                    <option
+                                        key={subCategory.id}
+                                        value={subCategory.id}
+                                    >
+                                        {subCategory.name}
+                                    </option>
+                                ))}
+                            </select>
                         </FormField>
 
                         <FormField label="Brand">
                             <input
                                 value={form.brand}
-                                onChange={(e) =>
-                                    setFormField("brand", e.target.value)
-                                }
+                                onChange={(e) => setFormField("brand", e.target.value)}
                                 placeholder="UltraTech"
                             />
                         </FormField>
@@ -184,9 +213,7 @@ export default function ProductDrawer(): JSX.Element | null {
                             <input
                                 type="number"
                                 value={form.price}
-                                onChange={(e) =>
-                                    setFormField("price", e.target.value)
-                                }
+                                onChange={(e) => setFormField("price", e.target.value)}
                                 placeholder="420"
                             />
                         </FormField>
@@ -194,9 +221,7 @@ export default function ProductDrawer(): JSX.Element | null {
                         <FormField label="Unit">
                             <input
                                 value={form.unit}
-                                onChange={(e) =>
-                                    setFormField("unit", e.target.value)
-                                }
+                                onChange={(e) => setFormField("unit", e.target.value)}
                                 placeholder="bag, kg, ton, day"
                             />
                         </FormField>
@@ -205,9 +230,7 @@ export default function ProductDrawer(): JSX.Element | null {
                             <input
                                 type="number"
                                 value={form.stock}
-                                onChange={(e) =>
-                                    setFormField("stock", e.target.value)
-                                }
+                                onChange={(e) => setFormField("stock", e.target.value)}
                                 placeholder="100"
                             />
                         </FormField>
@@ -219,6 +242,14 @@ export default function ProductDrawer(): JSX.Element | null {
 
                             <Info label="Product ID" value={selectedProduct.id} />
                             <Info label="Slug" value={selectedProduct.slug} />
+                            <Info
+                                label="Category"
+                                value={selectedProduct.category?.name || "N/A"}
+                            />
+                            <Info
+                                label="Sub Category"
+                                value={selectedProduct.subCategory?.name || "N/A"}
+                            />
                             <Info
                                 label="Created At"
                                 value={new Date(

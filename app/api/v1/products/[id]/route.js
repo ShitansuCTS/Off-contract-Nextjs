@@ -97,8 +97,8 @@ export async function PATCH(req, { params }) {
         const body = {
             title: formData.get("title"),
             description: formData.get("description"),
-            category: formData.get("category"),
-            subCategory: formData.get("subCategory"),
+            categoryId: formData.get("categoryId"),
+            subCategoryId: formData.get("subCategoryId"),
             price: formData.get("price"),
             unit: formData.get("unit"),
             stock: formData.get("stock"),

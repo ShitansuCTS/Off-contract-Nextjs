@@ -71,9 +71,26 @@ const menuItems = [
   },
   {
     label: "Products",
-    href: "/dashboard/admin/products",
+    href: "#",
     icon: Package,
     roles: ["ADMIN"],
+    subMenus: [
+      {
+        label: "Categories",
+        href: "/dashboard/admin/product-categories",
+        roles: ["ADMIN"],
+      },
+      {
+        label: "Sub Categories",
+        href: "/dashboard/admin/product-sub-categories",
+        roles: ["ADMIN"],
+      },
+      {
+        label: "All Products",
+        href: "/dashboard/admin/products",
+        roles: ["ADMIN"],
+      },
+    ],
   },
   {
     label: "KYC Verification",

@@ -293,8 +293,11 @@ model Product {
   slug        String  @unique
   description String?
 
-  category    String
-  subCategory String?
+  categoryId    String?
+  subCategoryId String?
+
+  category    ProductCategory?    @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  subCategory ProductSubCategory? @relation(fields: [subCategoryId], references: [id], onDelete: SetNull)
 
   price        Float?
   unit         String? // bag, kg, ton, piece, day, month
@@ -321,9 +324,50 @@ model Product {
 
   @@index([userId])
   @@index([companyId])
-  @@index([category])
+  @@index([categoryId])
+  @@index([subCategoryId])
   @@index([status])
   @@index([stateId])
   @@index([cityId])
   @@index([createdAt])
+}
+
+////////////////////////////
+//// PRODUCTS CATEGORY
+////////////////////////////
+model ProductCategory {
+  id String @id @default(uuid())
+
+  name String
+  slug String @unique
+
+  subCategories ProductSubCategory[]
+  products      Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+}
+
+////////////////////////////
+//// SUB CATEGORY
+////////////////////////////
+model ProductSubCategory {
+  id String @id @default(uuid())
+
+  categoryId String
+
+  name String
+  slug String
+
+  category ProductCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  products Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([slug, categoryId])
+  @@index([categoryId])
+  @@index([name])
 }
