@@ -21,6 +21,9 @@ export default function ContructionMaterials() {
         fetchPublicProducts();
     }, [fetchPublicProducts]);
 
+
+
+
     return (
         <div
             style={{
@@ -156,96 +159,99 @@ export default function ContructionMaterials() {
                 ) : (
                     <>
                         <div className="row">
-                            {products.map((item) => (
-                                <div className="col-lg-3 col-md-6 col-sm-6 mb-4" key={item.id}>
-                                    <div
-                                        className="product-small-card"
-                                        style={{
-                                            background: "#fff",
-                                            borderRadius: "16px",
-                                            overflow: "hidden",
-                                            border: "1px solid #edf0ef",
-                                            boxShadow: "0 10px 26px rgba(8,23,31,0.08)",
-                                            height: "100%",
-                                            transition: "0.3s ease",
-                                        }}
-                                    >
-                                        <Link href={`/products/${item.slug}`}>
-                                            <div
-                                                style={{
-                                                    height: "170px",
-                                                    background: "#f5f8f7",
-                                                    overflow: "hidden",
-                                                }}
-                                            >
-                                                <img
-                                                    src={item.imageUrl || "/assets/img/all-images/products/1.jpeg"}
-                                                    alt={item.title}
+                            {products.map((item) => {
+                                const productUrl = `/products/${item.category?.slug || "category"}/${item.subCategory?.slug || "general"}/${item.slug}`;
+
+                                return (
+                                    <div className="col-lg-3 col-md-6 col-sm-6 mb-4" key={item.id}>
+                                        <div
+                                            className="product-small-card"
+                                            style={{
+                                                background: "#fff",
+                                                borderRadius: "16px",
+                                                overflow: "hidden",
+                                                border: "1px solid #edf0ef",
+                                                boxShadow: "0 10px 26px rgba(8,23,31,0.08)",
+                                                height: "100%",
+                                                transition: "0.3s ease",
+                                            }}
+                                        >
+                                            <Link href={productUrl}>
+                                                <div
                                                     style={{
-                                                        width: "100%",
-                                                        height: "100%",
-                                                        objectFit: "cover",
-                                                        transition: "0.4s ease",
+                                                        height: "170px",
+                                                        background: "#f5f8f7",
+                                                        overflow: "hidden",
                                                     }}
-                                                />
-                                            </div>
-                                        </Link>
+                                                >
+                                                    <img
+                                                        src={item.imageUrl || "/assets/img/all-images/products/1.jpeg"}
+                                                        alt={item.title}
+                                                        style={{
+                                                            width: "100%",
+                                                            height: "100%",
+                                                            objectFit: "cover",
+                                                        }}
+                                                    />
+                                                </div>
+                                            </Link>
 
-                                        <div style={{ padding: "14px" }}>
-                                            <span
-                                                style={{
-                                                    display: "inline-block",
-                                                    fontSize: "11px",
-                                                    fontWeight: 800,
-                                                    color: "#00433f",
-                                                    background: "rgba(0,67,63,0.08)",
-                                                    padding: "5px 10px",
-                                                    borderRadius: "30px",
-                                                    marginBottom: "8px",
-                                                }}
-                                            >
-                                                {item.category || "Product"}
-                                            </span>
-
-                                            <h3
-                                                style={{
-                                                    fontSize: "17px",
-                                                    fontWeight: 800,
-                                                    lineHeight: "22px",
-                                                    marginBottom: "14px",
-                                                }}
-                                            >
-                                                <Link
-                                                    href={`/products/${item.slug}`}
+                                            <div style={{ padding: "14px" }}>
+                                                <span
                                                     style={{
-                                                        color: "#08171f",
+                                                        display: "inline-block",
+                                                        fontSize: "11px",
+                                                        fontWeight: 800,
+                                                        color: "#00433f",
+                                                        background: "rgba(0,67,63,0.08)",
+                                                        padding: "5px 10px",
+                                                        borderRadius: "30px",
+                                                        marginBottom: "8px",
+                                                    }}
+                                                >
+                                                    {item.category?.name || "Product"}
+                                                </span>
+
+                                                <h3
+                                                    style={{
+                                                        fontSize: "17px",
+                                                        fontWeight: 800,
+                                                        lineHeight: "22px",
+                                                        marginBottom: "14px",
+                                                    }}
+                                                >
+                                                    <Link
+                                                        href={productUrl}
+                                                        style={{
+                                                            color: "#08171f",
+                                                            textDecoration: "none",
+                                                        }}
+                                                    >
+                                                        {item.title}
+                                                    </Link>
+                                                </h3>
+
+                                                <Link
+                                                    href={productUrl}
+                                                    style={{
+                                                        display: "block",
+                                                        textAlign: "center",
+                                                        background: "#00433f",
+                                                        color: "#fff",
+                                                        padding: "10px 12px",
+                                                        borderRadius: "10px",
+                                                        fontSize: "14px",
+                                                        fontWeight: 800,
                                                         textDecoration: "none",
                                                     }}
                                                 >
-                                                    {item.title}
+                                                    View More →
                                                 </Link>
-                                            </h3>
-
-                                            <Link
-                                                href={`/products/${item.slug}`}
-                                                style={{
-                                                    display: "block",
-                                                    textAlign: "center",
-                                                    background: "#00433f",
-                                                    color: "#fff",
-                                                    padding: "10px 12px",
-                                                    borderRadius: "10px",
-                                                    fontSize: "14px",
-                                                    fontWeight: 800,
-                                                    textDecoration: "none",
-                                                }}
-                                            >
-                                                View More →
-                                            </Link>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
 
                         {pagination && pagination.totalPages > 1 && (
