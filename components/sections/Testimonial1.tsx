@@ -111,6 +111,7 @@ export default function Testimonial1() {
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
+               zIndex:"0",
             }}
           >
             <div className="container">

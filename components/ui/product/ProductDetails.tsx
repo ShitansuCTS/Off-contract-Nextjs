@@ -8,6 +8,7 @@ import { usePublicProductsStore } from "@/stores/usePublicProductsStore";
 import Skeleton from "react-loading-skeleton";
 import "@/styles/public/products/products.public.css"
 import "react-loading-skeleton/dist/skeleton.css";
+
 import {
     FileText,
     Tags,
@@ -88,36 +89,80 @@ export default function ProductDetails({ slug }: { slug: string }) {
     if (loading) {
         return (
             <Layout headerStyle={1} footerStyle={1}>
-                <div className="container py-5">
-                    <div className="row">
-                        <div className="col-lg-8">
-                            <Skeleton
-                                height={450}
-                                borderRadius={16}
-                            />
+                <div
+                    style={{
+                        background: "#fff",
+                        paddingTop: "90px",
+                        paddingBottom: "70px",
+                    }}
+                >
+                    <div className="container">
+                        <div className="row g-4 align-items-start " style={{ marginTop: "100px" }}>
+                            <div className="col-lg-8">
+                                <div
+                                    style={{
+                                        background: "#f4f6f5",
+                                        borderRadius: "18px",
+                                        padding: "38px",
+                                    }}
+                                >
+                                    <Skeleton height={470} borderRadius={14} />
 
-                            <div className="mt-4">
-                                <Skeleton height={40} width="70%" />
+                                    <div className="d-flex gap-3 mt-4">
+                                        <Skeleton width={90} height={70} borderRadius={10} />
+                                        <Skeleton width={90} height={70} borderRadius={10} />
+                                        <Skeleton width={90} height={70} borderRadius={10} />
+                                    </div>
+                                </div>
+
+                                <div
+                                    style={{
+                                        marginTop: "30px",
+                                        background: "#fff",
+                                        border: "1px solid #edf0ef",
+                                        borderRadius: "18px",
+                                        padding: "28px",
+                                        boxShadow: "0 12px 35px rgba(8,23,31,0.06)",
+                                    }}
+                                >
+                                    <Skeleton height={34} width="70%" />
+                                    <Skeleton height={22} width={160} className="mt-3" />
+
+                                    <div className="mt-4">
+                                        <Skeleton count={5} height={18} />
+                                    </div>
+                                </div>
                             </div>
 
-                            <div className="mt-3">
-                                <Skeleton height={25} width={150} />
-                            </div>
+                            <div className="col-lg-4">
+                                <div
+                                    style={{
+                                        background: "#f2f3f3",
+                                        borderRadius: "18px",
+                                        padding: "30px",
+                                        position: "sticky",
+                                        top: "110px",
+                                    }}
+                                >
+                                    <Skeleton height={34} width="60%" />
 
-                            <div className="mt-4">
-                                <Skeleton count={5} height={20} />
-                            </div>
+                                    <div className="d-flex align-items-center gap-3 mt-4">
+                                        <Skeleton circle width={82} height={82} />
+                                        <div style={{ flex: 1 }}>
+                                            <Skeleton height={24} width="80%" />
+                                            <Skeleton height={18} width="95%" className="mt-2" />
+                                        </div>
+                                    </div>
 
-                            <div className="mt-5">
-                                <Skeleton height={250} />
+                                    <div className="mt-4">
+                                        <Skeleton height={58} borderRadius={10} />
+                                        <Skeleton height={58} borderRadius={10} className="mt-3" />
+                                        <Skeleton height={58} borderRadius={10} className="mt-3" />
+                                        <Skeleton height={120} borderRadius={10} className="mt-3" />
+                                        <Skeleton height={54} borderRadius={12} className="mt-4" />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-
-                        <div className="col-lg-4">
-                            <Skeleton
-                                height={500}
-                                borderRadius={16}
-                            />
                         </div>
                     </div>
                 </div>
@@ -386,6 +431,7 @@ export default function ProductDetails({ slug }: { slug: string }) {
 
                                                 <div className="input-area">
                                                     <textarea
+                                                        rows={2}
                                                         placeholder={`I am interested in ${product.title}`}
                                                     />
                                                 </div>
@@ -405,9 +451,9 @@ export default function ProductDetails({ slug }: { slug: string }) {
                         </div>
                     </div>
                 </div>
-                
+
             </div>
-           
+
         </Layout>
     );
 }

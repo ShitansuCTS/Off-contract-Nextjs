@@ -6,6 +6,7 @@ import { usePublicProductsStore } from "@/stores/usePublicProductsStore";
 import Skeleton, {
     SkeletonTheme,
 } from "react-loading-skeleton"; import "react-loading-skeleton/dist/skeleton.css";
+import "@/styles/public/services/constructsionMetrial.css"
 
 export default function ContructionMaterials() {
     const products = usePublicProductsStore((state) => state.products);
@@ -69,81 +70,45 @@ export default function ContructionMaterials() {
                     >
                         <div className="row">
                             {[...Array(8)].map((_, index) => (
-                                <div className="col-lg-3 col-md-6 mb-4" key={index}>
+                                <div className="col-lg-3 col-md-6 col-sm-6 mb-4" key={index}>
                                     <div
                                         style={{
-                                            border: "1px solid #e8eeee",
-                                            borderRadius: "18px",
                                             background: "#fff",
+                                            borderRadius: "18px",
                                             overflow: "hidden",
+                                            border: "1px solid #edf0ef",
+                                            boxShadow: "0 12px 30px rgba(8,23,31,0.08)",
                                             height: "100%",
-                                            boxShadow: "0 12px 34px rgba(8, 23, 31, 0.08)",
                                         }}
                                     >
-                                        <div style={{ padding: "12px 12px 0" }}>
-                                            <Skeleton
-                                                height={205}
-                                                borderRadius={14}
-                                            />
-                                        </div>
+                                        {/* Image */}
+                                        <Skeleton
+                                            height={170}
+                                            borderRadius="18px 18px 0 0"
+                                            baseColor="#edf3f2"
+                                            highlightColor="#ffffff"
+                                        />
 
-                                        <div style={{ padding: "16px 18px 18px" }}>
+                                        <div style={{ padding: "14px" }}>
+                                            {/* Category Badge */}
                                             <Skeleton
                                                 width={90}
                                                 height={24}
                                                 borderRadius={30}
                                             />
 
-                                            <div style={{ marginTop: "14px" }}>
-                                                <Skeleton
-                                                    height={24}
-                                                    width="85%"
-                                                />
+                                            {/* Title */}
+                                            <div style={{ marginTop: "12px" }}>
+                                                <Skeleton height={22} width="95%" />
+                                                <Skeleton height={22} width="70%" />
                                             </div>
 
-                                            <div style={{ marginTop: "8px" }}>
-                                                <Skeleton
-                                                    height={16}
-                                                    width="100%"
-                                                />
-                                                <Skeleton
-                                                    height={16}
-                                                    width="70%"
-                                                    style={{ marginTop: "6px" }}
-                                                />
-                                            </div>
 
-                                            <div
-                                                style={{
-                                                    display: "flex",
-                                                    gap: "8px",
-                                                    marginTop: "14px",
-                                                }}
-                                            >
-                                                <Skeleton
-                                                    width={110}
-                                                    height={30}
-                                                    borderRadius={8}
-                                                />
-
-                                                <Skeleton
-                                                    width={90}
-                                                    height={30}
-                                                    borderRadius={8}
-                                                />
-                                            </div>
-
-                                            <div style={{ marginTop: "14px" }}>
-                                                <Skeleton
-                                                    width={140}
-                                                    height={30}
-                                                />
-                                            </div>
-
+                                            {/* Button */}
                                             <div style={{ marginTop: "18px" }}>
                                                 <Skeleton
-                                                    height={48}
-                                                    borderRadius={12}
+                                                    height={44}
+                                                    borderRadius={10}
                                                 />
                                             </div>
                                         </div>
@@ -168,20 +133,32 @@ export default function ContructionMaterials() {
                                             className="product-small-card"
                                             style={{
                                                 background: "#fff",
-                                                borderRadius: "16px",
+                                                borderRadius: "18px",
                                                 overflow: "hidden",
-                                                border: "1px solid #edf0ef",
-                                                boxShadow: "0 10px 26px rgba(8,23,31,0.08)",
+                                                border: "1px solid rgba(0,67,63,0.10)",
+                                                boxShadow: "0 14px 34px rgba(8,23,31,0.09)",
                                                 height: "100%",
-                                                transition: "0.3s ease",
+                                                transition: "all 0.35s ease",
+                                                position: "relative",
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.transform = "translateY(-6px)";
+                                                e.currentTarget.style.boxShadow =
+                                                    "0 22px 45px rgba(8,23,31,0.14)";
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.transform = "translateY(0)";
+                                                e.currentTarget.style.boxShadow =
+                                                    "0 14px 34px rgba(8,23,31,0.09)";
                                             }}
                                         >
                                             <Link href={productUrl}>
                                                 <div
                                                     style={{
-                                                        height: "170px",
+                                                        height: "180px",
                                                         background: "#f5f8f7",
                                                         overflow: "hidden",
+                                                        position: "relative",
                                                     }}
                                                 >
                                                     <img
@@ -191,33 +168,46 @@ export default function ContructionMaterials() {
                                                             width: "100%",
                                                             height: "100%",
                                                             objectFit: "cover",
+                                                            transition: "0.45s ease",
                                                         }}
                                                     />
+
+                                                    <div
+                                                        style={{
+                                                            position: "absolute",
+                                                            inset: 0,
+                                                            background:
+                                                                "linear-gradient(180deg, rgba(0,0,0,0.02) 45%, rgba(0,0,0,0.45) 100%)",
+                                                        }}
+                                                    />
+
+                                                    <span
+                                                        style={{
+                                                            position: "absolute",
+                                                            top: "12px",
+                                                            left: "12px",
+                                                            fontSize: "11px",
+                                                            fontWeight: 800,
+                                                            color: "#00433f",
+                                                            background: "#ffffff",
+                                                            padding: "6px 11px",
+                                                            borderRadius: "30px",
+                                                            boxShadow: "0 8px 18px rgba(0,0,0,0.12)",
+                                                        }}
+                                                    >
+                                                        {item.category?.name || "Product"}
+                                                    </span>
                                                 </div>
                                             </Link>
 
-                                            <div style={{ padding: "14px" }}>
-                                                <span
-                                                    style={{
-                                                        display: "inline-block",
-                                                        fontSize: "11px",
-                                                        fontWeight: 800,
-                                                        color: "#00433f",
-                                                        background: "rgba(0,67,63,0.08)",
-                                                        padding: "5px 10px",
-                                                        borderRadius: "30px",
-                                                        marginBottom: "8px",
-                                                    }}
-                                                >
-                                                    {item.category?.name || "Product"}
-                                                </span>
-
+                                            <div style={{ padding: "16px" }}>
                                                 <h3
                                                     style={{
                                                         fontSize: "17px",
-                                                        fontWeight: 800,
-                                                        lineHeight: "22px",
-                                                        marginBottom: "14px",
+                                                        fontWeight: 900,
+                                                        lineHeight: "23px",
+                                                        marginBottom: "10px",
+                                                        minHeight: "46px",
                                                     }}
                                                 >
                                                     <Link
@@ -231,22 +221,82 @@ export default function ContructionMaterials() {
                                                     </Link>
                                                 </h3>
 
-                                                <Link
-                                                    href={productUrl}
+                                                <div
                                                     style={{
-                                                        display: "block",
-                                                        textAlign: "center",
-                                                        background: "#00433f",
-                                                        color: "#fff",
-                                                        padding: "10px 12px",
-                                                        borderRadius: "10px",
-                                                        fontSize: "14px",
-                                                        fontWeight: 800,
-                                                        textDecoration: "none",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        justifyContent: "space-between",
+                                                        gap: "10px",
+                                                        marginTop: "16px",
                                                     }}
                                                 >
-                                                    View More →
-                                                </Link>
+                                                    <Link
+                                                        href={productUrl}
+                                                        style={{
+                                                            display: "inline-flex",
+                                                            alignItems: "center",
+                                                            gap: "8px",
+                                                            background: "#00433f",
+                                                            color: "#fff",
+                                                            padding: "8px 8px 8px 14px",
+                                                            borderRadius: "50px",
+                                                            textDecoration: "none",
+                                                            fontSize: "11px",
+                                                            fontWeight: 700,
+                                                            boxShadow: "0 8px 20px rgba(0,67,63,0.15)",
+                                                        }}
+                                                    >
+                                                        View Product
+
+                                                        <span
+                                                            style={{
+                                                                width: "26px",
+                                                                height: "26px",
+                                                                borderRadius: "50%",
+                                                                background: "#d4d529",
+                                                                color: "#08171f",
+                                                                display: "flex",
+                                                                alignItems: "center",
+                                                                justifyContent: "center",
+                                                                fontWeight: 900,
+                                                                fontSize: "13px",
+                                                            }}
+                                                        >
+                                                            →
+                                                        </span>
+                                                    </Link>
+
+                                                    <div
+                                                        style={{
+                                                            background: "#fffdf0",
+                                                            borderRadius: "12px",
+                                                            padding: "8px 12px",
+                                                            textAlign: "right",
+                                                            minWidth: "90px",
+                                                        }}
+                                                    >
+
+
+                                                        <div
+                                                            style={{
+                                                                fontSize: "11px",
+                                                                fontWeight: 900,
+                                                                color: "#00433f",
+                                                            }}
+                                                        >
+                                                            ₹{item.price || "--"}
+                                                            <span
+                                                                style={{
+                                                                    fontSize: "11px",
+                                                                    color: "#6b7280",
+                                                                    fontWeight: 600,
+                                                                }}
+                                                            >
+                                                                /{item.unit || "Bag"}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -259,28 +309,23 @@ export default function ContructionMaterials() {
                                 style={{
                                     display: "flex",
                                     justifyContent: "center",
-                                    gap: "10px",
-                                    marginTop: "30px",
-                                    flexWrap: "wrap",
+                                    alignItems: "center",
+                                    gap: "8px",
+                                    marginTop: "50px",
                                 }}
                             >
                                 <button
                                     disabled={!pagination.hasPrev}
                                     onClick={() => setPage(pagination.page - 1)}
-                                    style={{
-                                        border: "none",
-                                        background: pagination.hasPrev ? "#00433f" : "#d9e0df",
-                                        color: pagination.hasPrev ? "#fff" : "#7b8a89",
-                                        padding: "11px 18px",
-                                        borderRadius: "10px",
-                                        fontWeight: 800,
-                                        cursor: pagination.hasPrev ? "pointer" : "not-allowed",
-                                    }}
+                                    className="pagination-btn"
                                 >
-                                    Prev
+                                    ←
                                 </button>
 
-                                {Array.from({ length: pagination.totalPages }).map(
+                                {Array.from(
+                                    {
+                                        length: Math.min(5, pagination.totalPages),
+                                    },
                                     (_, index) => {
                                         const pageNumber = index + 1;
 
@@ -288,40 +333,44 @@ export default function ContructionMaterials() {
                                             <button
                                                 key={pageNumber}
                                                 onClick={() => setPage(pageNumber)}
-                                                style={{
-                                                    border: "none",
-                                                    background:
-                                                        pagination.page === pageNumber
-                                                            ? "#d4d629"
-                                                            : "#ffffff",
-                                                    color: "#08171f",
-                                                    padding: "11px 15px",
-                                                    borderRadius: "10px",
-                                                    fontWeight: 900,
-                                                    boxShadow: "0 8px 20px rgba(8, 23, 31, 0.08)",
-                                                    cursor: "pointer",
-                                                }}
+                                                className={
+                                                    pagination.page === pageNumber
+                                                        ? "pagination-number active"
+                                                        : "pagination-number"
+                                                }
                                             >
                                                 {pageNumber}
                                             </button>
                                         );
-                                    },
+                                    }
+                                )}
+
+                                {pagination.totalPages > 5 && (
+                                    <>
+                                        <span
+                                            style={{
+                                                fontWeight: 700,
+                                                color: "#6b7280",
+                                            }}
+                                        >
+                                            ...
+                                        </span>
+
+                                        <button
+                                            onClick={() => setPage(pagination.totalPages)}
+                                            className="pagination-number"
+                                        >
+                                            {pagination.totalPages}
+                                        </button>
+                                    </>
                                 )}
 
                                 <button
                                     disabled={!pagination.hasNext}
                                     onClick={() => setPage(pagination.page + 1)}
-                                    style={{
-                                        border: "none",
-                                        background: pagination.hasNext ? "#00433f" : "#d9e0df",
-                                        color: pagination.hasNext ? "#fff" : "#7b8a89",
-                                        padding: "11px 18px",
-                                        borderRadius: "10px",
-                                        fontWeight: 800,
-                                        cursor: pagination.hasNext ? "pointer" : "not-allowed",
-                                    }}
+                                    className="pagination-btn"
                                 >
-                                    Next
+                                    →
                                 </button>
                             </div>
                         )}

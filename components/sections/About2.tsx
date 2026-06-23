@@ -5,7 +5,6 @@ import CounterUp from '../elements/CounterUp'
 export default function About2() {
 	return (
 		<>
-
 			<div className="about2-section-area sp1">
 				<div className="container">
 					<div className="row align-items-center">

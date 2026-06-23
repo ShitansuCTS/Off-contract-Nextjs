@@ -83,6 +83,7 @@ const Cta = () => {
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
                   backgroundSize: "cover",
+                  zIndex: "0",
                 }}
               >
                 <div className="row align-items-center">

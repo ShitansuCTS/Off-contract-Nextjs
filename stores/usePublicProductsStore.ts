@@ -60,7 +60,7 @@ interface PublicProductsStore {
   page: number;
   limit: number;
 
-  fetchPublicProducts: () => Promise<void>;
+  fetchPublicProducts: (limit?: number) => Promise<void>;
   fetchPublicProductDetails: (slug: string) => Promise<void>;
   setPage: (page: number) => void;
 }
@@ -74,16 +74,16 @@ export const usePublicProductsStore = create<PublicProductsStore>(
     detailsLoading: false,
     error: null,
     page: 1,
-    limit: 4,
+    limit: 8,
 
-    fetchPublicProducts: async () => {
+    fetchPublicProducts: async (customLimit) => {
       try {
         set({ loading: true, error: null });
 
         const { page, limit } = get();
-
+        const finalLimit = customLimit || limit;
         const res = await fetch(
-          `/api/v1/products?page=${page}&limit=${limit}`,
+          `/api/v1/products?page=${page}&limit=${finalLimit}`,
           {
             cache: "no-store",
           },

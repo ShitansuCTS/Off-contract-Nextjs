@@ -86,7 +86,7 @@ export default function Project1() {
 
   return (
     <>
-      <div className="project1-section-area sp2">
+      <div className="project1-section-area sp2" style={{ zIndex: "0", }}>
         <div className="container">
           <div className="row">
             <div className="col-lg-6 m-auto">

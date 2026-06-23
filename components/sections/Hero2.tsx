@@ -49,10 +49,10 @@ export default function Hero2() {
                   <div className="hero2-header">
                     <h5>Welcome to OfContractors</h5>
                     <div className="space20" />
-                    <h1 style={{fontSize:"50px"}}>Building Odisha’s Construction Future</h1>
+                    <h1 style={{ fontSize: "50px" }}>Building Odisha’s Construction Future</h1>
                     <div className="space20" />
                     <div className="btn-area1">
-                      <Link href="/property-details-v1" className="theme-btn3">
+                      <Link href="/contact-us" className="theme-btn3">
                         Explore Services{" "}
                         <span className="arrow1">
                           <svg
@@ -111,10 +111,10 @@ export default function Hero2() {
                   <div className="hero2-header">
                     <h5>Welcome to OfContractors</h5>
                     <div className="space20" />
-                    <h1 style={{fontSize:"50px"}}>Powering Odisha’s Construction Growth</h1>
+                    <h1 style={{ fontSize: "50px" }}>Powering Odisha’s Construction Growth</h1>
                     <div className="space20" />
                     <div className="btn-area1">
-                      <Link href="/property-details-v1" className="theme-btn3">
+                      <Link href="/contact-us" className="theme-btn3">
                         Explore Services{" "}
                         <span className="arrow1">
                           <svg
@@ -173,10 +173,10 @@ export default function Hero2() {
                   <div className="hero2-header">
                     <h5>Welcome to OfContractors</h5>
                     <div className="space20" />
-                    <h1 style={{fontSize:"50px"}}>Where Construction Businesses Connect</h1>
+                    <h1 style={{ fontSize: "50px" }}>Where Construction Businesses Connect</h1>
                     <div className="space20" />
                     <div className="btn-area1">
-                      <Link href="/property-details-v1" className="theme-btn3">
+                      <Link href="/contact-us" className="theme-btn3">
                         Join Network{" "}
                         <span className="arrow1">
                           <svg

@@ -2,9 +2,8 @@
 import Link from "next/link";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { BadgeCheck, BadgeX } from "lucide-react";
-
 
 
 // Data for slides
@@ -43,6 +42,43 @@ const slides = [
 
 export default function EquipmentRental() {
   const swiperRef = useRef<any>(null); // Ref to control Swiper
+  const [isModalShowing, setIsModalShowing] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  });
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%",
+    height: "52px",
+    border: "1px solid #dbe2ea",
+    borderRadius: "5px",
+    padding: "0 16px",
+    marginBottom: "18px",
+    fontSize: "15px",
+    outline: "none",
+    background: "#fff",
+    zIndex: 999
+  };
+
+  const openProductPopup = (productName: string) => {
+    setSelectedProduct(productName);
+
+    setFormData((prev) => ({
+      ...prev,
+      subject: `Equipment Rental Enquiry - ${productName}`,
+      message: `I am interested in renting ${productName}. Please share availability, rental price, and terms.`,
+    }));
+
+    setIsModalShowing(true);
+  };
 
   // Log Swiper instance when initialized for debugging
   useEffect(() => {
@@ -50,6 +86,74 @@ export default function EquipmentRental() {
       console.log("Swiper initialized:", swiperRef.current.swiper);
     }
   }, []);
+
+
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+
+      const response = await fetch("/api/v1/leads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          formType: "EQUIPMENT_RENTAL",
+
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          subject: `Equipment Rental Enquiry - ${selectedProduct}`,
+          message: formData.message,
+
+          productName: selectedProduct,
+        }),
+
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
+      alert("Enquiry submitted successfully!");
+
+
+      setIsModalShowing(false);
+    } catch (error: unknown) {
+      console.error(error);
+
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert("Failed to submit enquiry");
+      }
+    } finally {
+      setLoading(false);
+    }
+
+
+
+  };
+
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
 
   return (
     <>
@@ -128,8 +232,15 @@ export default function EquipmentRental() {
                       {slide.status}
                     </div>
                     <Link
-                      href="/property-details-v1"
-                      style={{ padding: "8px", fontSize: "15px" }}
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        openProductPopup(slide.location);
+                      }}
+                      style={{
+                        padding: "8px",
+                        fontSize: "15px",
+                      }}
                     >
                       {slide.location}
                     </Link>
@@ -199,8 +310,15 @@ export default function EquipmentRental() {
                       {slide.status}
                     </div>
                     <Link
-                      href="/products-details"
-                      style={{ padding: "8px", fontSize: "15px" }}
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        openProductPopup(slide.location);
+                      }}
+                      style={{
+                        padding: "8px",
+                        fontSize: "15px",
+                      }}
                     >
                       {slide.location}
                     </Link>
@@ -210,6 +328,159 @@ export default function EquipmentRental() {
             </div>
           </div>
         </div>
+
+        {isModalShowing && (
+          <div
+            onClick={() => setIsModalShowing(false)}
+            style={{
+              position: "fixed",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              background: "rgba(15,23,42,0.7)",
+              backdropFilter: "blur(5px)",
+              zIndex: 999999,
+              overflowY: "auto",
+              padding: "30px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: "70px"
+            }}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                width: "100%",
+                maxWidth: "650px",
+                background: "#ffffff",
+                borderRadius: "7px",
+                padding: "35px",
+                position: "relative",
+                boxShadow: "0px 15px 60px rgba(0,0,0,0.12)",
+                zIndex: 1000000,
+              }}
+            >
+              <button
+                onClick={() => setIsModalShowing(false)}
+                style={{
+                  position: "absolute",
+                  top: "18px",
+                  right: "18px",
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "50%",
+                  border: "none",
+                  background: "#f1f5f9",
+                  color: "#0f172a",
+                  fontSize: "16px",
+                  cursor: "pointer",
+                }}
+              >
+                ✕
+              </button>
+
+              <div style={{ textAlign: "center", marginBottom: "30px" }}>
+                <h2
+                  style={{
+                    fontSize: "35px",
+                    lineHeight: "52px",
+                    fontWeight: 700,
+                    color: "#0f172a",
+                    marginBottom: "10px",
+                  }}
+                >
+                  Equipment Rental Enquiry
+                </h2>
+
+                <p style={{ color: "#64748b", margin: 0 }}>
+                  Enquiry for: <strong>{selectedProduct}</strong>
+                </p>
+              </div>
+
+              <form className="row" onSubmit={handleSubmit}>
+                <div className="col-md-6">
+                  <input
+                    name="firstName"
+                    placeholder="First Name"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    style={inputStyle}
+                  />
+                </div>
+
+                <div className="col-md-6">
+                  <input
+                    name="lastName"
+                    placeholder="Last Name"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    style={inputStyle}
+                  />
+                </div>
+
+                <div className="col-md-6">
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
+                    value={formData.email}
+                    onChange={handleChange}
+                    style={inputStyle}
+                  />
+                </div>
+
+                <div className="col-md-6">
+                  <input
+                    type="number"
+                    name="phone"
+                    placeholder="Phone Number"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    style={inputStyle}
+                  />
+                </div>
+
+                <div className="col-lg-12">
+                  <textarea
+                    name="message"
+                    placeholder="Write Your Message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    style={{
+                      ...inputStyle,
+                      height: "90px",
+                      padding: "16px",
+                      resize: "none",
+                    }}
+                  />
+                </div>
+
+                <div className="col-lg-12">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="theme-btn1"
+                    style={{
+                      width: "100%",
+                      height: "54px",
+                      borderRadius: "5px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "16px",
+                      fontWeight: 600,
+                      opacity: loading ? 0.7 : 1,
+                      cursor: loading ? "not-allowed" : "pointer",
+                    }}
+                  >
+                    {loading ? "Submitting..." : "Submit Rental Enquiry"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

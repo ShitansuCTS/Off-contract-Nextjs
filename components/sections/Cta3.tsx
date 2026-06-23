@@ -3,7 +3,6 @@
 export default function Cta3() {
 	return (
 		<>
-
 			<div className="cta4-section-area" style={{ backgroundImage: 'url(assets/img/all-images/bg/bg4.png)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
 				<div className="container">
 					<div className="row">

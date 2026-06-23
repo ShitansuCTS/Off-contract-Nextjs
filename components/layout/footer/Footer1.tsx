@@ -107,8 +107,7 @@ export default function Footer1() {
                           wordBreak: "break-word",
                         }}
                       >
-                        Plot 11, 8RXG+785 Arya Bhoomi, Nandankanan Road,
-                        Phase-II, Kanan Vihar, Patia, Bhubaneswar, Odisha
+                        Kanan Vihar, Patia, Bhubaneswar, Odisha
                       </span>
                     </Link>
                   </li>
@@ -141,87 +140,28 @@ export default function Footer1() {
             </div>
             <div className="col-lg-3 col-md-6">
               <div className="instagram-posts">
-                <h3>Instagram Posts</h3>
+                <h3>Our Location</h3>
+
                 <div className="space8" />
-                <div className="row">
-                  <div className="col-lg-4 col-4">
-                    <div className="img1">
-                      <img
-                        src="/assets/img/all-images/footer/footer-img1.png"
-                        alt="housebox"
-                      />
-                      <div className="icons">
-                        <Link href="#">
-                          <i className="fa-brands fa-instagram" />
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-4">
-                    <div className="img1">
-                      <img
-                        src="/assets/img/all-images/footer/footer-img2.png"
-                        alt="housebox"
-                      />
-                      <div className="icons">
-                        <Link href="#">
-                          <i className="fa-brands fa-instagram" />
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-4">
-                    <div className="img1">
-                      <img
-                        src="/assets/img/all-images/footer/footer-img3.png"
-                        alt="housebox"
-                      />
-                      <div className="icons">
-                        <Link href="#">
-                          <i className="fa-brands fa-instagram" />
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-4">
-                    <div className="img1">
-                      <img
-                        src="/assets/img/all-images/footer/footer-img4.png"
-                        alt="housebox"
-                      />
-                      <div className="icons">
-                        <Link href="#">
-                          <i className="fa-brands fa-instagram" />
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-4">
-                    <div className="img1">
-                      <img
-                        src="/assets/img/all-images/footer/footer-img5.png"
-                        alt="housebox"
-                      />
-                      <div className="icons">
-                        <Link href="#">
-                          <i className="fa-brands fa-instagram" />
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-4">
-                    <div className="img1">
-                      <img
-                        src="/assets/img/all-images/footer/footer-img6.png"
-                        alt="housebox"
-                      />
-                      <div className="icons">
-                        <Link href="#">
-                          <i className="fa-brands fa-instagram" />
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
+
+                <div
+                  style={{
+                    borderRadius: "16px",
+                    overflow: "hidden",
+                    border: "2px solid rgba(255,255,255,0.1)",
+                  }}
+                >
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6770.579028635909!2d85.8250687761787!3d20.347125320810072!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a1909148bc48545%3A0x88975e943897e577!2s8RXG%2B785%20Arya%20Bhoomi%2C%20Nandankanan%20Rd%2C%20Phase-II%2C%20Kanan%20Vihar%2C%20Patia%2C%20Bhubaneswar%2C%20Odisha%20751031!5e1!3m2!1sen!2sin!4v1782194956307!5m2!1sen!2sin"
+                    width="100%"
+                    height="200"
+                    style={{
+                      border: 0,
+                      display: "block",
+                    }}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
                 </div>
               </div>
             </div>

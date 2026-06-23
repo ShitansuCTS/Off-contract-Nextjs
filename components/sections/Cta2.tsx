@@ -4,7 +4,6 @@ import Link from 'next/link'
 export default function Cta2() {
 	return (
 		<>
-
 			<div className="cta1-section-area">
 				<div className="container">
 					<div className="row">

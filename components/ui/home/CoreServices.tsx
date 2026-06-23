@@ -105,7 +105,8 @@ export default function CoreServices() {
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           paddingTop: "50px",
-          paddingBottom:"100px"
+          paddingBottom:"100px",
+          zIndex:"0",
         }}
       >
         <div className="container">

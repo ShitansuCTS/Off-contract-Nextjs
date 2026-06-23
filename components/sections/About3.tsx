@@ -3,7 +3,6 @@
 export default function About3() {
 	return (
 		<>
-
 			<div className="about3-section-area sp1">
 				<div className="container">
 					<div className="row">

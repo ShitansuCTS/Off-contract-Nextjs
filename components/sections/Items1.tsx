@@ -77,6 +77,7 @@ export default function Items1() {
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundAttachment: "fixed",
+           zIndex:"0",
        
         }}
       >

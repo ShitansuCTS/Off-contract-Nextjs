@@ -4,7 +4,6 @@ import Link from 'next/link'
 export default function Hero4() {
 	return (
 		<>
-
 			<div>
 				<div className="hero4-section-area sp1" style={{ backgroundImage: 'url(assets/img/all-images/hero/hero4-img1.png)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
 					<div className="container">
@@ -68,7 +67,7 @@ export default function Hero4() {
 												</Link>
 											</div>
 										</div>
-										<div className="tab-content1"  id="for-rent" style={{ display: 'none' }}>
+										<div className="tab-content1" id="for-rent" style={{ display: 'none' }}>
 											<div className="dropdown-container">
 												<select>
 													<option>All Status</option>
