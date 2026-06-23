@@ -162,7 +162,7 @@ export default function Items1() {
                     </h3>
                     <div className="space28" />
                     <div className="btn-area1">
-                      <Link href="/sidebar-grid" className="theme-btn1">
+                      <Link href="/services" className="theme-btn1">
                         Schedule Visit{" "}
                         <span className="arrow1">
                           <svg

@@ -183,7 +183,7 @@ export default function AboutPageUi() {
                     data-aos-duration={1100}
                   >
                     <Link
-                      href="/property-halfmap-grid"
+                      href="/services#construction-items"
                       className="theme-btn1"
                       style={{ marginRight: "10px" }}
                     >

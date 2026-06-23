@@ -60,35 +60,35 @@ const servicesData = [
     image: "/assets/img/all-images/services/1.jpeg",
     title: "Construction Materials",
     properties: "3 Properties",
-    link: "/property-details-v1",
+    link: "/services#construction-items",
   },
   {
     id: 2,
     image: "/assets/img/all-images/services/2.jpeg",
     title: "B2B Network",
     properties: "5 Properties",
-    link: "/property-details-v1",
+    link: "#",
   },
   {
     id: 3,
     image: "/assets/img/all-images/services/3.jpeg",
     title: "Insurance Support",
     properties: "2 Properties",
-    link: "/property-details-v1",
+    link: "/services#insurance",
   },
   {
     id: 4,
     image: "/assets/img/all-images/services/4.jpeg",
     title: "Finance Solutions",
     properties: "4 Properties",
-    link: "/property-details-v1",
+    link: "/services#finance",
   },
   {
     id: 5,
     image: "/assets/img/all-images/services/5.jpeg",
     title: "Equipment Rental",
     properties: "6 Properties",
-    link: "/property-details-v1",
+    link: "/services#equipment-rental",
   },
 ];
 
@@ -105,8 +105,8 @@ export default function CoreServices() {
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           paddingTop: "50px",
-          paddingBottom:"100px",
-          zIndex:"0",
+          paddingBottom: "100px",
+          zIndex: "0",
         }}
       >
         <div className="container">
@@ -133,7 +133,7 @@ export default function CoreServices() {
                     <div className="conetnt-area">
                       <div className="text">
                         <Link
-                          href="/property-details-v1"
+                          href={`${item.link}`}
                           style={{ fontSize: "20px" }}
                         >
                           {item.title}
@@ -143,7 +143,7 @@ export default function CoreServices() {
                       </div>
                       <div className="arrow">
                         <Link
-                          href="/property-details-v1"
+                          href={`${item.link}`}
                           style={{ backgroundColor: "#cbcd30" }}
                         >
                           <svg
