@@ -136,25 +136,25 @@ export default function Testimonial1() {
                         <Slider {...settings2} className="images-area2 slider2">
                           <div className="img1 image-anime">
                             <img
-                              src="/assets/img/all-images/about/7.jpg"
+                              src="/assets/img/all-images/about/7.webp"
                               alt="Of Contractors"
                             />
                           </div>
                           <div className="img1 image-anime">
                             <img
-                              src="/assets/img/all-images/about/8.jpg"
+                              src="/assets/img/all-images/about/8.webp"
                               alt="Of Contractors"
                             />
                           </div>
                           <div className="img1 image-anime">
                             <img
-                              src="/assets/img/all-images/about/9.jpg"
+                              src="/assets/img/all-images/about/9.webp"
                               alt="Of Contractors"
                             />
                           </div>
                           <div className="img1 image-anime">
                             <img
-                              src="/assets/img/all-images/about/10.jpg"
+                              src="/assets/img/all-images/about/10.webp"
                               alt="Of Contractors"
                             />
                           </div>

@@ -102,7 +102,7 @@ export default function AboutPageUi() {
                     </div> */}
                   <div className="img1 image-anime reveal">
                     <img
-                      src="/assets/img/all-images/about/1.jpg"
+                      src="/assets/img/all-images/about/1.webp"
                       alt="Of Contractors"
                     />
                   </div>
@@ -333,7 +333,7 @@ export default function AboutPageUi() {
               <div className="col-lg-5">
                 <div className="img1">
                   <img
-                    src="/assets/img/all-images/about/4.jpg"
+                    src="/assets/img/all-images/about/4.webp"
                     alt="Of Contractors"
                   />
                 </div>
@@ -479,25 +479,25 @@ export default function AboutPageUi() {
                         <Slider {...settings2} className="images-area2 slider2">
                           <div className="img1 image-anime">
                             <img
-                              src="/assets/img/all-images/about/7.jpg"
+                              src="/assets/img/all-images/about/7.webp"
                               alt="Of Contractors"
                             />
                           </div>
                           <div className="img1 image-anime">
                             <img
-                              src="/assets/img/all-images/about/8.jpg"
+                              src="/assets/img/all-images/about/8.webp"
                               alt="Of Contractors"
                             />
                           </div>
                           <div className="img1 image-anime">
                             <img
-                              src="/assets/img/all-images/about/9.jpg"
+                              src="/assets/img/all-images/about/9.webp"
                               alt="Of Contractors"
                             />
                           </div>
                           <div className="img1 image-anime">
                             <img
-                              src="/assets/img/all-images/about/10.jpg"
+                              src="/assets/img/all-images/about/10.webp"
                               alt="Of Contractors"
                             />
                           </div>
@@ -799,7 +799,7 @@ export default function AboutPageUi() {
                 <div className="col-lg-6">
                   <div className="img1">
                     <img
-                      src="/assets/img/all-images/about/6.jpg"
+                      src="/assets/img/all-images/about/6.webp"
                       alt="Of Contractors"
                       style={{ borderRadius: "8px" }}
                     />
