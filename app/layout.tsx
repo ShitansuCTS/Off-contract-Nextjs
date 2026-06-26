@@ -23,8 +23,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "HouseBox - Real Esate Next.js Template",
-  description: "Made by AliThemes",
+  title: "Welcome to Ofcontract | Trusted Contractors & Construction Services ",
+  description: "Learn about OfContractors, a trusted platform connecting businesses with reliable contractors, construction professionals, equipment providers, and industry experts. Discover our mission, vision, and commitment to delivering quality construction solutions.",
 };
 
 export default function RootLayout({

@@ -123,7 +123,7 @@ export default function Testimonial1() {
                     </h5>
                     <div className="space20" />
                     <h2 className="text-anime-style-3">
-                      A Legacy Of Happy Clients
+                      Our Happy Clients
                     </h2>
                   </div>
                 </div>
