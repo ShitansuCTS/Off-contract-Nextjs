@@ -3,10 +3,10 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { usePublicProductsStore } from "@/stores/usePublicProductsStore";
-import Skeleton, {
-    SkeletonTheme,
-} from "react-loading-skeleton"; import "react-loading-skeleton/dist/skeleton.css";
-import "@/styles/public/services/constructsionMetrial.css"
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import "@/styles/public/services/constructsionMetrial.css";
+import { ArrowRight } from "lucide-react";
 
 export default function ContructionMaterials() {
     const products = usePublicProductsStore((state) => state.products);
@@ -21,9 +21,6 @@ export default function ContructionMaterials() {
     useEffect(() => {
         fetchPublicProducts();
     }, [fetchPublicProducts]);
-
-
-
 
     return (
         <div
@@ -64,10 +61,7 @@ export default function ContructionMaterials() {
                 </div>
 
                 {loading ? (
-                    <SkeletonTheme
-                        baseColor="#edf3f2"
-                        highlightColor="#f9fbfb"
-                    >
+                    <SkeletonTheme baseColor="#edf3f2" highlightColor="#f9fbfb">
                         <div className="row">
                             {[...Array(8)].map((_, index) => (
                                 <div className="col-lg-3 col-md-6 col-sm-6 mb-4" key={index}>
@@ -91,11 +85,7 @@ export default function ContructionMaterials() {
 
                                         <div style={{ padding: "14px" }}>
                                             {/* Category Badge */}
-                                            <Skeleton
-                                                width={90}
-                                                height={24}
-                                                borderRadius={30}
-                                            />
+                                            <Skeleton width={90} height={24} borderRadius={30} />
 
                                             {/* Title */}
                                             <div style={{ marginTop: "12px" }}>
@@ -103,13 +93,9 @@ export default function ContructionMaterials() {
                                                 <Skeleton height={22} width="70%" />
                                             </div>
 
-
                                             {/* Button */}
                                             <div style={{ marginTop: "18px" }}>
-                                                <Skeleton
-                                                    height={44}
-                                                    borderRadius={10}
-                                                />
+                                                <Skeleton height={44} borderRadius={10} />
                                             </div>
                                         </div>
                                     </div>
@@ -123,257 +109,210 @@ export default function ContructionMaterials() {
                     <div className="text-center py-5">No products found.</div>
                 ) : (
                     <>
-                        <div className="row">
-                            {products.map((item) => {
-                                const productUrl = `/products/${item.category?.slug || "category"}/${item.subCategory?.slug || "general"}/${item.slug}`;
+                        <div className="blog2-section-area">
+                            <div className="container">
 
-                                return (
-                                    <div className="col-lg-3 col-md-6 col-sm-6 mb-4" key={item.id}>
-                                        <div
-                                            className="product-small-card"
-                                            style={{
-                                                background: "#fff",
-                                                borderRadius: "18px",
-                                                overflow: "hidden",
-                                                border: "1px solid rgba(0,67,63,0.10)",
-                                                boxShadow: "0 14px 34px rgba(8,23,31,0.09)",
-                                                height: "100%",
-                                                transition: "all 0.35s ease",
-                                                position: "relative",
-                                            }}
-                                            onMouseEnter={(e) => {
-                                                e.currentTarget.style.transform = "translateY(-6px)";
-                                                e.currentTarget.style.boxShadow =
-                                                    "0 22px 45px rgba(8,23,31,0.14)";
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                e.currentTarget.style.transform = "translateY(0)";
-                                                e.currentTarget.style.boxShadow =
-                                                    "0 14px 34px rgba(8,23,31,0.09)";
-                                            }}
-                                        >
-                                            <Link href={productUrl}>
-                                                <div
-                                                    style={{
-                                                        height: "180px",
-                                                        background: "#f5f8f7",
-                                                        overflow: "hidden",
-                                                        position: "relative",
-                                                    }}
-                                                >
-                                                    <img
-                                                        src={item.imageUrl || "/assets/img/all-images/products/1.jpeg"}
-                                                        alt={item.title}
-                                                        style={{
-                                                            width: "100%",
-                                                            height: "100%",
-                                                            objectFit: "cover",
-                                                            transition: "0.45s ease",
-                                                        }}
-                                                    />
+                                {/* ================= PRODUCTS ================= */}
+
+                                <div className="row g-4">
+
+                                    {products.slice(0, 8).map((item, index) => {
+                                        const productUrl = `/products/${item.category?.slug || "category"
+                                            }/${item.subCategory?.slug || "general"
+                                            }/${item.slug}`;
+
+                                        return (
+                                            <div
+                                                key={item.id}
+                                                className={`col-lg-3 col-md-6 col-sm-6 ${index >= 4 ? "d-none d-sm-block" : ""
+                                                    }`}
+                                                data-aos="zoom-in-up"
+                                                data-aos-duration={800 + index * 100}
+                                            >
+                                                <div className="blog-single-boxarea h-100 d-flex flex-column overflow-hidden rounded-3 border bg-white shadow-sm" style={{ marginBottom: "0px" }}>
+
+                                                    {/* ================= IMAGE ================= */}
 
                                                     <div
-                                                        style={{
-                                                            position: "absolute",
-                                                            inset: 0,
-                                                            background:
-                                                                "linear-gradient(180deg, rgba(0,0,0,0.02) 45%, rgba(0,0,0,0.45) 100%)",
-                                                        }}
-                                                    />
-
-                                                    <span
-                                                        style={{
-                                                            position: "absolute",
-                                                            top: "12px",
-                                                            left: "12px",
-                                                            fontSize: "11px",
-                                                            fontWeight: 800,
-                                                            color: "#00433f",
-                                                            background: "#ffffff",
-                                                            padding: "6px 11px",
-                                                            borderRadius: "30px",
-                                                            boxShadow: "0 8px 18px rgba(0,0,0,0.12)",
-                                                        }}
+                                                        className="img1 image-anime position-relative overflow-hidden"
+                                                        style={{ height: "220px" }}
                                                     >
-                                                        {item.category?.name || "Product"}
-                                                    </span>
-                                                </div>
-                                            </Link>
-
-                                            <div style={{ padding: "16px" }}>
-                                                <h3
-                                                    style={{
-                                                        fontSize: "17px",
-                                                        fontWeight: 900,
-                                                        lineHeight: "23px",
-                                                        marginBottom: "10px",
-                                                        minHeight: "46px",
-                                                    }}
-                                                >
-                                                    <Link
-                                                        href={productUrl}
-                                                        style={{
-                                                            color: "#08171f",
-                                                            textDecoration: "none",
-                                                        }}
-                                                    >
-                                                        {item.title}
-                                                    </Link>
-                                                </h3>
-
-                                                <div
-                                                    style={{
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                        justifyContent: "space-between",
-                                                        gap: "10px",
-                                                        marginTop: "16px",
-                                                    }}
-                                                >
-                                                    <Link
-                                                        href={productUrl}
-                                                        style={{
-                                                            display: "inline-flex",
-                                                            alignItems: "center",
-                                                            gap: "8px",
-                                                            background: "#00433f",
-                                                            color: "#fff",
-                                                            padding: "8px 8px 8px 14px",
-                                                            borderRadius: "50px",
-                                                            textDecoration: "none",
-                                                            fontSize: "11px",
-                                                            fontWeight: 700,
-                                                            boxShadow: "0 8px 20px rgba(0,67,63,0.15)",
-                                                        }}
-                                                    >
-                                                        View Product
-
-                                                        <span
-                                                            style={{
-                                                                width: "26px",
-                                                                height: "26px",
-                                                                borderRadius: "50%",
-                                                                background: "#d4d529",
-                                                                color: "#08171f",
-                                                                display: "flex",
-                                                                alignItems: "center",
-                                                                justifyContent: "center",
-                                                                fontWeight: 900,
-                                                                fontSize: "13px",
-                                                            }}
+                                                        <Link
+                                                            href={productUrl}
+                                                            className="d-block h-100"
                                                         >
-                                                            →
-                                                        </span>
-                                                    </Link>
-
-                                                    <div
-                                                        style={{
-                                                            background: "#fffdf0",
-                                                            borderRadius: "12px",
-                                                            padding: "8px 12px",
-                                                            textAlign: "right",
-                                                            minWidth: "90px",
-                                                        }}
-                                                    >
-
-
-                                                        <div
-                                                            style={{
-                                                                fontSize: "11px",
-                                                                fontWeight: 900,
-                                                                color: "#00433f",
-                                                            }}
-                                                        >
-                                                            ₹{item.price || "--"}
-                                                            <span
+                                                            <img
+                                                                src={
+                                                                    item.imageUrl ||
+                                                                    "/assets/img/all-images/products/1.jpeg"
+                                                                }
+                                                                alt={
+                                                                    item.title || "Product"
+                                                                }
+                                                                className="w-100 h-100"
                                                                 style={{
-                                                                    fontSize: "11px",
-                                                                    color: "#6b7280",
-                                                                    fontWeight: 600,
+                                                                    objectFit: "cover",
                                                                 }}
+                                                            />
+                                                        </Link>
+
+                                                        {/* ================= PRICE BADGE ================= */}
+
+                                                        <div className="position-absolute bottom-0 start-0 m-2">
+                                                            <Link
+                                                                href={productUrl}
+                                                                className="text-decoration-none"
                                                             >
-                                                                /{item.unit || "Bag"}
-                                                            </span>
+                                                                <span className="badge bg-warning text-dark px-3 py-2 rounded-2 shadow-sm d-flex align-items-center gap-1 fs-6 fw-bold">
+
+                                                                    {/* Price / Tag Icon */}
+                                                                    <svg
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        width="16"
+                                                                        height="16"
+                                                                        viewBox="0 0 24 24"
+                                                                        fill="none"
+                                                                        stroke="currentColor"
+                                                                        strokeWidth="2"
+                                                                        strokeLinecap="round"
+                                                                        strokeLinejoin="round"
+                                                                    >
+                                                                        <path d="M20.59 13.41 11 3.83V3H4v7h.83l9.58 9.59a2 2 0 0 0 2.83 0l3.35-3.35a2 2 0 0 0 0-2.83Z" />
+                                                                        <circle
+                                                                            cx="7.5"
+                                                                            cy="6.5"
+                                                                            r="1"
+                                                                        />
+                                                                    </svg>
+
+                                                                    ₹{item.price || "--"}
+                                                                </span>
+                                                            </Link>
                                                         </div>
+                                                    </div>
+
+                                                    {/* ================= CONTENT ================= */}
+
+                                                    <div className="content-area p-3 p-lg-4 d-flex flex-column flex-grow-1">
+
+                                                        {/* CATEGORY */}
+
+                                                        <div className="d-flex align-items-center gap-2 mb-2">
+
+                                                            <span className="d-flex align-items-center justify-content-center text-muted">
+                                                                <svg
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    width="17"
+                                                                    height="17"
+                                                                    viewBox="0 0 24 24"
+                                                                    fill="none"
+                                                                    stroke="currentColor"
+                                                                    strokeWidth="1.8"
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                >
+                                                                    <path d="M3 7h18" />
+                                                                    <path d="M5 7v13h14V7" />
+                                                                    <path d="M8 7V4h8v3" />
+                                                                </svg>
+                                                            </span>
+
+                                                            <Link
+                                                                href={productUrl}
+                                                                className="text-decoration-none text-muted small fw-medium text-truncate"
+                                                            >
+                                                                {item.category?.name ||
+                                                                    "Product"}
+                                                            </Link>
+
+                                                        </div>
+
+                                                        {/* ================= TITLE ================= */}
+
+                                                        <Link
+                                                            href={productUrl}
+                                                            className="head d-block text-decoration-none text-dark fw-semibold"
+                                                            style={{
+                                                                minHeight: "52px",
+                                                            }}
+                                                        >
+                                                            {item.title}
+                                                        </Link>
+
+                                                        {/* Push CTA to bottom */}
+
+
+                                                        {/* ================= DIVIDER ================= */}
+
+                                                        <div className="border-top my-3" />
+
+                                                        {/* ================= VIEW PRODUCT ================= */}
+
+                                                        <Link
+                                                            href={productUrl}
+                                                            className="readmore d-flex align-items-center justify-content-between text-decoration-none fw-semibold"
+                                                        >
+                                                            <span className="d-flex align-items-center gap-2">
+                                                                <svg
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    width="17"
+                                                                    height="17"
+                                                                    viewBox="0 0 24 24"
+                                                                    fill="none"
+                                                                    stroke="currentColor"
+                                                                    strokeWidth="1.8"
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                >
+                                                                    <circle
+                                                                        cx="12"
+                                                                        cy="12"
+                                                                        r="9"
+                                                                    />
+                                                                    <path d="M8 12h8" />
+                                                                    <path d="m13 8 4 4-4 4" />
+                                                                </svg>
+
+                                                                View Product
+                                                            </span>
+
+                                                            <span className="d-flex align-items-center justify-content-center">
+                                                                <svg
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    width="18"
+                                                                    height="18"
+                                                                    viewBox="0 0 24 24"
+                                                                    fill="currentColor"
+                                                                >
+                                                                    <path d="M13.0508 12.361L7.39395 18.0179L5.97974 16.6037L11.6366 10.9468L6.68684 5.99707H18.0006V17.3108L13.0508 12.361Z" />
+                                                                </svg>
+                                                            </span>
+                                                        </Link>
+
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-
-                        {pagination && pagination.totalPages > 1 && (
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    gap: "8px",
-                                    marginTop: "50px",
-                                }}
-                            >
-                                <button
-                                    disabled={!pagination.hasPrev}
-                                    onClick={() => setPage(pagination.page - 1)}
-                                    className="pagination-btn"
-                                >
-                                    ←
-                                </button>
-
-                                {Array.from(
-                                    {
-                                        length: Math.min(5, pagination.totalPages),
-                                    },
-                                    (_, index) => {
-                                        const pageNumber = index + 1;
-
-                                        return (
-                                            <button
-                                                key={pageNumber}
-                                                onClick={() => setPage(pageNumber)}
-                                                className={
-                                                    pagination.page === pageNumber
-                                                        ? "pagination-number active"
-                                                        : "pagination-number"
-                                                }
-                                            >
-                                                {pageNumber}
-                                            </button>
                                         );
-                                    }
+                                    })}
+
+                                </div>
+
+                                {/* ================= VIEW MORE ================= */}
+
+                                {products.length > 8 && (
+                                    <div className="text-center mt-5">
+                                        <Link
+                                            className="theme-btn1 inline-flex items-center gap-2"
+                                            href="/product-listing"
+                                        >
+                                            View Details
+                                            <ArrowRight size={18} strokeWidth={2.5} />
+                                        </Link>
+                                    </div>
                                 )}
 
-                                {pagination.totalPages > 5 && (
-                                    <>
-                                        <span
-                                            style={{
-                                                fontWeight: 700,
-                                                color: "#6b7280",
-                                            }}
-                                        >
-                                            ...
-                                        </span>
-
-                                        <button
-                                            onClick={() => setPage(pagination.totalPages)}
-                                            className="pagination-number"
-                                        >
-                                            {pagination.totalPages}
-                                        </button>
-                                    </>
-                                )}
-
-                                <button
-                                    disabled={!pagination.hasNext}
-                                    onClick={() => setPage(pagination.page + 1)}
-                                    className="pagination-btn"
-                                >
-                                    →
-                                </button>
                             </div>
-                        )}
+                        </div>
                     </>
                 )}
             </div>

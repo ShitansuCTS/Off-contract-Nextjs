@@ -22,6 +22,9 @@ export const getPublicProductBySlugService = async (slug) => {
         },
     });
 
+
+    
+
     if (!product) {
         const error = new Error("Product not found");
         error.statusCode = 404;
