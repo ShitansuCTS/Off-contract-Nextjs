@@ -4,6 +4,7 @@ import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useRef, useEffect, useState } from "react";
 import { BadgeCheck, BadgeX } from "lucide-react";
+import toast from "react-hot-toast";
 
 
 // Data for slides
@@ -51,7 +52,6 @@ export default function EquipmentRental() {
     lastName: "",
     email: "",
     phone: "",
-    subject: "",
     message: "",
   });
 
@@ -73,7 +73,6 @@ export default function EquipmentRental() {
 
     setFormData((prev) => ({
       ...prev,
-      subject: `Equipment Rental Enquiry - ${productName}`,
       message: `I am interested in renting ${productName}. Please share availability, rental price, and terms.`,
     }));
 
@@ -93,6 +92,15 @@ export default function EquipmentRental() {
   ) => {
     e.preventDefault();
 
+    const fullName = [formData.firstName.trim(), formData.lastName.trim()]
+      .filter(Boolean)
+      .join(" ") || "Customer";
+
+    if (!formData.email.trim() || !formData.phone.trim()) {
+      alert("Please fill in your email and phone number.");
+      return;
+    }
+
     try {
       setLoading(true);
 
@@ -103,43 +111,43 @@ export default function EquipmentRental() {
         },
         body: JSON.stringify({
           formType: "EQUIPMENT_RENTAL",
-
-          firstName: formData.firstName,
-          lastName: formData.lastName,
+          name: fullName,
           email: formData.email,
           phone: formData.phone,
           subject: `Equipment Rental Enquiry - ${selectedProduct}`,
-          message: formData.message,
-
+          message: formData.message || `I am interested in renting ${selectedProduct}. Please share availability, rental price, and terms.`,
           productName: selectedProduct,
+          sourcePage: window.location.pathname,
+          sourceWebsite: window.location.origin,
         }),
-
       });
 
       const data = await response.json();
 
-      if (!response.ok) {
+      if (!response.ok || !data.success) {
         throw new Error(data.message || "Something went wrong");
       }
 
-      alert("Enquiry submitted successfully!");
-
-
+      toast.success("Equipment rental enquiry submitted successfully.");
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        message: "",
+      });
       setIsModalShowing(false);
     } catch (error: unknown) {
       console.error(error);
 
       if (error instanceof Error) {
-        alert(error.message);
+        toast.error(error.message);
       } else {
-        alert("Failed to submit enquiry");
+        toast.error("Failed to submit enquiry");
       }
     } finally {
       setLoading(false);
     }
-
-
-
   };
 
 

@@ -77,6 +77,18 @@ export default function LeadsFilters() {
 
         <select
           className="leads-select"
+          value={filters.priority}
+          onChange={(e) => setFilter("priority", e.target.value)}
+        >
+          <option value="">All Priority</option>
+          <option value="LOW">Low</option>
+          <option value="MEDIUM">Medium</option>
+          <option value="HIGH">High</option>
+          <option value="URGENT">Urgent</option>
+        </select>
+
+        <select
+          className="leads-select"
           value={filters.limit}
           onChange={(e) => setFilter("limit", e.target.value)}
         >

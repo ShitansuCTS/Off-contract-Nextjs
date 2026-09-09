@@ -12,15 +12,26 @@ import LeadsPagination from "@/components/dashboard/leads/LeadsPagination";
 import "@/styles/dashboard/leads/dashboard-leads.css";
 
 export default function DashboardLeadsPage() {
-  const { filters, fetchLeads } = useLeadStore();
+  const filters = useLeadStore((state) => state.filters);
+  const fetchLeads = useLeadStore((state) => state.fetchLeads);
 
   useEffect(() => {
     fetchLeads();
-  }, [filters]);
+  }, [
+    filters.page,
+    filters.limit,
+    filters.status,
+    filters.priority,
+    filters.formType,
+    filters.search,
+    filters.sortBy,
+    filters.sortOrder,
+    fetchLeads,
+  ]);
 
   return (
     <div className="dashboard-page leads-page">
-      {/* <LeadsHeader /> */}
+      <LeadsHeader />
       <LeadsStats />
       <LeadsFilters />
       <LeadsTable />

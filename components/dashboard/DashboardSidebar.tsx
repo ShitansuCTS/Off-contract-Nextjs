@@ -132,7 +132,11 @@ export default function DashboardSidebar({
   const [accessStatus, setAccessStatus] = useState<AccessStatus | null>(null);
 
   const [openMenu, setOpenMenu] = useState<string | null>(
-    pathname.startsWith("/dashboard/kyc") ? "KYC Verification" : null,
+    pathname.startsWith("/dashboard/kyc")
+      ? "KYC Verification"
+      : pathname.startsWith("/dashboard/admin/product")
+        ? "Products"
+        : null,
   );
 
   useEffect(() => {
@@ -273,6 +277,7 @@ export default function DashboardSidebar({
                           className={`admin-sidebar-sublink ${isSubActive ? "active" : ""
                             }`}
                         >
+                          <span className="admin-sidebar-subicon" />
                           {sub.label}
                         </Link>
                       );

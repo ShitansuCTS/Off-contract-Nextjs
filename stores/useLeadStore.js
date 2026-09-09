@@ -5,6 +5,10 @@ export const useLeadStore = create((set, get) => ({
     pagination: null,
     loading: false,
     error: "",
+    fetchedKey: "",
+    selectedLead: null,
+    drawerOpen: false,
+    detailsLoading: false,
 
     filters: {
         page: 1,
@@ -30,8 +34,15 @@ export const useLeadStore = create((set, get) => ({
             };
         }),
 
-    fetchLeads: async () => {
+    fetchLeads: async (force = false) => {
         const { filters } = get();
+        const requestKey = JSON.stringify(filters);
+
+        if (!force && get().fetchedKey === requestKey && !get().error) {
+            return;
+        }
+
+        if (get().loading) return;
 
         try {
             set({ loading: true, error: "" });
@@ -57,11 +68,46 @@ export const useLeadStore = create((set, get) => ({
             set({
                 leads: result.data || [],
                 pagination: result.pagination,
+                fetchedKey: requestKey,
             });
         } catch (error) {
-            set({ error: error.message });
+            set({ error: error instanceof Error ? error.message : "Failed to fetch leads" });
         } finally {
             set({ loading: false });
         }
     },
+
+    updateLead: async (leadId, changes) => {
+        const res = await fetch(`/api/v1/leads/${leadId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(changes),
+        });
+
+        const result = await res.json();
+
+        if (!res.ok || !result.success) {
+            throw new Error(result.message || "Failed to update lead");
+        }
+
+        const updatedLead = result.data;
+
+        set((state) => ({
+            leads: state.leads.map((lead) =>
+                lead.id === leadId ? { ...lead, ...updatedLead } : lead,
+            ),
+            selectedLead: state.selectedLead?.id === leadId
+                ? { ...state.selectedLead, ...updatedLead }
+                : state.selectedLead,
+        }));
+
+        return updatedLead;
+    },
+
+    openLeadDrawer: (lead) => set({ drawerOpen: true, selectedLead: lead }),
+
+    closeLeadDrawer: () => set({ drawerOpen: false, selectedLead: null }),
 }));

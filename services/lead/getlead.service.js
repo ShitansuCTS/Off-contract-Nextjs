@@ -141,6 +141,7 @@ export const getLeadsService = async (req, user) => {
 
                 sourcePage: true,
                 sourceWebsite: true,
+                formData: true,
 
                 adminNotes: true,
                 createdAt: true,

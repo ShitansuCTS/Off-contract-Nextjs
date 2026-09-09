@@ -1,74 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import toast from "react-hot-toast";
+import LeadCaptureForm from "@/components/ui/services/LeadCaptureForm";
 
 export default function InsuranceSection() {
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    try {
-      setLoading(true);
-
-      const res = await fetch("/api/v1/leads", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        body: JSON.stringify({
-          ...formData,
-
-          subject: "Insurance Quote Request",
-
-          formType: "INSURANCE",
-
-          sourcePage: window.location.pathname,
-
-          sourceWebsite: window.location.origin,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!data.success) {
-        toast.error(data.message || "Something went wrong");
-        return;
-      }
-
-      toast.success("Insurance enquiry submitted");
-
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        message: "",
-      });
-    } catch (error) {
-      toast.error("Failed to submit enquiry");
-    } finally {
-      setLoading(false);
-    }
-  };
   return (
     <>
       <div
@@ -168,70 +102,14 @@ export default function InsuranceSection() {
                 <div className="contact-form-area">
                   <h4>Request Insurance Quote</h4>
 
-                  <form className="row" onSubmit={handleSubmit}>
-                    <div className="col-lg-12">
-                      <div className="input-area">
-                        <input
-                          type="text"
-                          name="name"
-                          placeholder="Your Name"
-                          value={formData.name}
-                          onChange={handleChange}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-lg-12">
-                      <div className="input-area">
-                        <input
-                          type="email"
-                          name="email"
-                          placeholder="Email Address"
-                          value={formData.email}
-                          onChange={handleChange}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-lg-12">
-                      <div className="input-area">
-                        <input
-                          type="number"
-                          name="phone"
-                          placeholder="Phone Number"
-                          value={formData.phone}
-                          onChange={handleChange}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-lg-12">
-                      <div className="input-area">
-                        <textarea
-                          placeholder="Your Message"
-                          name="message"
-                          value={formData.message}
-                          onChange={handleChange}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-lg-12">
-                      <div className="input-area">
-                        <button
-                          type="submit"
-                          disabled={loading}
-                          className="theme-btn1"
-                          style={{
-                            opacity: loading ? 0.7 : 1,
-                            cursor: loading ? "not-allowed" : "pointer",
-                          }}
-                        >
-                          {loading ? "Submitting..." : "Send Now"}
-                        </button>
-                      </div>
-                    </div>
-                  </form>
+                  <LeadCaptureForm
+                    formType="INSURANCE"
+                    title="Insurance Quote Request"
+                    submitLabel="Send Now"
+                    defaultSubject="Insurance Quote Request"
+                    defaultMessage="I want to request a construction insurance quote for my project."
+                    successMessage="Insurance enquiry submitted successfully."
+                  />
                 </div>
               </div>
             </div>

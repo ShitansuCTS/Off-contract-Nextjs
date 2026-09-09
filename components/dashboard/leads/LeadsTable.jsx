@@ -4,9 +4,10 @@ import { Eye, Phone, Mail } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import { useLeadStore } from "@/stores/useLeadStore";
 import LeadStatusBadge from "./LeadStatusBadge";
+import LeadDetailsDrawer from "./LeadDetailsDrawer";
 
 export default function LeadsTable() {
-  const { leads, loading, error } = useLeadStore();
+  const { leads, loading, error, openLeadDrawer } = useLeadStore();
 
   if (error) {
     return <div className="leads-card leads-section leads-error">{error}</div>;
@@ -94,6 +95,11 @@ export default function LeadsTable() {
                     <span className="leads-client-email">
                       {lead.subject || "No subject"}
                     </span>
+                    {lead.formData?.productName && (
+                      <span className="leads-client-email">
+                        Item: {lead.formData.productName}
+                      </span>
+                    )}
                   </td>
 
                   <td>
@@ -128,7 +134,12 @@ export default function LeadsTable() {
                   </td>
 
                   <td>
-                    <button className="leads-action-btn">
+                    <button
+                      className="leads-action-btn"
+                      type="button"
+                      aria-label={`View ${lead.name || "lead"}`}
+                      onClick={() => openLeadDrawer(lead)}
+                    >
                       <Eye size={15} />
                     </button>
                   </td>
@@ -138,6 +149,7 @@ export default function LeadsTable() {
           </tbody>
         </table>
       </div>
+      <LeadDetailsDrawer />
     </div>
   );
 }

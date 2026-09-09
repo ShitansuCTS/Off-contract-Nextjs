@@ -296,3 +296,40 @@ button.admin-sidebar-link {
   font-weight: 600;
   color: rgba(255,255,255,0.55);
 }
+
+/* Final dashboard navigation polish */
+.admin-sidebar {
+  background: linear-gradient(180deg, #06443f 0%, #053b37 100%);
+}
+
+.admin-sidebar-logo {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-sidebar-link {
+  min-height: 52px;
+}
+
+.admin-sidebar-link.active::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: 0 4px 4px 0;
+  background: var(--ofc-accent);
+}
+
+.admin-sidebar-subicon {
+  width: 6px;
+  height: 6px;
+  margin-right: 9px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  opacity: 0.65;
+}
+
+.admin-sidebar-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}

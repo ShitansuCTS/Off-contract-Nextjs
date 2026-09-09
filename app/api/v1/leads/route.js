@@ -17,7 +17,11 @@ export async function POST(req) {
             {
                 success: true,
                 message: "Lead submitted successfully",
-                lead,
+                lead: {
+                    id: lead.id,
+                    status: lead.status,
+                    createdAt: lead.createdAt,
+                },
             },
             {
                 status: 201,

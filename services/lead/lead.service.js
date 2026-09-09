@@ -8,10 +8,16 @@ export const createLeadService = async (body, req) => {
     // VALIDATE INPUT
     const validatedData = createLeadSchema.parse(body);
 
-    // CREATE NAME
     const fullName =
         validatedData.name ||
-        `${validatedData.firstName || ""} ${validatedData.lastName || ""}`.trim();
+        [validatedData.firstName, validatedData.lastName].filter(Boolean).join(" ").trim() ||
+        "Customer";
+
+    const autoSubject = validatedData.subject ||
+        (validatedData.productName ? `Enquiry for ${validatedData.productName}` : "New Service Inquiry");
+
+    const autoMessage = validatedData.message ||
+        (validatedData.productName ? `I am interested in ${validatedData.productName}. Please contact me.` : "");
 
     // GET IP
     const forwarded = req.headers.get("x-forwarded-for");
@@ -20,12 +26,12 @@ export const createLeadService = async (body, req) => {
 
     // SANITIZE INPUT
     const cleanData = {
-        name: xss(fullName || ""),
+        name: xss(fullName || "Customer"),
         email: validator.normalizeEmail(validatedData.email),
         phone: validator.escape(validatedData.phone),
 
-        subject: xss(validatedData.subject || ""),
-        message: xss(validatedData.message || ""),
+        subject: xss(autoSubject || "New Service Inquiry"),
+        message: xss(autoMessage || ""),
 
         formType: validatedData.formType,
 
@@ -33,6 +39,19 @@ export const createLeadService = async (body, req) => {
         sourceWebsite: xss(validatedData.sourceWebsite || ""),
 
         ipAddress,
+    };
+
+    const normalizedBody = {
+        name: cleanData.name,
+        email: cleanData.email,
+        phone: cleanData.phone,
+        subject: cleanData.subject,
+        message: cleanData.message,
+        formType: cleanData.formType,
+        productName: validatedData.productName || null,
+        serviceName: validatedData.serviceName || null,
+        sourcePage: cleanData.sourcePage,
+        sourceWebsite: cleanData.sourceWebsite,
     };
 
     // CREATE LEAD
@@ -51,7 +70,7 @@ export const createLeadService = async (body, req) => {
             sourceWebsite: cleanData.sourceWebsite,
             ipAddress: cleanData.ipAddress,
 
-            formData: body,
+            formData: normalizedBody,
         },
     });
 

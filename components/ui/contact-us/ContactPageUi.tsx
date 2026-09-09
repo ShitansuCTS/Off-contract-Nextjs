@@ -1,6 +1,7 @@
 import Layout from "@/components/layout/Layout";
 import Link from "next/link";
 import Cta from "../cta/Cta";
+import LeadCaptureForm from "../services/LeadCaptureForm";
 export default function ContactPageUi() {
   return (
     <>
@@ -142,62 +143,13 @@ export default function ContactPageUi() {
                 <div className="col-lg-5">
                   <div className="contact-form-area">
                     <h4>Get In Touch</h4>
-                    <div className="row">
-                      <div className="col-lg-12">
-                        <div className="input-area">
-                          <input type="text" placeholder="First Name" />
-                        </div>
-                      </div>
-                      <div className="col-lg-12">
-                        <div className="input-area">
-                          <input type="text" placeholder="Last Name" />
-                        </div>
-                      </div>
-                      <div className="col-lg-12">
-                        <div className="input-area">
-                          <input type="email" placeholder="Email Address" />
-                        </div>
-                      </div>
-                      <div className="col-lg-12">
-                        <div className="input-area">
-                          <input type="number" placeholder="Phone Number" />
-                        </div>
-                      </div>
-                      <div className="col-lg-12">
-                        <div className="input-area">
-                          <textarea placeholder="Your Message" />
-                        </div>
-                      </div>
-                      <div className="col-lg-12">
-                        <div className="input-area">
-                          <button type="submit" className="theme-btn1">
-                            Send Now{" "}
-                            <span className="arrow1">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                width={24}
-                                height={24}
-                                fill="currentColor"
-                              >
-                                <path d="M12 13H4V11H12V4L20 12L12 20V13Z" />
-                              </svg>
-                            </span>
-                            <span className="arrow2">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                width={24}
-                                height={24}
-                                fill="currentColor"
-                              >
-                                <path d="M12 13H4V11H12V4L20 12L12 20V13Z" />
-                              </svg>
-                            </span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+                    <LeadCaptureForm
+                      formType="CONTACT"
+                      title="Contact Request"
+                      defaultSubject="Contact Request"
+                      submitLabel="Send Now"
+                      successMessage="Your contact request has been submitted successfully."
+                    />
                   </div>
                 </div>
               </div>
@@ -205,7 +157,7 @@ export default function ContactPageUi() {
           </div>
           <div className="mapouter" style={{ marginBottom: "30px" }}>
             <div className="gmap_canvas">
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13541.14127469395!2d85.80680605040774!3d20.347316803399185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a1909148bc48545%3A0x88975e943897e577!2s8RXG%2B785%20Arya%20Bhoomi%2C%20Nandankanan%20Rd%2C%20Phase-II%2C%20Kanan%20Vihar%2C%20Patia%2C%20Bhubaneswar%2C%20Odisha%20751031!5e1!3m2!1sen!2sin!4v1781593346269!5m2!1sen!2sin" width="100%" height="450" style={{ border: 0 }}  loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13541.14127469395!2d85.80680605040774!3d20.347316803399185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a1909148bc48545%3A0x88975e943897e577!2s8RXG%2B785%20Arya%20Bhoomi%2C%20Nandankanan%20Rd%2C%20Phase-II%2C%20Kanan%20Vihar%2C%20Patia%2C%20Bhubaneswar%2C%20Odisha%20751031!5e1!3m2!1sen!2sin!4v1781593346269!5m2!1sen!2sin" width="100%" height="450" style={{ border: 0 }} loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
             </div>
           </div>
           {/*===== CONTACT AREA ENDS =======*/}
