@@ -22,7 +22,12 @@ const RegisterForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+<<<<<<< HEAD
 
+=======
+  console.log("🔥 REGISTER FORM SUBMITTED");
+    console.log("FORM DATA:", form);
+>>>>>>> 0ab8559 (insert all data)
     try {
       // LOADING
       const loadingToast = toast.loading("Creating account...");

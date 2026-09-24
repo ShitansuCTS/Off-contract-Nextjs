@@ -8,7 +8,11 @@ import { useAdminUsersStore } from "@/stores/useAdminUsersStore";
 import type {
     UserRole,
     UserStatus,
+<<<<<<< HEAD
     VerificationStatus,
+=======
+    OnboardingStatus,
+>>>>>>> 0ab8559 (insert all data)
 } from "@/stores/useAdminUsersStore";
 
 export default function UserFilters(): JSX.Element {
@@ -36,7 +40,15 @@ export default function UserFilters(): JSX.Element {
                     <p>Search and filter admin, suppliers and agencies</p>
                 </div>
 
+<<<<<<< HEAD
                 <button type="button" className="users-reset-btn" onClick={handleReset}>
+=======
+                <button
+                    type="button"
+                    className="users-reset-btn"
+                    onClick={handleReset}
+                >
+>>>>>>> 0ab8559 (insert all data)
                     <RotateCcw size={15} />
                     Reset
                 </button>
@@ -78,10 +90,15 @@ export default function UserFilters(): JSX.Element {
                     <option value="">All Account Status</option>
                     <option value="ACTIVE">Active</option>
                     <option value="SUSPENDED">Suspended</option>
+<<<<<<< HEAD
+=======
+                    <option value="INACTIVE">Inactive</option>
+>>>>>>> 0ab8559 (insert all data)
                 </select>
 
                 <select
                     className="users-select"
+<<<<<<< HEAD
                     value={filters.verificationStatus}
                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                         setFilter(
@@ -95,6 +112,32 @@ export default function UserFilters(): JSX.Element {
                     <option value="PENDING_APPROVAL">Pending Approval</option>
                     <option value="VERIFIED">Verified</option>
                     <option value="REJECTED">Rejected</option>
+=======
+                    value={filters.onboardingStatus}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                        setFilter(
+                            "onboardingStatus",
+                            e.target.value as "" | OnboardingStatus,
+                        )
+                    }
+                >
+                    <option value="">All Onboarding Status</option>
+                    <option value="BUSINESS_PROFILE_PENDING">
+                        Business Profile Pending
+                    </option>
+                    <option value="KYC_UNDER_REVIEW">
+                        KYC Under Review
+                    </option>
+                    <option value="KYC_REJECTED">
+                        KYC Rejected
+                    </option>
+                    <option value="SUBSCRIPTION_PENDING">
+                        Subscription Pending
+                    </option>
+                    <option value="ACTIVE">
+                        Active
+                    </option>
+>>>>>>> 0ab8559 (insert all data)
                 </select>
 
                 <select

@@ -3,12 +3,22 @@ generator client {
 }
 
 datasource db {
+<<<<<<< HEAD
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 /////////////////////
 ///// ENUMS
+=======
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/////////////////////
+// ENUMS
+>>>>>>> 0ab8559 (insert all data)
 /////////////////////
 
 enum Role {
@@ -20,6 +30,7 @@ enum Role {
 enum UserStatus {
   ACTIVE
   SUSPENDED
+<<<<<<< HEAD
 }
 
 enum VerificationStatus {
@@ -27,6 +38,64 @@ enum VerificationStatus {
   PENDING_APPROVAL
   VERIFIED
   REJECTED
+=======
+  INACTIVE
+}
+
+enum OnboardingStatus {
+  EMAIL_VERIFICATION_PENDING
+  BUSINESS_PROFILE_PENDING
+  KYC_PENDING
+  KYC_UNDER_REVIEW
+  KYC_REJECTED
+  SUBSCRIPTION_PENDING
+  ACTIVE
+}
+
+enum BusinessType {
+  INDIVIDUAL
+  PROPRIETORSHIP
+  PARTNERSHIP
+  LLP
+  PRIVATE_LIMITED
+  PUBLIC_LIMITED
+  OTHER
+}
+
+enum KycStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  SUBMITTED
+  UNDER_REVIEW
+  VERIFIED
+  REJECTED
+  CORRECTION_REQUIRED
+}
+
+enum KycDocumentType {
+  BUSINESS_REGISTRATION
+  GST_CERTIFICATE
+  PAN_CARD
+  ADDRESS_PROOF
+  BUSINESS_ADDRESS_PROOF
+  IDENTITY_PROOF
+  AUTHORIZED_PERSON_ID
+  BANK_PROOF
+  LICENSE
+  OTHER
+}
+
+enum KycDocumentStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum KycReviewDecision {
+  APPROVED
+  REJECTED
+  CORRECTION_REQUIRED
+>>>>>>> 0ab8559 (insert all data)
 }
 
 enum SubscriptionStatus {
@@ -34,6 +103,24 @@ enum SubscriptionStatus {
   ACTIVE
   EXPIRED
   FAILED
+<<<<<<< HEAD
+=======
+  CANCELLED
+  PAUSED
+}
+
+enum BillingCycle {
+  MONTHLY
+  YEARLY
+}
+
+enum PaymentStatus {
+  CREATED
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+>>>>>>> 0ab8559 (insert all data)
 }
 
 enum LeadStatus {
@@ -70,6 +157,7 @@ enum ProductStatus {
 }
 
 /////////////////////
+<<<<<<< HEAD
 ///// USER
 /////////////////////
 
@@ -110,6 +198,46 @@ model Profile {
   fullName String
   phone    String @unique
 
+=======
+// USER
+/////////////////////
+
+model User {
+  id               String           @id @default(uuid())
+  email            String           @unique
+  password         String
+  role             Role
+  status           UserStatus       @default(ACTIVE)
+  onboardingStatus OnboardingStatus @default(BUSINESS_PROFILE_PENDING)
+  emailVerifiedAt  DateTime?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  profile              Profile?
+  company              Company?
+  subscriptions       Subscription[]
+  assignedLeads       Lead[]
+  products            Product[]
+  passwordResetTokens PasswordResetToken[]
+  kycReviews          KycReview[]
+  payments            Payment[]
+
+  @@index([email])
+  @@index([role])
+  @@index([status])
+  @@index([onboardingStatus])
+}
+
+/////////////////////
+// PROFILE
+/////////////////////
+
+model Profile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  fullName  String
+  phone     String   @unique
+>>>>>>> 0ab8559 (insert all data)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -117,6 +245,7 @@ model Profile {
 }
 
 /////////////////////
+<<<<<<< HEAD
 ///// COMPANY
 /////////////////////
 
@@ -134,14 +263,43 @@ model Company {
 
   stateId String?
   cityId  String?
+=======
+// COMPANY
+/////////////////////
+
+model Company {
+  id                 String      @id @default(uuid())
+  userId             String      @unique
+  name               String
+  businessType       BusinessType @default(OTHER)
+  gstNumber          String?
+  panNumber          String?
+  registrationNumber String?
+  category           String?
+  experience         Int?
+  description        String?
+  website            String?
+  businessEmail      String?
+  businessPhone      String?
+  address            String?
+  stateId            String?
+  cityId             String?
+>>>>>>> 0ab8559 (insert all data)
 
   state State? @relation(fields: [stateId], references: [id], onDelete: SetNull)
   city  City?  @relation(fields: [cityId], references: [id], onDelete: SetNull)
 
+<<<<<<< HEAD
   verificationStatus VerificationStatus @default(PROFILE_PENDING)
   rejectionReason    String?
 
   products Product[]
+=======
+  onboardingCompleted Boolean @default(false)
+
+  kycApplication KycApplication?
+  products       Product[]
+>>>>>>> 0ab8559 (insert all data)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -150,10 +308,15 @@ model Company {
 
   @@index([name])
   @@index([gstNumber])
+<<<<<<< HEAD
+=======
+  @@index([panNumber])
+>>>>>>> 0ab8559 (insert all data)
   @@index([stateId])
   @@index([cityId])
 }
 
+<<<<<<< HEAD
 /////////////////////
 ///// SUBSCRIPTION
 /////////////////////
@@ -180,10 +343,35 @@ model Subscription {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+=======
+////////////////////////////
+// KYC APPLICATION
+////////////////////////////
+
+model KycApplication {
+  id                  String    @id @default(uuid())
+  companyId           String    @unique
+  status              KycStatus @default(NOT_STARTED)
+  submittedAt        DateTime?
+  verifiedAt         DateTime?
+  rejectedAt         DateTime?
+  rejectionReason     String?
+  correctionRequired  Boolean   @default(false)
+  submittedVersion    Int       @default(1)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  company   Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  documents KycDocument[]
+  reviews   KycReview[]
+
+  @@index([companyId])
+>>>>>>> 0ab8559 (insert all data)
   @@index([status])
 }
 
 ////////////////////////////
+<<<<<<< HEAD
 //// LEAD MODEL
 ////////////////////////////
 
@@ -208,6 +396,152 @@ model Lead {
 
   assignedToId String?
   assignedTo   User?   @relation(fields: [assignedToId], references: [id], onDelete: SetNull)
+=======
+// KYC DOCUMENT
+////////////////////////////
+
+model KycDocument {
+  id                String              @id @default(uuid())
+  kycApplicationId  String
+  documentType      KycDocumentType
+  documentName      String?
+  fileUrl           String
+  storagePath       String?
+  documentNumber    String?
+  status            KycDocumentStatus   @default(PENDING)
+  rejectionReason   String?
+  uploadedAt        DateTime            @default(now())
+  verifiedAt        DateTime?
+
+  kycApplication KycApplication @relation(fields: [kycApplicationId], references: [id], onDelete: Cascade)
+
+  @@index([kycApplicationId])
+  @@index([documentType])
+  @@index([status])
+}
+
+////////////////////////////
+// KYC REVIEW
+////////////////////////////
+
+model KycReview {
+  id               String             @id @default(uuid())
+  kycApplicationId String
+  reviewerId       String?
+  decision         KycReviewDecision
+  remarks          String?
+  createdAt        DateTime           @default(now())
+
+  kycApplication KycApplication @relation(fields: [kycApplicationId], references: [id], onDelete: Cascade)
+  reviewer       User?          @relation(fields: [reviewerId], references: [id], onDelete: SetNull)
+
+  @@index([kycApplicationId])
+  @@index([reviewerId])
+  @@index([decision])
+}
+
+////////////////////////////
+// SUBSCRIPTION PLAN
+////////////////////////////
+
+model SubscriptionPlan {
+  id                  String       @id @default(uuid())
+  name                String
+  slug                String       @unique
+  description         String?
+  price               Float
+  billingCycle        BillingCycle
+  isActive            Boolean      @default(true)
+  razorpayPlanId      String?
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+
+  subscriptions Subscription[]
+
+  @@index([isActive])
+}
+
+////////////////////////////
+// SUBSCRIPTION
+////////////////////////////
+
+model Subscription {
+  id                     String             @id @default(uuid())
+  userId                 String
+  planId                 String
+  status                 SubscriptionStatus @default(PENDING)
+  amount                 Float
+  billingCycle           BillingCycle
+  razorpaySubscriptionId String?
+  startDate              DateTime?
+  endDate                DateTime?
+  cancelledAt            DateTime?
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+
+  user User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan SubscriptionPlan @relation(fields: [planId], references: [id], onDelete: Restrict)
+
+  payments Payment[]
+
+  @@index([userId])
+  @@index([planId])
+  @@index([status])
+  @@index([razorpaySubscriptionId])
+}
+
+////////////////////////////
+// PAYMENT
+////////////////////////////
+
+model Payment {
+  id                  String        @id @default(uuid())
+  userId              String
+  subscriptionId      String?
+  amount              Float
+  currency            String        @default("INR")
+  status              PaymentStatus @default(CREATED)
+  razorpayOrderId     String?
+  razorpayPaymentId   String?
+  razorpaySignature   String?
+  paidAt              DateTime?
+  failureReason       String?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscription Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([subscriptionId])
+  @@index([status])
+  @@index([razorpayOrderId])
+  @@index([razorpayPaymentId])
+}
+
+////////////////////////////
+// LEAD MODEL
+////////////////////////////
+
+model Lead {
+  id            String     @id @default(uuid())
+  name          String?
+  email         String?
+  phone         String?
+  subject       String?
+  message       String?
+  formType      LeadType
+  status        LeadStatus @default(NEW)
+  priority      LeadPriority @default(MEDIUM)
+  sourcePage    String?
+  sourceWebsite String?
+  ipAddress     String?
+  formData      Json?
+  adminNotes    String?
+  assignedToId  String?
+
+  assignedTo User? @relation(fields: [assignedToId], references: [id], onDelete: SetNull)
+>>>>>>> 0ab8559 (insert all data)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -222,6 +556,7 @@ model Lead {
 }
 
 ////////////////////////////
+<<<<<<< HEAD
 //// STATE MODEL
 ////////////////////////////
 
@@ -235,11 +570,24 @@ model State {
   companies Company[]
   products  Product[]
 
+=======
+// STATE MODEL
+////////////////////////////
+
+model State {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  slug      String   @unique
+  cities    City[]
+  companies Company[]
+  products  Product[]
+>>>>>>> 0ab8559 (insert all data)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 ////////////////////////////
+<<<<<<< HEAD
 //// CITY MODEL
 ////////////////////////////
 model City {
@@ -254,12 +602,31 @@ model City {
   products  Product[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+=======
+// CITY MODEL
+////////////////////////////
+
+model City {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String
+  stateId   String
+
+  state State @relation(fields: [stateId], references: [id], onDelete: Cascade)
+
+  companies Company[]
+  products  Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+>>>>>>> 0ab8559 (insert all data)
 
   @@unique([slug, stateId])
   @@index([stateId])
 }
 
 ////////////////////////////
+<<<<<<< HEAD
 //// PASSWORD RESET MODEL
 ////////////////////////////
 model PasswordResetToken {
@@ -272,6 +639,17 @@ model PasswordResetToken {
   expiresAt DateTime
   usedAt    DateTime?
 
+=======
+// PASSWORD RESET MODEL
+////////////////////////////
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+>>>>>>> 0ab8559 (insert all data)
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -281,6 +659,7 @@ model PasswordResetToken {
 }
 
 ////////////////////////////
+<<<<<<< HEAD
 //// PRODUCTS & ITEMS MODEL
 ////////////////////////////
 model Product {
@@ -293,6 +672,18 @@ model Product {
   slug        String  @unique
   description String?
 
+=======
+// PRODUCTS & ITEMS MODEL
+////////////////////////////
+
+model Product {
+  id            String  @id @default(uuid())
+  userId        String
+  companyId     String?
+  title         String
+  slug          String  @unique
+  description   String?
+>>>>>>> 0ab8559 (insert all data)
   categoryId    String?
   subCategoryId String?
 
@@ -300,6 +691,7 @@ model Product {
   subCategory ProductSubCategory? @relation(fields: [subCategoryId], references: [id], onDelete: SetNull)
 
   price        Float?
+<<<<<<< HEAD
   unit         String? // bag, kg, ton, piece, day, month
   stock        Int?
   brand        String?
@@ -309,6 +701,15 @@ model Product {
   imagePublicId String?
 
   status ProductStatus @default(DRAFT)
+=======
+  unit         String?
+  stock        Int?
+  brand        String?
+  productModel String?
+  imageUrl     String?
+  imagePublicId String?
+  status       ProductStatus @default(DRAFT)
+>>>>>>> 0ab8559 (insert all data)
 
   stateId String?
   cityId  String?
@@ -333,6 +734,7 @@ model Product {
 }
 
 ////////////////////////////
+<<<<<<< HEAD
 //// PRODUCTS CATEGORY
 ////////////////////////////
 model ProductCategory {
@@ -346,11 +748,25 @@ model ProductCategory {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+=======
+// PRODUCTS CATEGORY
+////////////////////////////
+
+model ProductCategory {
+  id            String               @id @default(uuid())
+  name          String
+  slug          String               @unique
+  subCategories ProductSubCategory[]
+  products      Product[]
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+>>>>>>> 0ab8559 (insert all data)
 
   @@index([name])
 }
 
 ////////////////////////////
+<<<<<<< HEAD
 //// SUB CATEGORY
 ////////////////////////////
 model ProductSubCategory {
@@ -360,6 +776,16 @@ model ProductSubCategory {
 
   name String
   slug String
+=======
+// SUB CATEGORY
+////////////////////////////
+
+model ProductSubCategory {
+  id         String @id @default(uuid())
+  categoryId String
+  name       String
+  slug       String
+>>>>>>> 0ab8559 (insert all data)
 
   category ProductCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   products Product[]
@@ -370,4 +796,8 @@ model ProductSubCategory {
   @@unique([slug, categoryId])
   @@index([categoryId])
   @@index([name])
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 0ab8559 (insert all data)

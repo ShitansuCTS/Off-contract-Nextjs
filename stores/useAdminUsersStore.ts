@@ -2,6 +2,7 @@ import { create } from "zustand";
 import toast from "react-hot-toast";
 
 export type UserRole = "ADMIN" | "SUPPLIER" | "AGENCY";
+<<<<<<< HEAD
 export type UserStatus = "ACTIVE" | "SUSPENDED";
 export type VerificationStatus =
   | "PROFILE_PENDING"
@@ -10,6 +11,25 @@ export type VerificationStatus =
   | "REJECTED";
 
 export type SubscriptionStatus = "PENDING" | "ACTIVE" | "EXPIRED" | "FAILED";
+=======
+
+export type UserStatus = "ACTIVE" | "SUSPENDED" | "INACTIVE";
+
+export type OnboardingStatus =
+  | "EMAIL_VERIFICATION_PENDING"
+  | "BUSINESS_PROFILE_PENDING"
+  | "KYC_PENDING"
+  | "KYC_UNDER_REVIEW"
+  | "KYC_REJECTED"
+  | "SUBSCRIPTION_PENDING"
+  | "ACTIVE";
+
+export type SubscriptionStatus =
+  | "PENDING"
+  | "ACTIVE"
+  | "EXPIRED"
+  | "FAILED";
+>>>>>>> 0ab8559 (insert all data)
 
 export interface AdminUserProfile {
   id: string;
@@ -31,6 +51,7 @@ export interface AdminUserLocation {
 export interface AdminUserCompany {
   id: string;
   name: string;
+<<<<<<< HEAD
   gstNumber?: string | null;
   category: string;
   experience?: number | null;
@@ -38,10 +59,28 @@ export interface AdminUserCompany {
   rejectionReason?: string | null;
   state?: AdminUserLocation | null;
   city?: AdminUserLocation | null;
+=======
+  businessType?: string;
+  gstNumber?: string | null;
+  panNumber?: string | null;
+  registrationNumber?: string | null;
+  category?: string | null;
+  experience?: number | null;
+  description?: string | null;
+  website?: string | null;
+  businessEmail?: string | null;
+  businessPhone?: string | null;
+  address?: string | null;
+  onboardingCompleted?: boolean;
+  state?: AdminUserLocation | null;
+  city?: AdminUserLocation | null;
+  kycApplication?: AdminUserKycApplication | null;
+>>>>>>> 0ab8559 (insert all data)
   createdAt?: string;
   updatedAt?: string;
 }
 
+<<<<<<< HEAD
 export interface AdminUserSubscription {
   id: string;
   planName: string;
@@ -52,6 +91,37 @@ export interface AdminUserSubscription {
   endDate?: string | null;
   createdAt?: string;
   updatedAt?: string;
+=======
+export interface AdminUserKycApplication {
+  id: string;
+  status: string;
+  submittedAt?: string | null;
+  verifiedAt?: string | null;
+  rejectedAt?: string | null;
+  rejectionReason?: string | null;
+  correctionRequired: boolean;
+  submittedVersion: number;
+}
+
+export interface AdminUserSubscription {
+  id: string;
+  amount: number;
+  billingCycle: string;
+  status: SubscriptionStatus;
+  razorpaySubscriptionId?: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
+  cancelledAt?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+  plan?: {
+    id: string;
+    name: string;
+    slug: string;
+    price: number;
+    billingCycle: string;
+  } | null;
+>>>>>>> 0ab8559 (insert all data)
 }
 
 export interface AdminUser {
@@ -59,6 +129,10 @@ export interface AdminUser {
   email: string;
   role: UserRole;
   status: UserStatus;
+<<<<<<< HEAD
+=======
+  onboardingStatus: OnboardingStatus;
+>>>>>>> 0ab8559 (insert all data)
   createdAt: string;
   updatedAt?: string;
   profile?: AdminUserProfile | null;
@@ -70,8 +144,13 @@ export interface UserTimelineStep {
   key: string;
   label: string;
   completed: boolean;
+<<<<<<< HEAD
   status?: VerificationStatus;
   reason?: string | null;
+=======
+  status?: string;
+  reason?: string;
+>>>>>>> 0ab8559 (insert all data)
 }
 
 export interface AdminUsersPagination {
@@ -89,7 +168,11 @@ interface AdminUsersFilters {
   search: string;
   role: "" | UserRole;
   status: "" | UserStatus;
+<<<<<<< HEAD
   verificationStatus: "" | VerificationStatus;
+=======
+  onboardingStatus: "" | OnboardingStatus;
+>>>>>>> 0ab8559 (insert all data)
 }
 
 interface AdminUsersStore {
@@ -140,7 +223,11 @@ export const useAdminUsersStore = create<AdminUsersStore>((set, get) => ({
     search: "",
     role: "",
     status: "",
+<<<<<<< HEAD
     verificationStatus: "",
+=======
+    onboardingStatus: "",
+>>>>>>> 0ab8559 (insert all data)
   },
 
   setFilter: (key, value) =>
@@ -160,7 +247,11 @@ export const useAdminUsersStore = create<AdminUsersStore>((set, get) => ({
         search: "",
         role: "",
         status: "",
+<<<<<<< HEAD
         verificationStatus: "",
+=======
+        onboardingStatus: "",
+>>>>>>> 0ab8559 (insert all data)
       },
     }),
 
@@ -173,7 +264,13 @@ export const useAdminUsersStore = create<AdminUsersStore>((set, get) => ({
       const query = new URLSearchParams();
 
       Object.entries(filters).forEach(([key, value]) => {
+<<<<<<< HEAD
         if (value) query.append(key, String(value));
+=======
+        if (value) {
+          query.append(key, String(value));
+        }
+>>>>>>> 0ab8559 (insert all data)
       });
 
       const res = await fetch(`/api/v1/admin/users?${query.toString()}`, {
@@ -253,4 +350,8 @@ export const useAdminUsersStore = create<AdminUsersStore>((set, get) => ({
       selectedUser: null,
       timeline: [],
     }),
+<<<<<<< HEAD
 }));
+=======
+}));
+>>>>>>> 0ab8559 (insert all data)

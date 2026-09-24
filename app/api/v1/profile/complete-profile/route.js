@@ -39,4 +39,10 @@ export async function PATCH(req) {
             { status: error.statusCode || 400 }
         );
     }
+<<<<<<< HEAD
 }
+=======
+}
+
+
+>>>>>>> 0ab8559 (insert all data)

@@ -3,6 +3,7 @@ import { adminMiddleware } from "@/middleware/admin.middleware";
 
 export const getAdminUsersService = async (searchParams) => {
     await adminMiddleware();
+<<<<<<< HEAD
 
     const page = Number(searchParams.get("page") || 1);
     const limit = Number(searchParams.get("limit") || 10);
@@ -12,11 +13,20 @@ export const getAdminUsersService = async (searchParams) => {
     const status = searchParams.get("status") || "";
     const verificationStatus = searchParams.get("verificationStatus") || "";
 
+=======
+    const page = Number(searchParams.get("page") || 1);
+    const limit = Number(searchParams.get("limit") || 10);
+    const search = searchParams.get("search") || "";
+    const role = searchParams.get("role") || "";
+    const status = searchParams.get("status") || "";
+    const onboardingStatus = searchParams.get("onboardingStatus") || "";
+>>>>>>> 0ab8559 (insert all data)
     const skip = (page - 1) * limit;
 
     const where = {
         ...(role && { role }),
         ...(status && { status }),
+<<<<<<< HEAD
 
         ...(verificationStatus && {
             company: {
@@ -24,6 +34,9 @@ export const getAdminUsersService = async (searchParams) => {
             },
         }),
 
+=======
+        ...(onboardingStatus && { onboardingStatus }),
+>>>>>>> 0ab8559 (insert all data)
         ...(search && {
             OR: [
                 {
@@ -81,24 +94,38 @@ export const getAdminUsersService = async (searchParams) => {
                 email: true,
                 role: true,
                 status: true,
+<<<<<<< HEAD
                 createdAt: true,
                 updatedAt: true,
 
                 profile: true,
 
+=======
+                onboardingStatus: true,
+                createdAt: true,
+                updatedAt: true,
+                profile: true,
+>>>>>>> 0ab8559 (insert all data)
                 company: {
                     include: {
                         state: true,
                         city: true,
+<<<<<<< HEAD
                     },
                 },
 
+=======
+                        kycApplication: true,
+                    },
+                },
+>>>>>>> 0ab8559 (insert all data)
                 subscriptions: {
                     orderBy: {
                         createdAt: "desc",
                     },
                     select: {
                         id: true,
+<<<<<<< HEAD
                         planName: true,
                         amount: true,
                         status: true,
@@ -106,11 +133,34 @@ export const getAdminUsersService = async (searchParams) => {
                         startDate: true,
                         endDate: true,
                         createdAt: true,
+=======
+                        amount: true,
+                        billingCycle: true,
+                        status: true,
+                        razorpaySubscriptionId: true,
+                        startDate: true,
+                        endDate: true,
+                        cancelledAt: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        plan: {
+                            select: {
+                                id: true,
+                                name: true,
+                                slug: true,
+                                price: true,
+                                billingCycle: true,
+                            },
+                        },
+>>>>>>> 0ab8559 (insert all data)
                     },
                 },
             },
         }),
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0ab8559 (insert all data)
         prisma.user.count({ where }),
     ]);
 
@@ -147,24 +197,38 @@ export const getAdminUserDetailsService = async (userId) => {
             email: true,
             role: true,
             status: true,
+<<<<<<< HEAD
             createdAt: true,
             updatedAt: true,
 
             profile: true,
 
+=======
+            onboardingStatus: true,
+            createdAt: true,
+            updatedAt: true,
+            profile: true,
+>>>>>>> 0ab8559 (insert all data)
             company: {
                 include: {
                     state: true,
                     city: true,
+<<<<<<< HEAD
                 },
             },
 
+=======
+                    kycApplication: true,
+                },
+            },
+>>>>>>> 0ab8559 (insert all data)
             subscriptions: {
                 orderBy: {
                     createdAt: "desc",
                 },
                 select: {
                     id: true,
+<<<<<<< HEAD
                     planName: true,
                     amount: true,
                     status: true,
@@ -173,6 +237,26 @@ export const getAdminUserDetailsService = async (userId) => {
                     endDate: true,
                     createdAt: true,
                     updatedAt: true,
+=======
+                    amount: true,
+                    billingCycle: true,
+                    status: true,
+                    razorpaySubscriptionId: true,
+                    startDate: true,
+                    endDate: true,
+                    cancelledAt: true,
+                    createdAt: true,
+                    updatedAt: true,
+                    plan: {
+                        select: {
+                            id: true,
+                            name: true,
+                            slug: true,
+                            price: true,
+                            billingCycle: true,
+                        },
+                    },
+>>>>>>> 0ab8559 (insert all data)
                 },
             },
         },
@@ -190,8 +274,22 @@ export const getAdminUserDetailsService = async (userId) => {
         (subscription) => subscription.status === "ACTIVE"
     );
 
+<<<<<<< HEAD
     const verificationStatus =
         user.company?.verificationStatus || "PROFILE_PENDING";
+=======
+
+    const kycApplication = user.company?.kycApplication;
+
+    const kycApproved =
+        kycApplication?.status === "VERIFIED" ||
+        user.onboardingStatus === "SUBSCRIPTION_PENDING" ||
+        user.onboardingStatus === "ACTIVE";
+
+    const kycRejected =
+        kycApplication?.status === "REJECTED" ||
+        user.onboardingStatus === "KYC_REJECTED";
+>>>>>>> 0ab8559 (insert all data)
 
     const timeline = [
         {
@@ -205,6 +303,7 @@ export const getAdminUserDetailsService = async (userId) => {
             completed: hasProfile && hasCompany,
         },
         {
+<<<<<<< HEAD
             key: "SUBSCRIPTION_COMPLETED",
             label: "Subscription Completed",
             completed: hasActiveSubscription,
@@ -228,6 +327,25 @@ export const getAdminUserDetailsService = async (userId) => {
                 verificationStatus === "REJECTED",
             status: verificationStatus,
             reason: user.company?.rejectionReason || null,
+=======
+            key: "KYC_REVIEW",
+            label: "Admin Verification",
+            completed: kycApproved,
+            status: kycRejected ? "REJECTED" : undefined,
+            reason: kycApplication?.rejectionReason || undefined,
+        },
+        {
+            key: "SUBSCRIPTION",
+            label: "Subscription",
+            completed:
+                hasActiveSubscription ||
+                user.onboardingStatus === "ACTIVE",
+        },
+        {
+            key: "ACTIVE",
+            label: "Account Active",
+            completed: user.onboardingStatus === "ACTIVE",
+>>>>>>> 0ab8559 (insert all data)
         },
     ];
 

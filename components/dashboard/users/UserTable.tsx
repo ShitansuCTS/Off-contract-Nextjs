@@ -45,6 +45,7 @@ export default function UserTable(): JSX.Element {
                                         </td>
                                         <td>
                                             <Skeleton width={160} height={16} />
+<<<<<<< HEAD
                                             <Skeleton width={190} height={12} style={{ marginTop: 6 }} />
                                         </td>
                                         <td>
@@ -52,11 +53,33 @@ export default function UserTable(): JSX.Element {
                                         </td>
                                         <td>
                                             <Skeleton width={80} height={26} borderRadius={999} />
+=======
+                                            <Skeleton
+                                                width={190}
+                                                height={12}
+                                                style={{ marginTop: 6 }}
+                                            />
+                                        </td>
+                                        <td>
+                                            <Skeleton
+                                                width={80}
+                                                height={26}
+                                                borderRadius={999}
+                                            />
+                                        </td>
+                                        <td>
+                                            <Skeleton
+                                                width={80}
+                                                height={26}
+                                                borderRadius={999}
+                                            />
+>>>>>>> 0ab8559 (insert all data)
                                         </td>
                                         <td>
                                             <Skeleton width={160} />
                                         </td>
                                         <td>
+<<<<<<< HEAD
                                             <Skeleton width={120} height={26} borderRadius={999} />
                                         </td>
                                         <td>
@@ -64,6 +87,27 @@ export default function UserTable(): JSX.Element {
                                         </td>
                                         <td>
                                             <Skeleton width={36} height={36} borderRadius={10} />
+=======
+                                            <Skeleton
+                                                width={120}
+                                                height={26}
+                                                borderRadius={999}
+                                            />
+                                        </td>
+                                        <td>
+                                            <Skeleton
+                                                width={100}
+                                                height={26}
+                                                borderRadius={999}
+                                            />
+                                        </td>
+                                        <td>
+                                            <Skeleton
+                                                width={36}
+                                                height={36}
+                                                borderRadius={10}
+                                            />
+>>>>>>> 0ab8559 (insert all data)
                                         </td>
                                     </tr>
                                 ))
@@ -88,7 +132,13 @@ export default function UserTable(): JSX.Element {
                                             <td>
                                                 <div className="users-title-line">
                                                     <UserRound size={15} />
+<<<<<<< HEAD
                                                     <span>{user.profile?.fullName || "N/A"}</span>
+=======
+                                                    <span>
+                                                        {user.profile?.fullName || "N/A"}
+                                                    </span>
+>>>>>>> 0ab8559 (insert all data)
                                                 </div>
 
                                                 <div className="users-contact-line muted">
@@ -109,6 +159,10 @@ export default function UserTable(): JSX.Element {
                                                 <div className="users-client-name">
                                                     {user.company?.name || "N/A"}
                                                 </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0ab8559 (insert all data)
                                                 <span className="users-muted">
                                                     {user.company?.category || "No category"}
                                                 </span>
@@ -116,10 +170,14 @@ export default function UserTable(): JSX.Element {
 
                                             <td>
                                                 <UserStatusBadge
+<<<<<<< HEAD
                                                     status={
                                                         user.company?.verificationStatus ||
                                                         "PROFILE_PENDING"
                                                     }
+=======
+                                                    status={user.onboardingStatus}
+>>>>>>> 0ab8559 (insert all data)
                                                 />
                                             </td>
 
@@ -137,7 +195,13 @@ export default function UserTable(): JSX.Element {
                                                 <button
                                                     type="button"
                                                     className="users-view-btn"
+<<<<<<< HEAD
                                                     onClick={() => openUserDrawer(user.id)}
+=======
+                                                    onClick={() =>
+                                                        openUserDrawer(user.id)
+                                                    }
+>>>>>>> 0ab8559 (insert all data)
                                                     title="View Details"
                                                 >
                                                     <Eye size={15} />
