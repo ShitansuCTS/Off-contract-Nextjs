@@ -1,15 +1,21 @@
 "use client";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import "@/styles/dashboard/kyc/complete-profile.css";
 =======
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { JSX } from "react";
+=======
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+>>>>>>> a4fa27d (Add subscription plans and update subscription flow)
 import "@/styles/dashboard/kyc/complete-profile.css";
 
 >>>>>>> 0ab8559 (insert all data)
 import {
+<<<<<<< HEAD
   Building2,
   MapPin,
   BriefcaseBusiness,
@@ -36,15 +42,20 @@ const steps = [
   Layers,
   Clock,
   Hourglass,
+=======
+  Building2, MapPin, BriefcaseBusiness, Phone, User, Globe, FileText, Mail, Layers, Clock,
+  ChevronRight, ChevronLeft, Loader2, Check, CheckCircle2, AlertCircle, Hourglass,
+  type LucideIcon,
+>>>>>>> a4fa27d (Add subscription plans and update subscription flow)
 } from "lucide-react";
-
-import { useAuthStore } from "@/stores/useAuthStore";
 import toast from "react-hot-toast";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 /* ============================================================
-   CONSTANTS
+   CONFIG  (change the route to match your app)
 ============================================================ */
 
+<<<<<<< HEAD
 const STEPS = [
 >>>>>>> 0ab8559 (insert all data)
   "Personal Info",
@@ -77,20 +88,23 @@ const BUSINESS_TYPES = [
 ];
 
 const CATEGORY_OPTIONS = ["Construction", "Supplier", "Electrical", "Plumbing"];
+=======
+export const SUBSCRIPTION_ROUTE = "/dashboard/kyc/complete-payment";
+>>>>>>> a4fa27d (Add subscription plans and update subscription flow)
 
 const GST_REGEX = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
 const PAN_REGEX = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const URL_REGEX = /^https?:\/\/.+\..+/;
 
-/* ============================================================
-   TYPES
-============================================================ */
+const opts = (list: string[]) => list.map((v) => ({ value: v, label: v }));
 
-type FormData = {
-  fullName: string;
-  phone: string;
+const BUSINESS_TYPES = [
+  ["INDIVIDUAL", "Individual"], ["PROPRIETORSHIP", "Proprietorship"], ["PARTNERSHIP", "Partnership"],
+  ["LLP", "LLP"], ["PRIVATE_LIMITED", "Private Limited"], ["PUBLIC_LIMITED", "Public Limited"], ["OTHER", "Other"],
+].map(([value, label]) => ({ value, label }));
 
+<<<<<<< HEAD
   companyName: string;
   businessType: string;
   gstNumber: string;
@@ -114,8 +128,20 @@ type FormData = {
 <<<<<<< HEAD
 type StateOption = {
 =======
-type FormErrors = Partial<Record<keyof FormData, string>>;
+=======
+const EMPTY_FORM = {
+  fullName: "", phone: "",
+  companyName: "", businessType: "", gstNumber: "", panNumber: "", registrationNumber: "",
+  businessEmail: "", businessPhone: "", website: "",
+  category: "", experience: "", stateId: "", cityId: "", address: "", description: "",
+};
 
+type FormData = typeof EMPTY_FORM;
+>>>>>>> a4fa27d (Add subscription plans and update subscription flow)
+type FormErrors = Partial<Record<keyof FormData, string>>;
+type Option = { value: string; label: string };
+
+<<<<<<< HEAD
 type LocationOption = {
 >>>>>>> 0ab8559 (insert all data)
   id: string;
@@ -160,125 +186,139 @@ type ProfileStatus =
   | "under_review"
   | "rejected"
   | "verified";
-
-const EMPTY_FORM: FormData = {
-  fullName: "",
-  phone: "",
-  companyName: "",
-  businessType: "",
-  gstNumber: "",
-  panNumber: "",
-  registrationNumber: "",
-  category: "",
-  experience: "",
-  description: "",
-  website: "",
-  businessEmail: "",
-  businessPhone: "",
-  address: "",
-  stateId: "",
-  cityId: "",
+=======
+type Field = {
+  name: keyof FormData;
+  label: string;
+  icon?: LucideIcon;
+  kind?: "text" | "email" | "url" | "number" | "select" | "textarea";
+  required?: boolean;
+  placeholder?: string;
+  hint?: string;
+  maxLength?: number;
+  pattern?: RegExp;
+  patternMsg?: string;
+  options?: Option[];
 };
 
+/* One config drives the form, validation AND the review screen */
+const STEPS: { name: string; title: string; subtitle: string; icon: LucideIcon; fields: Field[] }[] = [
+  {
+    name: "Personal Info", title: "Personal Information", subtitle: "Provide your personal contact details.", icon: User,
+    fields: [
+      { name: "fullName", label: "Full Name", icon: User, required: true, placeholder: "Enter full name", hint: "Use your name as per official records." },
+      { name: "phone", label: "Personal Phone Number", icon: Phone, required: true, placeholder: "Enter phone number", hint: "We may use this number for verification." },
+    ],
+  },
+  {
+    name: "Company Info", title: "Company Information", subtitle: "Provide your registered business information.", icon: Building2,
+    fields: [
+      { name: "companyName", label: "Company Name", icon: Building2, required: true, placeholder: "Enter company name" },
+      { name: "businessType", label: "Business Type", icon: Layers, kind: "select", required: true, options: BUSINESS_TYPES },
+      { name: "gstNumber", label: "GST Number", icon: BriefcaseBusiness, placeholder: "Enter GST number", maxLength: 15, hint: "15 characters, e.g. 22AAAAA0000A1Z5", pattern: GST_REGEX, patternMsg: "Enter a valid 15-character GST number." },
+      { name: "panNumber", label: "PAN Number", icon: FileText, placeholder: "Enter PAN number", maxLength: 10, hint: "10 characters, e.g. ABCDE1234F", pattern: PAN_REGEX, patternMsg: "Enter a valid 10-character PAN number." },
+      { name: "registrationNumber", label: "Registration Number", icon: FileText, placeholder: "Enter registration number" },
+      { name: "businessEmail", label: "Business Email", icon: Mail, kind: "email", placeholder: "business@example.com", pattern: EMAIL_REGEX, patternMsg: "Enter a valid email address." },
+      { name: "businessPhone", label: "Business Phone", icon: Phone, placeholder: "Enter business phone" },
+      { name: "website", label: "Website", icon: Globe, kind: "url", placeholder: "https://example.com", pattern: URL_REGEX, patternMsg: "Enter a valid URL, e.g. https://example.com" },
+    ],
+  },
+  {
+    name: "Business Details", title: "Business Details", subtitle: "Add your business category, experience, address and location.", icon: Layers,
+    fields: [
+      { name: "category", label: "Business Category", icon: Layers, kind: "select", required: true, options: opts(["Construction", "Supplier", "Electrical", "Plumbing"]) },
+      { name: "experience", label: "Experience (Years)", icon: Clock, kind: "number", placeholder: "Enter experience" },
+      { name: "stateId", label: "State", icon: MapPin, kind: "select", required: true },
+      { name: "cityId", label: "City", icon: MapPin, kind: "select", required: true, hint: "Select a state first to load cities." },
+      { name: "address", label: "Business Address", icon: MapPin, kind: "textarea", maxLength: 300, placeholder: "Enter complete business address" },
+      { name: "description", label: "Business Description", icon: FileText, kind: "textarea", maxLength: 500, placeholder: "Describe your business, services and expertise" },
+    ],
+  },
+];
+>>>>>>> a4fa27d (Add subscription plans and update subscription flow)
+
+const REVIEW_STEP = STEPS.length + 1;
+const STEP_NAMES = [...STEPS.map((s) => s.name), "Review & Submit"];
+
 /* ============================================================
-   VALIDATION HELPERS
+   HELPERS
 ============================================================ */
 
-function validateStep(step: number, data: FormData): FormErrors {
-  const errors: FormErrors = {};
-
-  if (step === 1) {
-    if (!data.fullName.trim()) errors.fullName = "Full name is required.";
-    if (!data.phone.trim()) errors.phone = "Personal phone number is required.";
-  }
-
-  if (step === 2) {
-    if (!data.companyName.trim()) errors.companyName = "Company name is required.";
-    if (!data.businessType) errors.businessType = "Please select a business type.";
-
-    if (data.gstNumber.trim() && !GST_REGEX.test(data.gstNumber.trim())) {
-      errors.gstNumber = "Enter a valid 15-character GST number.";
-    }
-    if (data.panNumber.trim() && !PAN_REGEX.test(data.panNumber.trim())) {
-      errors.panNumber = "Enter a valid 10-character PAN number.";
-    }
-    if (data.businessEmail.trim() && !EMAIL_REGEX.test(data.businessEmail.trim())) {
-      errors.businessEmail = "Enter a valid email address.";
-    }
-    if (data.website.trim() && !URL_REGEX.test(data.website.trim())) {
-      errors.website = "Enter a valid URL, e.g. https://example.com";
+const validate = (fields: Field[], data: FormData): FormErrors => {
+  const errs: FormErrors = {};
+  for (const f of fields) {
+    const v = data[f.name].trim();
+    if (!v) {
+      if (f.required) errs[f.name] = `${f.label} is required.`;
+    } else if (f.pattern && !f.pattern.test(v)) {
+      errs[f.name] = f.patternMsg;
     }
   }
+  return errs;
+};
 
-  if (step === 3) {
-    if (!data.category) errors.category = "Please select a business category.";
-    if (!data.stateId) errors.stateId = "Please select a state.";
-    if (!data.cityId) errors.cityId = "Please select a city.";
-  }
+const clean = (d: FormData): FormData => {
+  const out = Object.fromEntries(Object.entries(d).map(([k, v]) => [k, v.trim()])) as FormData;
+  out.businessEmail = out.businessEmail.toLowerCase();
+  return out;
+};
 
-  return errors;
-}
-
-function validateAllSteps(data: FormData): { errors: FormErrors; firstInvalidStep: number | null } {
-  for (let step = 1; step <= 3; step++) {
-    const errors = validateStep(step, data);
-    if (Object.keys(errors).length > 0) {
-      return { errors, firstInvalidStep: step };
-    }
-  }
-  return { errors: {}, firstInvalidStep: null };
-}
-
-function preparePayload(data: FormData) {
+const toPayload = (d: FormData) => {
+  const c = clean(d);
   return {
-    fullName: data.fullName.trim(),
-    phone: data.phone.trim(),
-
-    companyName: data.companyName.trim(),
-    businessType: data.businessType,
-    gstNumber: data.gstNumber.trim().toUpperCase() || null,
-    panNumber: data.panNumber.trim().toUpperCase() || null,
-    registrationNumber: data.registrationNumber.trim() || null,
-
-    category: data.category.trim(),
-    experience: data.experience ? Number(data.experience) : null,
-    description: data.description.trim() || null,
-    website: data.website.trim() || null,
-
-    businessEmail: data.businessEmail.trim().toLowerCase() || null,
-    businessPhone: data.businessPhone.trim() || null,
-    address: data.address.trim() || null,
-
-    stateId: data.stateId || null,
-    cityId: data.cityId || null,
+    ...Object.fromEntries(Object.entries(c).map(([k, v]) => [k, v || null])),
+    experience: c.experience ? Number(c.experience) : null,
   };
+};
+
+const focusField = (name: string) =>
+  setTimeout(() => {
+    const el = document.querySelector<HTMLElement>(`[name="${name}"]`);
+    el?.focus();
+    el?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, 0);
+
+async function fetchList(url: string): Promise<Option[]> {
+  const res = await fetch(url);
+  const json = await res.json();
+  if (!res.ok || !json.success) throw new Error(json.message);
+  return (json.data ?? []).map((x: { id: string | number; name: string }) => ({ value: String(x.id), label: x.name }));
 }
 
-function normalizeForComparison(data: FormData): FormData {
-  return {
-    ...data,
-    gstNumber: data.gstNumber.trim().toUpperCase(),
-    panNumber: data.panNumber.trim().toUpperCase(),
-    registrationNumber: data.registrationNumber.trim(),
-    category: data.category.trim(),
-    description: data.description.trim(),
-    website: data.website.trim(),
-    businessEmail: data.businessEmail.trim().toLowerCase(),
-    businessPhone: data.businessPhone.trim(),
-    address: data.address.trim(),
-    fullName: data.fullName.trim(),
-    phone: data.phone.trim(),
-    companyName: data.companyName.trim(),
-  };
+function useLocations(stateId: string) {
+  const [states, setStates] = useState<Option[]>([]);
+  const [cities, setCities] = useState<Option[]>([]);
+  const [loadingStates, setLoadingStates] = useState(true);
+  const [loadingCities, setLoadingCities] = useState(false);
+
+  useEffect(() => {
+    fetchList("/api/v1/locations/states")
+      .then(setStates)
+      .catch(() => toast.error("Unable to load states. Please refresh the page."))
+      .finally(() => setLoadingStates(false));
+  }, []);
+
+  useEffect(() => {
+    if (!stateId) return setCities([]);
+    let cancelled = false;
+    setLoadingCities(true);
+    fetchList(`/api/v1/locations/cities?stateId=${stateId}`)
+      .then((d) => !cancelled && setCities(d))
+      .catch(() => !cancelled && toast.error("Unable to load cities for the selected state."))
+      .finally(() => !cancelled && setLoadingCities(false));
+    return () => { cancelled = true; };
+  }, [stateId]);
+
+  return { states, cities, loadingStates, loadingCities };
 }
 
-function hasFormChanged(current: FormData, original: FormData | null): boolean {
-  if (!original) return false;
-
-  return (Object.keys(current) as (keyof FormData)[]).some((field) => {
-    return String(current[field] ?? "").trim() !== String(original[field] ?? "").trim();
-  });
-}
+const BADGES = {
+  incomplete: { label: "Profile Incomplete", icon: <FileText size={15} />, tone: "neutral" },
+  submitted: { label: "Profile Submitted", icon: <Check size={15} />, tone: "info" },
+  review: { label: "Under Admin Verification", icon: <Hourglass size={15} />, tone: "warning" },
+  rejected: { label: "Correction Required", icon: <AlertCircle size={15} />, tone: "danger" },
+  verified: { label: "Company Verified", icon: <CheckCircle2 size={15} />, tone: "success" },
+} as const;
 
 /* ============================================================
    COMPONENT
@@ -287,46 +327,39 @@ function hasFormChanged(current: FormData, original: FormData | null): boolean {
 export default function ProfileCard() {
   const { user, checkAuth } = useAuthStore();
 
-  const [currentStep, setCurrentStep] = useState(1);
-  const [maxStepReached, setMaxStepReached] = useState(1);
-
-  const [profileSubmitted, setProfileSubmitted] = useState(false);
+  const [step, setStep] = useState(1);
+  const [maxStep, setMaxStep] = useState(1);
   const [isEditing, setIsEditing] = useState(true);
   const [loading, setLoading] = useState(false);
-
-  const [states, setStates] = useState<LocationOption[]>([]);
-  const [cities, setCities] = useState<LocationOption[]>([]);
-  const [loadingStates, setLoadingStates] = useState(false);
-  const [loadingCities, setLoadingCities] = useState(false);
-
   const [formData, setFormData] = useState<FormData>(EMPTY_FORM);
-  const [originalFormData, setOriginalFormData] = useState<FormData | null>(null);
+  const [original, setOriginal] = useState<FormData | null>(null);
   const [errors, setErrors] = useState<FormErrors>({});
 
-  const fieldRefs = useRef<Partial<Record<keyof FormData, HTMLElement | null>>>({});
+  const { states, cities, loadingStates, loadingCities } = useLocations(formData.stateId);
 
-  const kycApplication = user?.company?.kycApplication;
-  const onboardingStatus = user?.onboardingStatus;
+  /* ---------- status (single source of truth) ---------- */
+  const onboarding = user?.onboardingStatus;
+  const kyc = user?.company?.kycApplication;
+  const submitted = !!user?.company?.onboardingCompleted;
 
-  /* ------------------------------------------------------------
-     STATUS MODEL (single source of truth)
-  ------------------------------------------------------------ */
-
-  const isUnderReview = onboardingStatus === "KYC_UNDER_REVIEW";
-  const isRejected = onboardingStatus === "KYC_REJECTED";
+  const isUnderReview = onboarding === "KYC_UNDER_REVIEW";
+  const isRejected = onboarding === "KYC_REJECTED";
   const isVerified =
-    kycApplication?.status === "VERIFIED" ||
-    onboardingStatus === "SUBSCRIPTION_PENDING" ||
-    onboardingStatus === "ACTIVE";
+    kyc?.status === "VERIFIED" || onboarding === "SUBSCRIPTION_PENDING" || onboarding === "ACTIVE";
+  const canProceed = isVerified && onboarding !== "ACTIVE"; // verified, but not paid yet
 
-  const canEdit = !isUnderReview && !isVerified && (!isRejected || isEditing) && !loading;
-  const formDisabled = !canEdit;
+  const locked = loading || isUnderReview || isVerified || (isRejected && !isEditing);
+  const hasChanges = !!original && JSON.stringify(clean(formData)) !== JSON.stringify(original);
 
-  const hasChanges = useMemo(
-    () => hasFormChanged(formData, originalFormData),
-    [formData, originalFormData]
+  const status = isVerified ? "verified" : isUnderReview ? "review" : isRejected ? "rejected" : submitted ? "submitted" : "incomplete";
+  const badge = BADGES[status];
+
+  const completion = Math.round(
+    (Object.values(formData).filter((v) => v.trim()).length / Object.keys(formData).length) * 100
   );
+  const progress = Math.round((step / STEP_NAMES.length) * 100);
 
+<<<<<<< HEAD
   const canSubmit = isRejected ? isEditing && hasChanges : true;
 
   const status: ProfileStatus = isVerified
@@ -450,8 +483,13 @@ export default function ProfileCard() {
   ------------------------------------------------------------ */
 >>>>>>> 0ab8559 (insert all data)
 
+=======
+  /* ---------- load existing user data ---------- */
+>>>>>>> a4fa27d (Add subscription plans and update subscription flow)
   useEffect(() => {
     if (!user) return;
+    const c = user.company;
+    const s = (v: unknown) => (v === null || v === undefined ? "" : String(v));
 
 <<<<<<< HEAD
     setFormData({
@@ -484,88 +522,49 @@ export default function ProfileCard() {
       setCurrentStep((prev) => prev + 1);
 =======
     const loaded: FormData = {
-      fullName: user.profile?.fullName || "",
-      phone: user.profile?.phone || "",
-
-      companyName: user.company?.name || "",
-      businessType: user.company?.businessType || "",
-      gstNumber: user.company?.gstNumber || "",
-      panNumber: user.company?.panNumber || "",
-      registrationNumber: user.company?.registrationNumber || "",
-
-      category: user.company?.category || "",
-      experience:
-        user.company?.experience !== null && user.company?.experience !== undefined
-          ? String(user.company.experience)
-          : "",
-      description: user.company?.description || "",
-      website: user.company?.website || "",
-
-      businessEmail: user.company?.businessEmail || "",
-      businessPhone: user.company?.businessPhone || "",
-      address: user.company?.address || "",
-
-      stateId:
-        user.company?.stateId !== null && user.company?.stateId !== undefined
-          ? String(user.company.stateId)
-          : "",
-      cityId:
-        user.company?.cityId !== null && user.company?.cityId !== undefined
-          ? String(user.company.cityId)
-          : "",
+      fullName: s(user.profile?.fullName), phone: s(user.profile?.phone),
+      companyName: s(c?.name), businessType: s(c?.businessType), gstNumber: s(c?.gstNumber),
+      panNumber: s(c?.panNumber), registrationNumber: s(c?.registrationNumber),
+      businessEmail: s(c?.businessEmail), businessPhone: s(c?.businessPhone), website: s(c?.website),
+      category: s(c?.category), experience: s(c?.experience), stateId: s(c?.stateId), cityId: s(c?.cityId),
+      address: s(c?.address), description: s(c?.description),
     };
 
     setFormData(loaded);
-    setOriginalFormData(loaded);
+    setOriginal(clean(loaded));
 
-    if (user.company?.onboardingCompleted) {
-      setProfileSubmitted(true);
-      setCurrentStep(TOTAL_STEPS);
-      setMaxStepReached(TOTAL_STEPS);
+    if (c?.onboardingCompleted) {
+      setStep(REVIEW_STEP);
+      setMaxStep(REVIEW_STEP);
       setIsEditing(false);
     }
   }, [user]);
 
-  /* ------------------------------------------------------------
-     INPUT HANDLING
-  ------------------------------------------------------------ */
+  /* ---------- handlers ---------- */
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const name = e.target.name as keyof FormData;
+    const value = name === "gstNumber" || name === "panNumber" ? e.target.value.toUpperCase() : e.target.value;
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    const field = name as keyof FormData;
-
-    let nextValue = value;
-    if (field === "gstNumber" || field === "panNumber") {
-      nextValue = value.toUpperCase();
-    }
-
-    setFormData((prev) => ({ ...prev, [field]: nextValue }));
-
-    if (errors[field]) {
-      setErrors((prev) => {
-        const next = { ...prev };
-        delete next[field];
-        return next;
-      });
-    }
+    setFormData((p) => ({ ...p, [name]: value, ...(name === "stateId" && { cityId: "" }) }));
+    setErrors((p) => ({ ...p, [name]: undefined }));
   };
 
-  const handleStateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    setFormData((prev) => ({ ...prev, stateId: value, cityId: "" }));
-    setErrors((prev) => ({ ...prev, stateId: undefined, cityId: undefined }));
+  const goTo = (n: number) => {
+    if (!submitted && n > maxStep) return;
+    setStep(n);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const focusField = (field: keyof FormData) => {
-    const el = fieldRefs.current[field];
-    if (el && typeof el.focus === "function") {
-      el.focus();
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
+  const next = () => {
+    const errs = validate(STEPS[step - 1].fields, formData);
+    setErrors(errs);
+    if (Object.keys(errs).length) return focusField(Object.keys(errs)[0]);
+
+    setMaxStep((m) => Math.max(m, step + 1));
+    goTo(step + 1);
   };
 
+<<<<<<< HEAD
   /* ------------------------------------------------------------
      STEP NAVIGATION
   ------------------------------------------------------------ */
@@ -642,40 +641,38 @@ export default function ProfileCard() {
      SUBMIT
   ------------------------------------------------------------ */
 
+=======
+>>>>>>> a4fa27d (Add subscription plans and update subscription flow)
   const handleSubmit = async () => {
     if (loading) return;
 
-    const { errors: allErrors, firstInvalidStep } = validateAllSteps(formData);
-
-    if (firstInvalidStep) {
-      setErrors(allErrors);
-      setCurrentStep(firstInvalidStep);
-      const firstField = Object.keys(allErrors)[0] as keyof FormData;
-      setTimeout(() => focusField(firstField), 0);
-      return;
-    }
-
-    if (isRejected && !hasChanges) {
-      toast("Make a change before resubmitting your profile.", { icon: "ℹ️" });
-      return;
+    for (let i = 0; i < STEPS.length; i++) {
+      const errs = validate(STEPS[i].fields, formData);
+      if (Object.keys(errs).length) {
+        setErrors(errs);
+        setStep(i + 1);
+        return focusField(Object.keys(errs)[0]);
+      }
     }
 
     setErrors({});
     setLoading(true);
-
     try {
-      const payload = preparePayload(formData);
-
       const res = await fetch("/api/v1/profile/complete-profile", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
+<<<<<<< HEAD
         body: JSON.stringify(payload),
 >>>>>>> 0ab8559 (insert all data)
+=======
+        body: JSON.stringify(toPayload(formData)),
+>>>>>>> a4fa27d (Add subscription plans and update subscription flow)
       });
-
       const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || "Unable to update your profile.");
 
+<<<<<<< HEAD
       if (!res.ok || !data.success) {
 <<<<<<< HEAD
         throw new Error(data.message || "Profile update failed");
@@ -716,11 +713,18 @@ export default function ProfileCard() {
       console.error("COMPLETE PROFILE ERROR:", error);
       toast.error(error.message || "Something went wrong. Please try again.");
 >>>>>>> 0ab8559 (insert all data)
+=======
+      toast.success(submitted ? "Business profile resubmitted successfully." : "Business profile submitted successfully.");
+      await checkAuth?.(); // refreshes user -> effect above resets form, step & status
+    } catch (err: any) {
+      toast.error(err.message || "Something went wrong. Please try again.");
+>>>>>>> a4fa27d (Add subscription plans and update subscription flow)
     } finally {
       setLoading(false);
     }
   };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   return (
     <div className="dashboard-page">
@@ -730,26 +734,88 @@ export default function ProfileCard() {
     setErrors({});
     setCurrentStep(1);
     scrollTop();
+=======
+  /* ---------- rendering helpers ---------- */
+  const optionsFor = (f: Field): Option[] =>
+    f.name === "stateId" ? states : f.name === "cityId" ? cities : f.options ?? [];
+
+  const displayValue = (f: Field) => {
+    const v = formData[f.name];
+    if (!v) return "N/A";
+    if (f.kind === "select") return optionsFor(f).find((o) => o.value === v)?.label ?? v;
+    return f.name === "experience" ? `${v} Years` : v;
+>>>>>>> a4fa27d (Add subscription plans and update subscription flow)
   };
 
-  /* ------------------------------------------------------------
-     DERIVED DISPLAY VALUES
-  ------------------------------------------------------------ */
+  const renderField = (f: Field) => {
+    const err = errors[f.name];
+    const Icon = f.icon;
+    const isTextarea = f.kind === "textarea";
+    const isCity = f.name === "cityId";
+    const busy = (f.name === "stateId" && loadingStates) || (isCity && loadingCities);
+    const common = { name: f.name, value: formData[f.name], onChange: handleChange, disabled: locked };
 
-  const selectedState = states.find((s) => String(s.id) === String(formData.stateId));
-  const selectedCity = cities.find((c) => String(c.id) === String(formData.cityId));
-  const selectedBusinessType = BUSINESS_TYPES.find((t) => t.value === formData.businessType);
+    const control =
+      f.kind === "select" ? (
+        <select {...common} disabled={locked || busy || (isCity && !formData.stateId)}>
+          <option value="">{busy ? "Loading..." : `Select ${f.label.toLowerCase()}`}</option>
+          {optionsFor(f).map((o) => (
+            <option key={o.value} value={o.value}>{o.label}</option>
+          ))}
+        </select>
+      ) : isTextarea ? (
+        <textarea {...common} rows={4} maxLength={f.maxLength} placeholder={f.placeholder} />
+      ) : (
+        <input {...common} type={f.kind ?? "text"} min={f.kind === "number" ? 0 : undefined} maxLength={f.maxLength} placeholder={f.placeholder} />
+      );
 
-  const completionPercent = useMemo(() => {
-    const fields = Object.values(formData);
-    const filled = fields.filter((v) => String(v || "").trim() !== "").length;
-    return Math.round((filled / fields.length) * 100);
-  }, [formData]);
+    // City hint only shows until a state is chosen
+    const showHint = f.hint && !(isCity && formData.stateId);
 
-  const progressPercent = Math.round((currentStep / TOTAL_STEPS) * 100);
+    return (
+      <div key={f.name} className={`profile-input-group ${isTextarea ? "profile-textarea-group full-width" : ""}`}>
+        <label>
+          {f.label}
+          {f.required && <span className="profile-required">*</span>}
+          {isTextarea && <span className="profile-char-count">{formData[f.name].length}/{f.maxLength}</span>}
+        </label>
+        <div className={`${isTextarea ? "profile-textarea-wrap" : "profile-input-wrap"} ${err ? "has-error" : ""}`}>
+          {Icon && <Icon size={18} />}
+          {control}
+          {busy && <Loader2 size={16} className="profile-inline-spinner" />}
+        </div>
+        {err ? <small className="field-error">{err}</small> : showHint && <small className="profile-hint">{f.hint}</small>}
+      </div>
+    );
+  };
 
-  const registerRef = (field: keyof FormData) => (el: HTMLElement | null) => {
-    fieldRefs.current[field] = el;
+  const renderAction = () => {
+    const disabledBtn = (icon: React.ReactNode, text: string) => (
+      <button type="button" className="profile-btn-primary" disabled>{icon}{text}</button>
+    );
+
+    if (canProceed)
+      return (
+        <Link href={SUBSCRIPTION_ROUTE} className="profile-btn-primary">
+          Continue to Subscription <ChevronRight size={18} />
+        </Link>
+      );
+    if (isVerified) return disabledBtn(<CheckCircle2 size={18} />, "Company Verified");
+    if (isUnderReview) return disabledBtn(<Clock size={18} />, "Waiting for Admin Verification");
+    if (isRejected && !isEditing)
+      return (
+        <button type="button" className="profile-btn-primary" onClick={() => { setIsEditing(true); setErrors({}); setStep(1); }}>
+          <FileText size={18} /> Correct & Resubmit
+        </button>
+      );
+    if (submitted && !isRejected) return disabledBtn(<Check size={18} />, "Profile Submitted");
+
+    return (
+      <button type="button" className="profile-btn-primary" onClick={handleSubmit} disabled={loading || (isRejected && !hasChanges)}>
+        {loading ? <Loader2 size={18} className="profile-btn-spinner" /> : <Check size={18} />}
+        {isRejected ? "Resubmit for Verification" : "Submit Profile"}
+      </button>
+    );
   };
 
   /* ============================================================
@@ -763,6 +829,7 @@ export default function ProfileCard() {
       <div className="profile-page-header">
         <div>
           <h1>Complete Business Profile</h1>
+<<<<<<< HEAD
           <p>
 <<<<<<< HEAD
             Complete your company verification process to unlock dashboard
@@ -783,30 +850,30 @@ export default function ProfileCard() {
             Complete your business information to continue with KYC verification and unlock
             dashboard features.
           </p>
+=======
+          <p>Complete your business information to continue with KYC verification and unlock dashboard features.</p>
+>>>>>>> a4fa27d (Add subscription plans and update subscription flow)
         </div>
-
-        <div className={`status-badge status-badge--${STATUS_CONFIG[status].tone}`}>
-          {STATUS_CONFIG[status].icon}
-          {STATUS_CONFIG[status].label}
+        <div className={`status-badge status-badge--${badge.tone}`}>
+          {badge.icon}
+          {badge.label}
           <span className="status-badge__divider" />
-          {completionPercent}% Complete
+          {completion}% Complete
         </div>
       </div>
 
       {/* STEPPER */}
       <div className="profile-stepper-card">
         <div className="profile-progress-head">
-          <span>
-            Step {currentStep} of {TOTAL_STEPS}: {STEPS[currentStep - 1]}
-          </span>
-          <span>{progressPercent}%</span>
+          <span>Step {step} of {STEP_NAMES.length}: {STEP_NAMES[step - 1]}</span>
+          <span>{progress}%</span>
         </div>
-
         <div className="profile-progress-track">
-          <div className="profile-progress-fill" style={{ width: `${progressPercent}%` }} />
+          <div className="profile-progress-fill" style={{ width: `${progress}%` }} />
         </div>
 
         <div className="profile-stepper-grid">
+<<<<<<< HEAD
           {STEPS.map((step, index) => {
             const stepNumber = index + 1;
             const active = currentStep === stepNumber;
@@ -836,14 +903,24 @@ export default function ProfileCard() {
                   .filter(Boolean)
                   .join(" ")}
                 onClick={() => goToStep(stepNumber)}
+=======
+          {STEP_NAMES.map((name, i) => {
+            const n = i + 1;
+            const active = step === n;
+            const completed = submitted || step > n;
+            const clickable = submitted || n <= maxStep;
+            return (
+              <div
+                key={name}
+>>>>>>> a4fa27d (Add subscription plans and update subscription flow)
                 role="button"
                 aria-disabled={!clickable}
+                onClick={() => goTo(n)}
+                className={["profile-step-item", active && "active", completed && "completed", !clickable && "disabled"].filter(Boolean).join(" ")}
               >
-                <div className="profile-step-circle">
-                  {completed ? <Check size={18} /> : stepNumber}
-                </div>
+                <div className="profile-step-circle">{completed ? <Check size={18} /> : n}</div>
                 <div className="profile-step-content">
-                  <strong>{step}</strong>
+                  <strong>{name}</strong>
                   <span>{completed ? "Completed" : active ? "In progress" : "Pending"}</span>
 >>>>>>> 0ab8559 (insert all data)
                 </div>
@@ -860,10 +937,11 @@ export default function ProfileCard() {
 =======
       {/* FORM */}
       <div className="profile-form-card">
-        {currentStep === 1 && (
+        {step < REVIEW_STEP ? (
           <div className="profile-step-fade">
 >>>>>>> 0ab8559 (insert all data)
             <div className="profile-form-header">
+<<<<<<< HEAD
               <h3>Personal Information</h3>
               <p>Provide your personal contact details.</p>
             </div>
@@ -938,8 +1016,14 @@ export default function ProfileCard() {
                 )}
 >>>>>>> 0ab8559 (insert all data)
               </div>
+=======
+              <h3>{STEPS[step - 1].title}</h3>
+              <p>{STEPS[step - 1].subtitle}</p>
+>>>>>>> a4fa27d (Add subscription plans and update subscription flow)
             </div>
+            <div className="profile-form-grid">{STEPS[step - 1].fields.map(renderField)}</div>
           </div>
+<<<<<<< HEAD
         )}
 
         {currentStep === 2 && (
@@ -1404,6 +1488,9 @@ export default function ProfileCard() {
                 <span>State</span>
                 <strong>{states.find((s: any) => s.id === formData.stateId)?.name || "N/A"}</strong>
 =======
+=======
+        ) : (
+>>>>>>> a4fa27d (Add subscription plans and update subscription flow)
           <div className="profile-step-fade">
             <div className="profile-form-header">
               <h3>Review Information</h3>
@@ -1411,44 +1498,37 @@ export default function ProfileCard() {
                 {isUnderReview
                   ? "Your business information is currently under admin verification."
                   : isVerified
-                    ? "Your business information has been verified by the admin."
+                    ? "Your company is verified. Continue to choose your subscription plan."
                     : "Verify all information before submission."}
               </p>
             </div>
 
             {isRejected && (
               <div className="rejection-box">
-                <div className="rejection-box__title">
-                  <AlertCircle size={18} />
-                  Correction Required
-                </div>
-                <p className="rejection-box__lead">
-                  Your company information needs correction before it can be verified.
-                </p>
-                {kycApplication?.rejectionReason && (
+                <div className="rejection-box__title"><AlertCircle size={18} /> Correction Required</div>
+                <p className="rejection-box__lead">Your company information needs correction before it can be verified.</p>
+                {kyc?.rejectionReason && (
                   <div className="rejection-box__message">
                     <span>Admin Message</span>
-                    <p>{kycApplication.rejectionReason}</p>
+                    <p>{kyc.rejectionReason}</p>
                   </div>
                 )}
               </div>
             )}
 
-            <div className="profile-review-section">
-              <div className="profile-review-title">
-                <User size={16} />
-                Personal Details
-              </div>
-              <div className="profile-review-grid">
-                <div className="profile-review-item">
-                  <span>Full Name</span>
-                  <strong>{formData.fullName || "N/A"}</strong>
-                </div>
-                <div className="profile-review-item">
-                  <span>Personal Phone</span>
-                  <strong>{formData.phone || "N/A"}</strong>
+            {STEPS.map(({ title, icon: Icon, fields }) => (
+              <div key={title} className="profile-review-section">
+                <div className="profile-review-title"><Icon size={16} /> {title}</div>
+                <div className="profile-review-grid">
+                  {fields.map((f) => (
+                    <div key={f.name} className={`profile-review-item ${f.kind === "textarea" ? "full-width" : ""}`}>
+                      <span>{f.label}</span>
+                      <strong>{displayValue(f)}</strong>
+                    </div>
+                  ))}
                 </div>
               </div>
+<<<<<<< HEAD
             </div>
 
             <div className="profile-review-section">
@@ -1538,6 +1618,9 @@ export default function ProfileCard() {
 >>>>>>> 0ab8559 (insert all data)
               </div>
             </div>
+=======
+            ))}
+>>>>>>> a4fa27d (Add subscription plans and update subscription flow)
           </div>
         )}
 
@@ -1546,6 +1629,7 @@ export default function ProfileCard() {
         {/* ACTIONS */}
 >>>>>>> 0ab8559 (insert all data)
         <div className="profile-form-actions">
+<<<<<<< HEAD
           {currentStep > 1 && (
             <button
               type="button"
@@ -1641,6 +1725,19 @@ export default function ProfileCard() {
               Profile Submitted
 >>>>>>> 0ab8559 (insert all data)
             </button>
+=======
+          {step > 1 && (
+            <button type="button" className="profile-btn-secondary" onClick={() => goTo(step - 1)} disabled={loading}>
+              <ChevronLeft size={18} /> Previous
+            </button>
+          )}
+          {step < REVIEW_STEP ? (
+            <button type="button" className="profile-btn-primary" onClick={next} disabled={loading}>
+              Continue <ChevronRight size={18} />
+            </button>
+          ) : (
+            renderAction()
+>>>>>>> a4fa27d (Add subscription plans and update subscription flow)
           )}
         </div>
       </div>
