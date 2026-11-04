@@ -133,6 +133,7 @@ export default function VendorTable(): JSX.Element {
                                         </td>
 
                                         <td>
+<<<<<<< HEAD
                                             {vendor.company?.verificationStatus && (
                                                 <VendorStatusBadge
                                                     status={
@@ -141,6 +142,11 @@ export default function VendorTable(): JSX.Element {
                                                     }
                                                 />
                                             )}
+=======
+                                            <VendorStatusBadge
+                                                status={vendor.onboardingStatus}
+                                            />
+>>>>>>> 0ab8559 (insert all data)
                                         </td>
 
                                         <td>

@@ -2,11 +2,21 @@ import { create } from "zustand";
 import toast from "react-hot-toast";
 
 export type VendorRole = "SUPPLIER" | "AGENCY";
+<<<<<<< HEAD
 export type VerificationStatus =
   | "PROFILE_PENDING"
   | "PENDING_APPROVAL"
   | "VERIFIED"
   | "REJECTED";
+=======
+
+export type OnboardingStatus =
+  | "BUSINESS_PROFILE_PENDING"
+  | "KYC_UNDER_REVIEW"
+  | "KYC_REJECTED"
+  | "SUBSCRIPTION_PENDING"
+  | "ACTIVE";
+>>>>>>> 0ab8559 (insert all data)
 
 export interface VendorProfile {
   fullName: string;
@@ -22,6 +32,7 @@ export interface VendorLocation {
   updatedAt?: string;
 }
 
+<<<<<<< HEAD
 export interface VendorCompany {
   id: string;
   name: string;
@@ -32,6 +43,37 @@ export interface VendorCompany {
   rejectionReason?: string | null;
   state?: VendorLocation | null;
   city?: VendorLocation | null;
+=======
+export interface VendorKycApplication {
+  id: string;
+  status: string;
+  submittedAt?: string | null;
+  verifiedAt?: string | null;
+  rejectedAt?: string | null;
+  rejectionReason?: string | null;
+  correctionRequired: boolean;
+  submittedVersion: number;
+}
+
+export interface VendorCompany {
+  id: string;
+  name: string;
+  businessType?: string;
+  gstNumber?: string | null;
+  panNumber?: string | null;
+  registrationNumber?: string | null;
+  category?: string | null;
+  experience?: number | null;
+  description?: string | null;
+  website?: string | null;
+  businessEmail?: string | null;
+  businessPhone?: string | null;
+  address?: string | null;
+  state?: VendorLocation | null;
+  city?: VendorLocation | null;
+  onboardingCompleted: boolean;
+  kycApplication?: VendorKycApplication | null;
+>>>>>>> 0ab8559 (insert all data)
   createdAt?: string;
   updatedAt?: string;
 }
@@ -52,6 +94,10 @@ export interface Vendor {
   email: string;
   role: VendorRole;
   status: string;
+<<<<<<< HEAD
+=======
+  onboardingStatus: OnboardingStatus;
+>>>>>>> 0ab8559 (insert all data)
   createdAt: string;
   profile?: VendorProfile | null;
   company?: VendorCompany | null;
@@ -60,7 +106,11 @@ export interface Vendor {
 
 interface VendorFilters {
   search: string;
+<<<<<<< HEAD
   status: VerificationStatus;
+=======
+  status: OnboardingStatus;
+>>>>>>> 0ab8559 (insert all data)
   role: "" | VendorRole;
   limit: number;
 }
@@ -91,7 +141,11 @@ export const useVendorReviewStore = create<VendorReviewStore>((set, get) => ({
 
   filters: {
     search: "",
+<<<<<<< HEAD
     status: "PENDING_APPROVAL",
+=======
+    status: "KYC_UNDER_REVIEW",
+>>>>>>> 0ab8559 (insert all data)
     role: "",
     limit: 10,
   },
@@ -218,4 +272,8 @@ export const useVendorReviewStore = create<VendorReviewStore>((set, get) => ({
       set({ actionLoading: false });
     }
   },
+<<<<<<< HEAD
 }));
+=======
+}));
+>>>>>>> 0ab8559 (insert all data)

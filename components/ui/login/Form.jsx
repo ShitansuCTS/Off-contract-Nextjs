@@ -373,6 +373,11 @@ const LoginForm = () => {
       </div>
     </div>
   );
+<<<<<<< HEAD
+=======
+
+  
+>>>>>>> 0ab8559 (insert all data)
 };
 
 export default LoginForm;

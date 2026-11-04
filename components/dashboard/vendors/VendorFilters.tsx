@@ -80,8 +80,13 @@ export default function VendorFilters(): JSX.Element {
                     value={filters.status}
                     disabled
                 >
+<<<<<<< HEAD
                     <option value="PENDING_APPROVAL">
                         Pending Approval
+=======
+                    <option value="KYC_UNDER_REVIEW">
+                        Under Review
+>>>>>>> 0ab8559 (insert all data)
                     </option>
                 </select>
 

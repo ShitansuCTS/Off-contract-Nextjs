@@ -83,7 +83,11 @@ export const loginService = async (body) => {
 
   // SANITIZE INPUT
   const cleanData = {
+<<<<<<< HEAD
     email: validatedData.email.toLowerCase().trim(),
+=======
+    email: validator.normalizeEmail(validatedData.email),
+>>>>>>> 0ab8559 (insert all data)
     password: validatedData.password,
   };
 

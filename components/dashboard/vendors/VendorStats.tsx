@@ -17,8 +17,12 @@ export default function VendorStats(): JSX.Element {
     ).length;
 
     const pending = vendors.filter(
+<<<<<<< HEAD
         (vendor) =>
             vendor.company?.verificationStatus === "PENDING_APPROVAL"
+=======
+        (vendor) => vendor.onboardingStatus === "KYC_UNDER_REVIEW"
+>>>>>>> 0ab8559 (insert all data)
     ).length;
 
     return (

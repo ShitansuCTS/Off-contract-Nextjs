@@ -1,7 +1,14 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
+<<<<<<< HEAD
 import { createLeadController } from "@/controllers/lead/lead.controller";
 import { getLeadsController } from "@/controllers/lead/lead.controller";
+=======
+import {
+    createLeadController,
+    getLeadsController,
+} from "@/controllers/lead/lead.controller";
+>>>>>>> 0ab8559 (insert all data)
 import { authMiddleware } from "@/middleware/auth.middleware";
 
 

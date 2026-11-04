@@ -8,9 +8,21 @@ export default function UserStats(): JSX.Element {
     const pagination = useAdminUsersStore((state) => state.pagination);
 
     const total = pagination?.total || users.length;
+<<<<<<< HEAD
     const suppliers = users.filter((user) => user.role === "SUPPLIER").length;
     const agencies = users.filter((user) => user.role === "AGENCY").length;
     const admins = users.filter((user) => user.role === "ADMIN").length;
+=======
+    const suppliers = users.filter(
+        (user) => user.role === "SUPPLIER"
+    ).length;
+    const agencies = users.filter(
+        (user) => user.role === "AGENCY"
+    ).length;
+    const admins = users.filter(
+        (user) => user.role === "ADMIN"
+    ).length;
+>>>>>>> 0ab8559 (insert all data)
 
     return (
         <div className="dashboard-stats-grid">

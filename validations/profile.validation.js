@@ -1,6 +1,10 @@
 import { z } from "zod";
 
 export const completeProfileSchema = z.object({
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0ab8559 (insert all data)
     fullName: z
         .string()
         .trim()
@@ -19,6 +23,19 @@ export const completeProfileSchema = z.object({
         .min(2, "Company name is required")
         .max(150, "Company name is too long"),
 
+<<<<<<< HEAD
+=======
+    businessType: z.enum([
+        "INDIVIDUAL",
+        "PROPRIETORSHIP",
+        "PARTNERSHIP",
+        "LLP",
+        "PRIVATE_LIMITED",
+        "PUBLIC_LIMITED",
+        "OTHER",
+    ]),
+
+>>>>>>> 0ab8559 (insert all data)
     gstNumber: z
         .string()
         .trim()
@@ -33,6 +50,30 @@ export const completeProfileSchema = z.object({
             "Enter valid 15 digit GST number"
         ),
 
+<<<<<<< HEAD
+=======
+    panNumber: z
+        .string()
+        .trim()
+        .optional()
+        .or(z.literal(""))
+        .refine(
+            (val) =>
+                !val ||
+                /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(
+                    val.toUpperCase()
+                ),
+            "Enter valid PAN number"
+        ),
+
+    registrationNumber: z
+        .string()
+        .trim()
+        .max(100, "Registration number is too long")
+        .optional()
+        .or(z.literal("")),
+
+>>>>>>> 0ab8559 (insert all data)
     category: z
         .string()
         .trim()
@@ -43,9 +84,67 @@ export const completeProfileSchema = z.object({
         .number()
         .min(0, "Experience cannot be negative")
         .max(100, "Experience is too high")
+<<<<<<< HEAD
         .optional(),
 
     stateId: z.string().uuid("Please select a valid state"),
 
     cityId: z.string().uuid("Please select a valid city"),
 });
+=======
+        .optional()
+        .nullable(),
+
+    description: z
+        .string()
+        .trim()
+        .max(1000, "Description is too long")
+        .optional()
+        .or(z.literal("")),
+
+    website: z
+        .string()
+        .trim()
+        .max(255, "Website URL is too long")
+        .nullable()
+        .optional()
+        .refine(
+            (value) =>
+                value === null ||
+                value === "" ||
+                /^https?:\/\/.+/i.test(value),
+            "Please enter a valid website URL"
+        ),
+
+    businessEmail: z
+        .string()
+        .trim()
+        .email("Enter a valid business email")
+        .max(150, "Business email is too long")
+        .optional()
+        .or(z.literal("")),
+
+    businessPhone: z
+        .string()
+        .trim()
+        .min(10, "Business phone number is invalid")
+        .max(15, "Business phone number is too long")
+        .optional()
+        .or(z.literal("")),
+
+    address: z
+        .string()
+        .trim()
+        .max(500, "Address is too long")
+        .optional()
+        .or(z.literal("")),
+
+    stateId: z
+        .string()
+        .uuid("Please select a valid state"),
+
+    cityId: z
+        .string()
+        .uuid("Please select a valid city"),
+});
+>>>>>>> 0ab8559 (insert all data)
